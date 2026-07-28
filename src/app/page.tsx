@@ -1,65 +1,110 @@
-import Image from "next/image";
+'use client';
+
+import React from 'react';
+import { useStreak } from '@/lib/StreakContext';
+import { Sidebar } from '@/components/Sidebar';
+import { TopNav } from '@/components/TopNav';
+import { MobileBottomNav } from '@/components/MobileBottomNav';
+
+// Views
+import { LandingPage } from '@/components/views/LandingPage';
+import { LoginSignupPage } from '@/components/views/LoginSignupPage';
+import { DashboardView } from '@/components/views/DashboardView';
+import { HeatmapView } from '@/components/views/HeatmapView';
+import { StatisticsView } from '@/components/views/StatisticsView';
+import { CalendarView } from '@/components/views/CalendarView';
+import { JournalView } from '@/components/views/JournalView';
+import { AchievementsView } from '@/components/views/AchievementsView';
+import { BadgesView } from '@/components/views/BadgesView';
+import { LeaderboardView } from '@/components/views/LeaderboardView';
+import { HabitsManagementView } from '@/components/views/HabitsManagementView';
+import { SettingsView } from '@/components/views/SettingsView';
+import { NotificationsDrawer } from '@/components/views/NotificationsDrawer';
+import { ProfileView } from '@/components/views/ProfileView';
+import { ActivityHistoryView } from '@/components/views/ActivityHistoryView';
+
+// Modals
+import { DailyCheckInModal } from '@/components/modals/DailyCheckInModal';
+import { DayDetailsModal } from '@/components/modals/DayDetailsModal';
+import { HabitFormModal } from '@/components/modals/HabitFormModal';
+import { WatchDemoModal } from '@/components/modals/WatchDemoModal';
 
 export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+  const { isLoggedIn, activeView } = useStreak();
+
+  // Landing view
+  if (activeView === 'landing') {
+    return (
+      <main className="min-h-screen flex flex-col">
+        <LandingPage />
+        <WatchDemoModal />
       </main>
+    );
+  }
+
+  // Login / Signup View
+  if (activeView === 'login' || !isLoggedIn) {
+    return (
+      <main className="min-h-screen flex flex-col">
+        <LoginSignupPage />
+      </main>
+    );
+  }
+
+  // Application Layout (Dashboard & Features)
+  const renderActiveView = () => {
+    switch (activeView) {
+      case 'heatmap':
+        return <HeatmapView />;
+      case 'statistics':
+        return <StatisticsView />;
+      case 'calendar':
+        return <CalendarView />;
+      case 'journal':
+        return <JournalView />;
+      case 'achievements':
+        return <AchievementsView />;
+      case 'badges':
+        return <BadgesView />;
+      case 'leaderboard':
+        return <LeaderboardView />;
+      case 'habits':
+        return <HabitsManagementView />;
+      case 'settings':
+        return <SettingsView />;
+      case 'profile':
+        return <ProfileView />;
+      case 'activity':
+        return <ActivityHistoryView />;
+      case 'dashboard':
+      default:
+        return <DashboardView />;
+    }
+  };
+
+  return (
+    <div className="flex min-h-screen bg-background text-foreground">
+      {/* Desktop Sidebar */}
+      <Sidebar />
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0 pb-20 lg:pb-8">
+        <TopNav />
+
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+          {renderActiveView()}
+        </main>
+      </div>
+
+      {/* Mobile Bottom Navigation */}
+      <MobileBottomNav />
+
+      {/* Global Modals & Drawers */}
+      <DailyCheckInModal />
+      <DayDetailsModal />
+      <HabitFormModal />
+      <NotificationsDrawer />
+      <WatchDemoModal />
     </div>
   );
 }
