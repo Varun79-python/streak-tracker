@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useStreak } from '@/lib/StreakContext';
+import { useRouter } from 'next/navigation';
 import { 
   LayoutDashboard, 
   Grid3X3, 
@@ -23,6 +24,7 @@ import {
 
 export const Sidebar: React.FC = () => {
   const { activeView, setActiveView, setIsLoggedIn, user, setShowCheckInModal } = useStreak();
+  const router = useRouter();
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -38,7 +40,7 @@ export const Sidebar: React.FC = () => {
     { id: 'activity', label: 'Activity History', icon: Clock },
     { id: 'profile', label: 'My Profile', icon: User },
     { id: 'settings', label: 'Settings', icon: Settings },
-    { id: 'admin', label: 'Admin Panel 🔐', icon: ShieldCheck },
+    { id: 'admin', label: 'Admin Panel 🔐', icon: ShieldCheck, isRoute: true, href: '/admin' },
   ];
 
   return (
@@ -76,7 +78,14 @@ export const Sidebar: React.FC = () => {
           return (
             <button
               key={item.id}
-              onClick={() => setActiveView(item.id)}
+              onClick={() => {
+                if (item.isRoute && item.href) {
+                  router.push(item.href);
+                } else {
+                  setActiveView(item.id);
+                  router.push('/');
+                }
+              }}
               className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all cursor-pointer ${
                 isActive
                   ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold glow-green'
@@ -111,6 +120,7 @@ export const Sidebar: React.FC = () => {
           onClick={() => {
             setIsLoggedIn(false);
             setActiveView('landing');
+            router.push('/');
           }}
           title="Logout"
           className="p-2 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors cursor-pointer"
