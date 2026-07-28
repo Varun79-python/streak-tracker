@@ -22,6 +22,7 @@ import { SettingsView } from '@/components/views/SettingsView';
 import { NotificationsDrawer } from '@/components/views/NotificationsDrawer';
 import { ProfileView } from '@/components/views/ProfileView';
 import { ActivityHistoryView } from '@/components/views/ActivityHistoryView';
+import { AdminView } from '@/components/views/AdminView';
 
 // Modals
 import { DailyCheckInModal } from '@/components/modals/DailyCheckInModal';
@@ -76,6 +77,8 @@ export default function Home() {
         return <ProfileView />;
       case 'activity':
         return <ActivityHistoryView />;
+      case 'admin':
+        return <AdminView />;
       case 'dashboard':
       default:
         return <DashboardView />;

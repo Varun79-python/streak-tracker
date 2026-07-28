@@ -69,6 +69,7 @@ export interface LeaderboardUser {
 }
 
 export interface UserProfile {
+  id: string;
   name: string;
   email: string;
   avatar: string;
@@ -81,4 +82,14 @@ export interface UserProfile {
   successRate: number;
   bio: string;
   joinedDate: string;
+}
+
+export interface UserCredential {
+  id: string;
+  email: string;
+  password: string;
+  name: string;
+  role: 'admin' | 'user';
+  createdAt: string;
+  status: 'active' | 'suspended';
 }

@@ -17,7 +17,8 @@ import {
   User, 
   LogOut,
   Flame,
-  Clock
+  Clock,
+  ShieldCheck
 } from 'lucide-react';
 
 export const Sidebar: React.FC = () => {
@@ -37,6 +38,7 @@ export const Sidebar: React.FC = () => {
     { id: 'activity', label: 'Activity History', icon: Clock },
     { id: 'profile', label: 'My Profile', icon: User },
     { id: 'settings', label: 'Settings', icon: Settings },
+    { id: 'admin', label: 'Admin Panel 🔐', icon: ShieldCheck },
   ];
 
   return (
