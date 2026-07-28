@@ -14,6 +14,7 @@ export const INITIAL_HABITS: Habit[] = [
 ];
 
 export const INITIAL_USER: UserProfile = {
+  id: 'u_1',
   name: 'Vedant',
   email: 'vedant@example.com',
   avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250',
