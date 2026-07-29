@@ -22,11 +22,9 @@ import { motion } from 'framer-motion';
 export const AdminView: React.FC = () => {
   const { 
     credentials, 
-    createManagedUser, 
-    updateManagedUser, 
-    deleteManagedUser, 
     isAdminUnlocked, 
-    verifyAndUnlockAdmin 
+    verifyAndUnlockAdmin,
+    setCredentials
   } = useStreak();
 
   const [inputKey, setInputKey] = useState('');
@@ -37,6 +35,7 @@ export const AdminView: React.FC = () => {
   const [newEmail, setNewEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [creationSuccess, setCreationSuccess] = useState('');
+  const [creating, setCreating] = useState(false);
 
   // Editing User Credential State
   const [editingUserId, setEditingUserId] = useState<string | null>(null);
@@ -44,6 +43,8 @@ export const AdminView: React.FC = () => {
   const [editPassword, setEditPassword] = useState('');
   const [editName, setEditName] = useState('');
   const [showPasswordMap, setShowPasswordMap] = useState<Record<string, boolean>>({});
+  const [saving, setSaving] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState<string | null>(null);
 
   const handleAdminUnlockSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,16 +56,57 @@ export const AdminView: React.FC = () => {
     }
   };
 
-  const handleCreateUser = (e: React.FormEvent) => {
+  const handleCreateUser = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newName.trim() || !newEmail.trim() || !newPassword.trim()) return;
 
-    createManagedUser(newName, newEmail, newPassword);
-    setNewName('');
-    setNewEmail('');
-    setNewPassword('');
-    setCreationSuccess('User account provisioned successfully! Credentials are ready for login.');
-    setTimeout(() => setCreationSuccess(''), 4000);
+    setCreating(true);
+    try {
+      const res = await fetch('/api/auth/create-user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: newName.trim(),
+          email: newEmail.trim().toLowerCase(),
+          password: newPassword.trim(),
+          adminKey: ADMIN_SECRET_KEY,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to create user');
+      }
+
+      // Refresh credentials list
+      await refreshCredentials();
+      
+      setNewName('');
+      setNewEmail('');
+      setNewPassword('');
+      setCreationSuccess('User account provisioned successfully! Credentials are ready for login.');
+      setTimeout(() => setCreationSuccess(''), 4000);
+    } catch (err) {
+      setCreationSuccess(`Error: ${err instanceof Error ? err.message : 'Failed to create user'}`);
+      setTimeout(() => setCreationSuccess(''), 4000);
+    } finally {
+      setCreating(false);
+    }
+  };
+
+  const refreshCredentials = async () => {
+    try {
+      const res = await fetch('/api/auth/admin/users', {
+        headers: { 'Authorization': `Bearer ${ADMIN_SECRET_KEY}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setCredentials(data.users || []);
+      }
+    } catch {
+      // Ignore errors
+    }
   };
 
   const startEdit = (user: UserCredential) => {
@@ -74,17 +116,66 @@ export const AdminView: React.FC = () => {
     setEditPassword(user.password);
   };
 
-  const saveEdit = (id: string) => {
-    updateManagedUser(id, {
-      name: editName,
-      email: editEmail,
-      password: editPassword,
-    });
-    setEditingUserId(null);
+  const saveEdit = async (id: string) => {
+    setSaving(id);
+    try {
+      const res = await fetch('/api/auth/admin/users', {
+        method: 'PATCH',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${ADMIN_SECRET_KEY}`,
+        },
+        body: JSON.stringify({
+          id,
+          name: editName,
+          email: editEmail,
+          password: editPassword,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to update user');
+      }
+
+      await refreshCredentials();
+      setEditingUserId(null);
+    } catch (err) {
+      alert(`Error: ${err instanceof Error ? err.message : 'Failed to update user'}`);
+    } finally {
+      setSaving(null);
+    }
   };
 
   const togglePasswordVisibility = (id: string) => {
     setShowPasswordMap(prev => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const handleDeleteUser = async (id: string) => {
+    if (!confirm('Are you sure you want to revoke access for this user?')) return;
+    
+    setDeleting(id);
+    try {
+      const res = await fetch('/api/auth/admin/users', {
+        method: 'DELETE',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${ADMIN_SECRET_KEY}`,
+        },
+        body: JSON.stringify({ id }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to delete user');
+      }
+
+      await refreshCredentials();
+    } catch (err) {
+      alert(`Error: ${err instanceof Error ? err.message : 'Failed to delete user'}`);
+    } finally {
+      setDeleting(null);
+    }
   };
 
   // If Admin Key is not unlocked yet, display Secret Key Entry Gate
@@ -221,10 +312,11 @@ export const AdminView: React.FC = () => {
 
             <button
               type="submit"
-              className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-all glow-green flex items-center justify-center gap-2 shadow-lg cursor-pointer"
+              disabled={creating}
+              className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-all glow-green flex items-center justify-center gap-2 shadow-lg cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <UserPlus className="w-4 h-4" />
-              <span>Generate & Grant User Credentials</span>
+              <span>{creating ? 'Creating...' : 'Generate & Grant User Credentials'}</span>
             </button>
           </form>
         </div>
@@ -296,9 +388,10 @@ export const AdminView: React.FC = () => {
                         </button>
                         <button
                           onClick={() => saveEdit(userCredential.id)}
-                          className="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400 cursor-pointer flex items-center gap-1"
+                          disabled={saving === userCredential.id}
+                          className="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400 cursor-pointer flex items-center gap-1 disabled:opacity-50"
                         >
-                          <CheckCircle2 className="w-3.5 h-3.5" /> Save Changes Immediately
+                          <CheckCircle2 className="w-3.5 h-3.5" /> {saving === userCredential.id ? 'Saving...' : 'Save Changes Immediately'}
                         </button>
                       </div>
                     </div>
@@ -346,8 +439,9 @@ export const AdminView: React.FC = () => {
                         {/* Delete User */}
                         {userCredential.role !== 'admin' && (
                           <button
-                            onClick={() => deleteManagedUser(userCredential.id)}
-                            className="p-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 transition-colors cursor-pointer"
+                            onClick={() => handleDeleteUser(userCredential.id)}
+                            disabled={deleting === userCredential.id}
+                            className="p-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 transition-colors cursor-pointer disabled:opacity-50"
                             title="Revoke Access"
                           >
                             <Trash2 className="w-4 h-4" />

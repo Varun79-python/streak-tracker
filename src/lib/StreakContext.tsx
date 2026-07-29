@@ -1,22 +1,13 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { Habit, DayCheckIn, Achievement, Badge, LeaderboardUser, NotificationItem, UserProfile, UserCredential } from './types';
-import { INITIAL_HABITS, INITIAL_USER, generateSeedHistory, INITIAL_ACHIEVEMENTS, INITIAL_BADGES, INITIAL_LEADERBOARD, INITIAL_NOTIFICATIONS } from './mockData';
+import { INITIAL_HABITS, INITIAL_USER, INITIAL_ACHIEVEMENTS, INITIAL_BADGES, INITIAL_LEADERBOARD, INITIAL_NOTIFICATIONS } from './mockData';
 import { format } from 'date-fns';
 
 export const ADMIN_SECRET_KEY = '123456789987654321741852963369258147';
 
 export const INITIAL_CREDENTIALS: UserCredential[] = [
-  {
-    id: 'u_1',
-    email: 'vedant@example.com',
-    password: 'password123',
-    name: 'Vedant',
-    role: 'user',
-    createdAt: '2025-05-01',
-    status: 'active'
-  },
   {
     id: 'u_admin',
     email: 'admin@streakify.com',
@@ -45,6 +36,7 @@ interface StreakContextType {
   leaderboard: LeaderboardUser[];
   notifications: NotificationItem[];
   credentials: UserCredential[];
+  setCredentials: React.Dispatch<React.SetStateAction<UserCredential[]>>;
   isAdminUnlocked: boolean;
   setIsAdminUnlocked: (val: boolean) => void;
   
@@ -65,29 +57,82 @@ interface StreakContextType {
   setShowAdminKeyModal: (val: boolean) => void;
 
   // Key operations & Admin functions
-  loginWithCredentials: (email: string, pass: string) => { success: boolean; message: string };
+  loginWithCredentials: (email: string, pass: string) => Promise<{ success: boolean; message: string }>;
   verifyAndUnlockAdmin: (keyInput: string) => boolean;
-  createManagedUser: (name: string, email: string, pass: string) => void;
-  updateManagedUser: (id: string, updates: Partial<UserCredential>) => void;
-  deleteManagedUser: (id: string) => void;
-  submitDailyCheckIn: (completedIds: string[], journalText?: string, journalTitle?: string, mood?: string) => void;
-  addNewHabit: (habitData: Omit<Habit, 'id'>) => void;
-  updateHabit: (id: string, updates: Partial<Habit>) => void;
-  deleteHabit: (id: string) => void;
-  saveJournalEntry: (date: string, title: string, content: string, mood: string) => void;
+  createManagedUser: (name: string, email: string, pass: string) => Promise<void>;
+  updateManagedUser: (id: string, updates: Partial<UserCredential>) => Promise<void>;
+  deleteManagedUser: (id: string) => Promise<void>;
+  submitDailyCheckIn: (completedIds: string[], journalText?: string, journalTitle?: string, mood?: string) => Promise<void>;
+  addNewHabit: (habitData: Omit<Habit, 'id'>) => Promise<void>;
+  updateHabit: (id: string, updates: Partial<Habit>) => Promise<void>;
+  deleteHabit: (id: string) => Promise<void>;
   markAllNotificationsRead: () => void;
   resetAllData: () => void;
+  refreshUserData: () => Promise<void>;
 }
 
 const StreakContext = createContext<StreakContextType | undefined>(undefined);
 
-export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [currentUserEmail, setCurrentUserEmail] = useState<string | null>('vedant@example.com');
-  const [theme, setThemeState] = useState<'dark' | 'amoled' | 'light'>('dark');
-  const [activeView, setActiveView] = useState<string>('dashboard');
+// Transform Supabase data to frontend types
+const transformHabit = (q: any): Habit => ({
+  id: q.id,
+  name: q.title,
+  description: q.description || '',
+  icon: q.icon || 'circle',
+  category: 'custom',
+  required: q.is_required,
+  active: q.is_active,
+  color: '#10b981',
+  reminderTime: undefined,
+});
 
-  const [user, setUser] = useState<UserProfile>({ ...INITIAL_USER, id: 'u_1' });
+const transformCheckIn = (dc: any): DayCheckIn => ({
+  date: dc.completion_date,
+  completedHabits: dc.completed_question_ids || [],
+  completionPercentage: Number(dc.completion_percentage) || 0,
+  xpEarned: dc.xp_earned || 0,
+  completed: dc.is_completed || false,
+  journal: dc.journal_entry ? {
+    title: 'Daily Reflection',
+    content: dc.journal_entry,
+    mood: dc.mood || 'Productive',
+  } : undefined,
+});
+
+const transformProfile = (p: any): UserProfile => ({
+  id: p.id,
+  name: p.display_name || p.username || 'User',
+  email: p.username || '',
+  avatar: p.avatar_url || '',
+  level: p.level || 1,
+  xp: p.xp || 0,
+  nextLevelXp: (p.level || 1) * 100,
+  currentStreak: p.current_streak || 0,
+  longestStreak: p.longest_streak || 0,
+  totalDays: p.total_completed_days || 0,
+  successRate: Number(p.completion_percentage) || 0,
+  bio: p.bio || '',
+  joinedDate: p.created_at?.split('T')[0] || '',
+});
+
+const transformCredential = (u: any): UserCredential => ({
+  id: u.id,
+  email: u.username,
+  password: '', // Not stored in frontend
+  name: u.display_name || u.username,
+  role: u.role,
+  createdAt: u.created_at?.split('T')[0] || '',
+  status: u.status,
+});
+
+export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUserEmail, setCurrentUserEmail] = useState<string | null>(null);
+  const [theme, setThemeState] = useState<'dark' | 'amoled' | 'light'>('dark');
+  const [activeView, setActiveView] = useState<string>('login');
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [user, setUser] = useState<UserProfile>(INITIAL_USER);
   const [habits, setHabits] = useState<Habit[]>(INITIAL_HABITS);
   const [history, setHistory] = useState<Record<string, DayCheckIn>>({});
   const [achievements, setAchievements] = useState<Achievement[]>(INITIAL_ACHIEVEMENTS);
@@ -106,63 +151,131 @@ export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [showNotificationDrawer, setShowNotificationDrawer] = useState(false);
   const [showAdminKeyModal, setShowAdminKeyModal] = useState(false);
 
-  // Load state from localStorage or initialize seed
-  useEffect(() => {
-    try {
-      const savedCredentials = localStorage.getItem('streakify_credentials');
-      if (savedCredentials) {
-        setCredentials(JSON.parse(savedCredentials));
-      } else {
-        localStorage.setItem('streakify_credentials', JSON.stringify(INITIAL_CREDENTIALS));
-      }
-
-      const savedHistory = localStorage.getItem('streakify_history');
-      if (savedHistory) {
-        setHistory(JSON.parse(savedHistory));
-      } else {
-        const seed = generateSeedHistory();
-        setHistory(seed);
-        localStorage.setItem('streakify_history', JSON.stringify(seed));
-      }
-
-      const savedHabits = localStorage.getItem('streakify_habits');
-      if (savedHabits) setHabits(JSON.parse(savedHabits));
-
-      const savedUser = localStorage.getItem('streakify_user');
-      if (savedUser) setUser(JSON.parse(savedUser));
-    } catch {
-      setHistory(generateSeedHistory());
-    }
-  }, []);
-
   // Sync theme to root HTML element
-  const setTheme = (t: 'dark' | 'amoled' | 'light') => {
+  const setTheme = useCallback((t: 'dark' | 'amoled' | 'light') => {
     setThemeState(t);
     const root = document.documentElement;
     root.classList.remove('theme-amoled', 'theme-light');
     if (t === 'amoled') root.classList.add('theme-amoled');
     if (t === 'light') root.classList.add('theme-light');
-  };
+  }, []);
 
-  // Auth check against admin-managed credentials
-  const loginWithCredentials = (emailInput: string, passwordInput: string) => {
-    const matched = credentials.find(
-      (c) => c.email.toLowerCase() === emailInput.trim().toLowerCase() && c.password === passwordInput.trim()
-    );
+  // Load user data from Supabase
+  const loadUserData = useCallback(async (userId: string) => {
+    try {
+      setIsLoading(true);
+      
+      // Fetch all data in parallel
+      const [habitsRes, historyRes, profileRes, achievementsRes, badgesRes, notificationsRes] = await Promise.all([
+        fetch(`/api/user/habits?userId=${userId}`),
+        fetch(`/api/user/history?userId=${userId}`),
+        fetch(`/api/user/profile?userId=${userId}`),
+        fetch(`/api/user/achievements?userId=${userId}`),
+        fetch(`/api/user/badges?userId=${userId}`),
+        fetch(`/api/user/notifications?userId=${userId}`),
+      ]);
 
-    if (!matched) {
-      return { success: false, message: 'Invalid Credentials. Access is restricted to Admin-provisioned accounts.' };
+      if (habitsRes.ok) {
+        const data = await habitsRes.json();
+        setHabits(data.map(transformHabit));
+      }
+      
+      if (historyRes.ok) {
+        const data = await historyRes.json();
+        const historyMap: Record<string, DayCheckIn> = {};
+        data.forEach((item: any) => {
+          historyMap[item.completion_date] = transformCheckIn(item);
+        });
+        setHistory(historyMap);
+      }
+
+      if (profileRes.ok) {
+        const data = await profileRes.json();
+        setUser(transformProfile(data));
+      }
+
+      if (achievementsRes.ok) {
+        const data = await achievementsRes.json();
+        setAchievements(data);
+      }
+
+      if (badgesRes.ok) {
+        const data = await badgesRes.json();
+        setBadges(data);
+      }
+
+      if (notificationsRes.ok) {
+        const data = await notificationsRes.json();
+        setNotifications(data);
+      }
+    } catch (error) {
+      console.error('Failed to load user data:', error);
+    } finally {
+      setIsLoading(false);
     }
+  }, []);
 
-    if (matched.status === 'suspended') {
-      return { success: false, message: 'Account is suspended by Admin.' };
+  // Load credentials for admin view
+  const loadCredentials = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/credentials');
+      if (res.ok) {
+        const data = await res.json();
+        setCredentials(data.map(transformCredential));
+      }
+    } catch (error) {
+      console.error('Failed to load credentials:', error);
     }
+  }, []);
 
-    setCurrentUserEmail(matched.email);
-    setUser(prev => ({ ...prev, name: matched.name, email: matched.email }));
-    setIsLoggedIn(true);
-    setActiveView('dashboard');
-    return { success: true, message: 'Login successful' };
+  // Initial load - check for existing session
+  useEffect(() => {
+    const init = async () => {
+      // Check if there's a stored user email and ID
+      const storedEmail = localStorage.getItem('streakify_user_email');
+      const storedUserId = localStorage.getItem('streakify_user_id');
+      if (storedEmail && storedUserId) {
+        setCurrentUserEmail(storedEmail);
+        setIsLoggedIn(true);
+        setActiveView('dashboard');
+        await loadUserData(storedUserId);
+      }
+      setIsLoading(false);
+    };
+    init();
+  }, [loadUserData]);
+
+  // Auth check against Supabase via API
+  const loginWithCredentials = async (emailInput: string, passwordInput: string) => {
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: emailInput, password: passwordInput }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        return { success: false, message: data.error || 'Invalid credentials' };
+      }
+
+      setCurrentUserEmail(data.user.email);
+      setUser(prev => ({ ...prev, name: data.user.name, email: data.user.email }));
+      setIsLoggedIn(true);
+      setActiveView('dashboard');
+      
+      // Store email and user ID for session persistence
+      localStorage.setItem('streakify_user_email', data.user.email);
+      localStorage.setItem('streakify_user_id', data.user.id);
+      
+      // Load user data
+      await loadUserData(data.user.id);
+      
+      return { success: true, message: 'Login successful' };
+    } catch {
+      return { success: false, message: 'Login failed. Please try again.' };
+    }
   };
 
   // Verify secret Admin Key
@@ -170,50 +283,84 @@ export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     if (keyInput.trim() === ADMIN_SECRET_KEY) {
       setIsAdminUnlocked(true);
       setActiveView('admin');
+      loadCredentials();
       return true;
     }
     return false;
   };
 
   // Admin User Creation
-  const createManagedUser = (name: string, email: string, pass: string) => {
-    const newUser: UserCredential = {
-      id: `u_${Date.now()}`,
-      name: name.trim(),
-      email: email.trim().toLowerCase(),
-      password: pass.trim(),
-      role: 'user',
-      createdAt: format(new Date(), 'yyyy-MM-dd'),
-      status: 'active'
-    };
+  const createManagedUser = async (name: string, email: string, pass: string) => {
+    try {
+      const res = await fetch('/api/auth/create-user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password: pass, adminKey: ADMIN_SECRET_KEY }),
+      });
 
-    const updated = [...credentials, newUser];
-    setCredentials(updated);
-    localStorage.setItem('streakify_credentials', JSON.stringify(updated));
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to create user');
+      }
+
+      // Refresh credentials list
+      await loadCredentials();
+    } catch (error) {
+      console.error('Failed to create user:', error);
+      throw error;
+    }
   };
 
-  // Admin User Credential Update (Immediate sync to DB/storage)
-  const updateManagedUser = (id: string, updates: Partial<UserCredential>) => {
-    const updated = credentials.map((c) => (c.id === id ? { ...c, ...updates } : c));
-    setCredentials(updated);
-    localStorage.setItem('streakify_credentials', JSON.stringify(updated));
+  // Admin User Credential Update
+  const updateManagedUser = async (id: string, updates: Partial<UserCredential>) => {
+    try {
+      const res = await fetch(`/api/admin/credentials/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ updates, adminKey: ADMIN_SECRET_KEY }),
+      });
 
-    // If currently logged in user is updated, update active session user details
-    const target = updated.find((c) => c.id === id);
-    if (target && target.email === user.email) {
-      setUser((prev) => ({ ...prev, name: target.name, email: target.email }));
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to update user');
+      }
+
+      // Refresh credentials list
+      await loadCredentials();
+    } catch (error) {
+      console.error('Failed to update user:', error);
+      throw error;
     }
   };
 
   // Admin User Deletion
-  const deleteManagedUser = (id: string) => {
-    const updated = credentials.filter((c) => c.id !== id);
-    setCredentials(updated);
-    localStorage.setItem('streakify_credentials', JSON.stringify(updated));
+  const deleteManagedUser = async (id: string) => {
+    try {
+      const res = await fetch(`/api/admin/credentials/${id}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ adminKey: ADMIN_SECRET_KEY }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to delete user');
+      }
+
+      // Refresh credentials list
+      await loadCredentials();
+    } catch (error) {
+      console.error('Failed to delete user:', error);
+      throw error;
+    }
   };
 
-  // Submit Daily Check-in logic
-  const submitDailyCheckIn = (completedIds: string[], journalText?: string, journalTitle?: string, mood?: string) => {
+  // Submit Daily Check-in
+  const submitDailyCheckIn = async (completedIds: string[], journalText?: string, journalTitle?: string, mood?: string) => {
+    const userId = localStorage.getItem('streakify_user_id');
+    if (!userId) return;
+
     const todayStr = format(new Date(), 'yyyy-MM-dd');
     const requiredHabits = habits.filter(h => h.required && h.active);
     const completedReqCount = requiredHabits.filter(h => completedIds.includes(h.id)).length;
@@ -223,94 +370,131 @@ export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const pct = totalHabitsCount > 0 ? Math.round((completedIds.length / totalHabitsCount) * 100) : 0;
     const xpGained = isPerfect ? 50 : Math.round((completedIds.length / totalHabitsCount) * 25);
 
-    const updatedCheckIn: DayCheckIn = {
-      date: todayStr,
-      completedHabits: completedIds,
-      completionPercentage: pct,
-      xpEarned: xpGained,
-      completed: isPerfect,
-      journal: journalText ? {
-        title: journalTitle || 'Daily Reflection',
-        content: journalText,
-        mood: mood || 'Productive'
-      } : undefined
-    };
-
-    const newHistory = { ...history, [todayStr]: updatedCheckIn };
-    setHistory(newHistory);
-    localStorage.setItem('streakify_history', JSON.stringify(newHistory));
-
-    if (isPerfect) {
-      setUser(prev => {
-        const newStreak = prev.currentStreak + 1;
-        const newLongest = Math.max(prev.longestStreak, newStreak);
-        const newXp = prev.xp + xpGained;
-        const newTotalDays = prev.totalDays + 1;
-        const updatedUser = {
-          ...prev,
-          currentStreak: newStreak,
-          longestStreak: newLongest,
-          xp: newXp,
-          totalDays: newTotalDays,
-          level: Math.floor(newXp / 100) + 1
-        };
-        localStorage.setItem('streakify_user', JSON.stringify(updatedUser));
-        return updatedUser;
+    try {
+      const res = await fetch('/api/user/checkin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId,
+          date: todayStr,
+          completedHabitIds: completedIds,
+          completionPercentage: pct,
+          xpEarned: xpGained,
+          isCompleted: isPerfect,
+          journalEntry: journalText,
+          journalTitle: journalTitle || 'Daily Reflection',
+          mood: mood || 'Productive',
+        }),
       });
 
-      setNotifications(prev => [
-        {
-          id: `n_${Date.now()}`,
-          title: '🔥 Streak Continued!',
-          message: `Awesome work! You completed all required habits for today. +${xpGained} XP!`,
-          type: 'streak',
-          timestamp: 'Just now',
-          read: false
-        },
-        ...prev
-      ]);
+      if (!res.ok) throw new Error('Failed to submit check-in');
+
+      // Update local state
+      const updatedCheckIn: DayCheckIn = {
+        date: todayStr,
+        completedHabits: completedIds,
+        completionPercentage: pct,
+        xpEarned: xpGained,
+        completed: isPerfect,
+        journal: journalText ? {
+          title: journalTitle || 'Daily Reflection',
+          content: journalText,
+          mood: mood || 'Productive'
+        } : undefined
+      };
+
+      const newHistory = { ...history, [todayStr]: updatedCheckIn };
+      setHistory(newHistory);
+
+      if (isPerfect) {
+        setUser(prev => {
+          const newStreak = prev.currentStreak + 1;
+          const newLongest = Math.max(prev.longestStreak, newStreak);
+          const newXp = prev.xp + xpGained;
+          const newTotalDays = prev.totalDays + 1;
+          return {
+            ...prev,
+            currentStreak: newStreak,
+            longestStreak: newLongest,
+            xp: newXp,
+            totalDays: newTotalDays,
+            level: Math.floor(newXp / 100) + 1
+          };
+        });
+
+        setNotifications(prev => [
+          {
+            id: `n_${Date.now()}`,
+            title: '🔥 Streak Continued!',
+            message: `Awesome work! You completed all required habits for today. +${xpGained} XP!`,
+            type: 'streak',
+            timestamp: 'Just now',
+            read: false
+          },
+          ...prev
+        ]);
+      }
+
+      // Reload user data to get updated profile
+      await loadUserData(userId);
+    } catch (error) {
+      console.error('Failed to submit check-in:', error);
+      throw error;
     }
   };
 
-  const addNewHabit = (habitData: Omit<Habit, 'id'>) => {
-    const newHabit: Habit = {
-      ...habitData,
-      id: `h_${Date.now()}`
-    };
-    const updated = [...habits, newHabit];
-    setHabits(updated);
-    localStorage.setItem('streakify_habits', JSON.stringify(updated));
+  const addNewHabit = async (habitData: Omit<Habit, 'id'>) => {
+    const userId = localStorage.getItem('streakify_user_id');
+    if (!userId) return;
+
+    try {
+      const res = await fetch('/api/user/habits', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, ...habitData }),
+      });
+
+      if (!res.ok) throw new Error('Failed to create habit');
+
+      const newHabit = await res.json();
+      setHabits(prev => [...prev, transformHabit(newHabit)]);
+    } catch (error) {
+      console.error('Failed to add habit:', error);
+      throw error;
+    }
   };
 
-  const updateHabit = (id: string, updates: Partial<Habit>) => {
-    const updated = habits.map(h => h.id === id ? { ...h, ...updates } : h);
-    setHabits(updated);
-    localStorage.setItem('streakify_habits', JSON.stringify(updated));
+  const updateHabit = async (id: string, updates: Partial<Habit>) => {
+    try {
+      const res = await fetch(`/api/user/habits/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ updates }),
+      });
+
+      if (!res.ok) throw new Error('Failed to update habit');
+
+      const updatedHabit = await res.json();
+      setHabits(prev => prev.map(h => h.id === id ? transformHabit(updatedHabit) : h));
+    } catch (error) {
+      console.error('Failed to update habit:', error);
+      throw error;
+    }
   };
 
-  const deleteHabit = (id: string) => {
-    const updated = habits.filter(h => h.id !== id);
-    setHabits(updated);
-    localStorage.setItem('streakify_habits', JSON.stringify(updated));
-  };
+  const deleteHabit = async (id: string) => {
+    try {
+      const res = await fetch(`/api/user/habits/${id}`, {
+        method: 'DELETE',
+      });
 
-  const saveJournalEntry = (date: string, title: string, content: string, mood: string) => {
-    const existing = history[date] || {
-      date,
-      completedHabits: [],
-      completionPercentage: 0,
-      xpEarned: 0,
-      completed: false
-    };
+      if (!res.ok) throw new Error('Failed to delete habit');
 
-    const updated: DayCheckIn = {
-      ...existing,
-      journal: { title, content, mood }
-    };
-
-    const newHistory = { ...history, [date]: updated };
-    setHistory(newHistory);
-    localStorage.setItem('streakify_history', JSON.stringify(newHistory));
+      setHabits(prev => prev.filter(h => h.id !== id));
+    } catch (error) {
+      console.error('Failed to delete habit:', error);
+      throw error;
+    }
   };
 
   const markAllNotificationsRead = () => {
@@ -318,15 +502,26 @@ export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
 
   const resetAllData = () => {
-    const seed = generateSeedHistory();
-    setHistory(seed);
+    setHistory({});
     setUser(INITIAL_USER);
-    setHabits(INITIAL_HABITS);
+    setHabits([]);
+    setAchievements([]);
+    setBadges([]);
+    setLeaderboard([]);
+    setNotifications([]);
     setCredentials(INITIAL_CREDENTIALS);
-    localStorage.removeItem('streakify_history');
-    localStorage.removeItem('streakify_habits');
-    localStorage.removeItem('streakify_user');
-    localStorage.removeItem('streakify_credentials');
+    localStorage.removeItem('streakify_user_email');
+    localStorage.removeItem('streakify_user_id');
+    setIsLoggedIn(false);
+    setCurrentUserEmail(null);
+    setActiveView('login');
+  };
+
+  const refreshUserData = async () => {
+    const userId = localStorage.getItem('streakify_user_id');
+    if (userId) {
+      await loadUserData(userId);
+    }
   };
 
   return (
@@ -338,7 +533,7 @@ export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       user, setUser,
       habits, history,
       achievements, badges, leaderboard, notifications,
-      credentials,
+      credentials, setCredentials,
       isAdminUnlocked, setIsAdminUnlocked,
       showCheckInModal, setShowCheckInModal,
       showAddHabitModal, setShowAddHabitModal,
@@ -356,9 +551,9 @@ export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       addNewHabit,
       updateHabit,
       deleteHabit,
-      saveJournalEntry,
       markAllNotificationsRead,
-      resetAllData
+      resetAllData,
+      refreshUserData,
     }}>
       {children}
     </StreakContext.Provider>

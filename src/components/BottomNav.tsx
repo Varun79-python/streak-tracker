@@ -4,7 +4,7 @@ import React from 'react';
 import { useStreak } from '@/lib/StreakContext';
 import { LayoutDashboard, CheckSquare, BarChart3, Calendar, User, Flame } from 'lucide-react';
 
-export const MobileBottomNav: React.FC = () => {
+export const BottomNav: React.FC = () => {
   const { activeView, setActiveView, setShowCheckInModal, user } = useStreak();
 
   const navItems = [
@@ -15,7 +15,7 @@ export const MobileBottomNav: React.FC = () => {
   ];
 
   return (
-    <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0f172a]/95 backdrop-blur-2xl border-t border-white/10 px-4 py-2 flex items-center justify-around select-none">
+    <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#0f172a]/95 backdrop-blur-2xl border-t border-white/10 px-4 py-2 flex items-center justify-around select-none">
       {navItems.slice(0, 2).map((item) => {
         const Icon = item.icon;
         const isActive = activeView === item.id;

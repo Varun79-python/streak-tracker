@@ -1,11 +1,21 @@
 -- Streak Tracker - Initial Database Schema
 -- All 15 tables with RLS policies
 
--- 1. Users (managed by Supabase Auth, extended by profiles)
+-- 1. Users (custom auth, replaces dependency on auth.users)
+CREATE TABLE users (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  username TEXT UNIQUE NOT NULL,
+  password_hash TEXT NOT NULL,
+  display_name TEXT,
+  role TEXT DEFAULT 'user',
+  status TEXT DEFAULT 'active',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
 
 -- 2. Profiles
 CREATE TABLE profiles (
-  id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  id UUID PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
   username TEXT UNIQUE,
   display_name TEXT,
   avatar_url TEXT,
@@ -204,69 +214,4 @@ CREATE INDEX idx_friends_user ON friends(user_id, status);
 CREATE INDEX idx_friends_friend ON friends(friend_id, status);
 CREATE INDEX idx_leaderboards_period ON leaderboards(period, score DESC);
 
--- Enable Row Level Security
-ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
-ALTER TABLE questions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE daily_answers ENABLE ROW LEVEL SECURITY;
-ALTER TABLE daily_completion ENABLE ROW LEVEL SECURITY;
-ALTER TABLE streaks ENABLE ROW LEVEL SECURITY;
-ALTER TABLE achievements ENABLE ROW LEVEL SECURITY;
-ALTER TABLE badges ENABLE ROW LEVEL SECURITY;
-ALTER TABLE xp_history ENABLE ROW LEVEL SECURITY;
-ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
-ALTER TABLE settings ENABLE ROW LEVEL SECURITY;
-ALTER TABLE journal ENABLE ROW LEVEL SECURITY;
-ALTER TABLE analytics ENABLE ROW LEVEL SECURITY;
-ALTER TABLE friends ENABLE ROW LEVEL SECURITY;
-ALTER TABLE leaderboards ENABLE ROW LEVEL SECURITY;
-
--- RLS Policies: Users can only access their own data
-CREATE POLICY "Users can view own profile" ON profiles FOR SELECT USING (auth.uid() = id);
-CREATE POLICY "Users can update own profile" ON profiles FOR UPDATE USING (auth.uid() = id);
-CREATE POLICY "Users can insert own profile" ON profiles FOR INSERT WITH CHECK (auth.uid() = id);
-
-CREATE POLICY "Users can manage own questions" ON questions FOR ALL USING (auth.uid() = user_id);
-CREATE POLICY "Users can manage own answers" ON daily_answers FOR ALL USING (auth.uid() = user_id);
-CREATE POLICY "Users can manage own completion" ON daily_completion FOR ALL USING (auth.uid() = user_id);
-CREATE POLICY "Users can manage own streaks" ON streaks FOR ALL USING (auth.uid() = user_id);
-CREATE POLICY "Users can manage own achievements" ON achievements FOR ALL USING (auth.uid() = user_id);
-CREATE POLICY "Users can manage own badges" ON badges FOR ALL USING (auth.uid() = user_id);
-CREATE POLICY "Users can manage own xp" ON xp_history FOR ALL USING (auth.uid() = user_id);
-CREATE POLICY "Users can manage own notifications" ON notifications FOR ALL USING (auth.uid() = user_id);
-CREATE POLICY "Users can manage own settings" ON settings FOR ALL USING (auth.uid() = user_id);
-CREATE POLICY "Users can manage own journal" ON journal FOR ALL USING (auth.uid() = user_id);
-CREATE POLICY "Users can manage own analytics" ON analytics FOR ALL USING (auth.uid() = user_id);
-
--- Friend-specific policies
-CREATE POLICY "Users can view own friends" ON friends FOR SELECT USING (auth.uid() = user_id OR auth.uid() = friend_id);
-CREATE POLICY "Users can manage own friend requests" ON friends FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users can update own friend requests" ON friends FOR UPDATE USING (auth.uid() = user_id OR auth.uid() = friend_id);
-
--- Leaderboard: everyone can see
-CREATE POLICY "Anyone can view leaderboard" ON leaderboards FOR SELECT USING (true);
-CREATE POLICY "Users can manage own leaderboard entry" ON leaderboards FOR ALL USING (auth.uid() = user_id);
-
--- Functions
-CREATE OR REPLACE FUNCTION handle_new_user()
-RETURNS TRIGGER AS $$
-BEGIN
-  INSERT INTO profiles (id, username, display_name, avatar_url)
-  VALUES (
-    NEW.id,
-    LOWER(SPLIT_PART(NEW.email, '@', 1)),
-    SPLIT_PART(NEW.email, '@', 1),
-    NEW.raw_user_meta_data->>'avatar_url'
-  );
-  
-  INSERT INTO settings (user_id) VALUES (NEW.id);
-  INSERT INTO streaks (user_id) VALUES (NEW.id);
-  
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
--- Trigger to create profile on signup
-CREATE OR REPLACE TRIGGER on_auth_user_created
-  AFTER INSERT ON auth.users
-  FOR EACH ROW
-  EXECUTE FUNCTION handle_new_user();
+-- Note: RLS is not used. All access is through API routes using the service_role key.

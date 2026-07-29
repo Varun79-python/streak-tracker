@@ -3,7 +3,7 @@
 import React from 'react';
 import { Sidebar } from '@/components/Sidebar';
 import { TopNav } from '@/components/TopNav';
-import { MobileBottomNav } from '@/components/MobileBottomNav';
+import { BottomNav } from '@/components/BottomNav';
 import { AdminView } from '@/components/views/AdminView';
 import { DailyCheckInModal } from '@/components/modals/DailyCheckInModal';
 import { DayDetailsModal } from '@/components/modals/DayDetailsModal';
@@ -26,7 +26,7 @@ export default function AdminPage() {
       </div>
 
       {/* Mobile Navigation & Drawers */}
-      <MobileBottomNav />
+      <BottomNav />
       <DailyCheckInModal />
       <DayDetailsModal />
       <HabitFormModal />

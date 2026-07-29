@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About & Documentation | Streakify - Habit & Streak Tracker</title>
+  <meta name="description" content="Complete architecture, page showcase, and feature guide for Streakify - The ultimate habit building, streak tracking, and gamified productivity web & mobile PWA app." />
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              400: '#4ade80',
+              500: '#22c55e',
+              600: '#16a34a',
+              900: '#052e16',
+            },
+            dark: {
+              bg: '#0b0f19',
+              card: '#141a24',
+              border: 'rgba(255, 255, 255, 0.08)',
+            }
+          },
+          animation: {
+            'fire-flicker': 'fireFlicker 1.8s infinite ease-in-out',
+            'pulse-subtle': 'pulseGlow 3s infinite ease-in-out',
+            'float': 'float 4s ease-in-out infinite',
+          },
+          keyframes: {
+            fireFlicker: {
+              '0%, 100%': { transform: 'scale(1) rotate(-1deg)', filter: 'drop-shadow(0 0 8px rgba(34, 197, 94, 0.8))' },
+              '50%': { transform: 'scale(1.1) rotate(2deg)', filter: 'drop-shadow(0 0 16px rgba(59, 130, 246, 0.9))' },
+            },
+            pulseGlow: {
+              '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
+              '50%': { opacity: '0.8', transform: 'scale(1.03)' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-8px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style type="text/css">
+    body {
+      background-color: #0b0f19;
+      color: #f8fafc;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+    }
+    .glass-panel {
+      background: rgba(20, 26, 36, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-card:hover {
+      border-color: rgba(34, 197, 94, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px -10px rgba(34, 197, 94, 0.15);
+    }
+    .glow-green {
+      box-shadow: 0 0 30px rgba(34, 197, 94, 0.25);
+    }
+    .glow-blue {
+      box-shadow: 0 0 30px rgba(59, 130, 246, 0.25);
+    }
+    .glow-amber {
+      box-shadow: 0 0 30px rgba(245, 158, 11, 0.25);
+    }
+    .glow-purple {
+      box-shadow: 0 0 30px rgba(168, 85, 247, 0.25);
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b0f19;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #334155;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-slate-100 relative antialiased selection:bg-brand-500 selection:text-slate-950">
+
+  <!-- Ambient Light Orbs -->
+  <div class="fixed -top-40 -left-40 w-[500px] h-[500px] bg-brand-500/10 rounded-full blur-[150px] pointer-events-none z-0"></div>
+  <div class="fixed top-1/3 -right-40 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[150px] pointer-events-none z-0"></div>
+  <div class="fixed -bottom-40 left-1/3 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[150px] pointer-events-none z-0"></div>
+
+  <!-- Header Navigation -->
+  <header class="sticky top-0 z-50 glass-panel border-b border-white/10 backdrop-blur-xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-emerald-400 p-[1px] glow-green group-hover:scale-105 transition-transform">
+          <div class="w-full h-full bg-slate-950 rounded-[11px] flex items-center justify-center">
+            <svg class="w-6 h-6 text-brand-400 animate-fire-flicker" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9.879z" />
+            </svg>
+          </div>
+        </div>
+        <div>
+          <span class="text-xl font-extrabold tracking-tight text-white flex items-center gap-2">
+            Streakify <span class="text-xs font-mono px-2 py-0.5 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-400">v1.0.0</span>
+          </span>
+          <p class="text-[10px] text-slate-400 font-mono tracking-wide">COMPREHENSIVE PROJECT SHOWCASE</p>
+        </div>
+      </a>
+
+      <!-- Quick Nav Links -->
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+        <a href="#overview" class="hover:text-brand-400 transition-colors">Overview</a>
+        <a href="#pages" class="hover:text-brand-400 transition-colors">All Pages & Views</a>
+        <a href="#modals" class="hover:text-brand-400 transition-colors">Modals & Drawers</a>
+        <a href="#tech" class="hover:text-brand-400 transition-colors">Tech Architecture</a>
+        <a href="/download" class="px-4 py-2 rounded-xl bg-brand-500 hover:bg-brand-400 text-slate-950 font-bold transition-all glow-green">
+          Download Android App
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative z-10 pt-16 pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-slate-300 mb-6 animate-pulse-subtle">
+      <span class="w-2 h-2 rounded-full bg-brand-400 animate-ping"></span>
+      Project Blueprint & Complete Application Reference
+    </div>
+
+    <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-white leading-tight max-w-4xl mx-auto">
+      Inside <span class="bg-gradient-to-r from-brand-400 via-emerald-300 to-cyan-400 bg-clip-text text-transparent">Streakify</span> — Complete System & Page Guide
+    </h1>
+
+    <p class="mt-6 text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed font-sans font-normal">
+      Streakify is a full-featured, gamified habit-building web and PWA application designed with Next.js 16, React 19, Supabase, and Tailwind CSS. Explore every single page, view, modal, feature, and architectural module below.
+    </p>
+
+    <!-- Quick Stats Bar -->
+    <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+      <div class="glass-card p-5 rounded-2xl text-center">
+        <div class="text-3xl font-black text-brand-400 font-mono">15+</div>
+        <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold mt-1">Interactive Views</div>
+      </div>
+      <div class="glass-card p-5 rounded-2xl text-center">
+        <div class="text-3xl font-black text-blue-400 font-mono">5</div>
+        <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold mt-1">Global Modals</div>
+      </div>
+      <div class="glass-card p-5 rounded-2xl text-center">
+        <div class="text-3xl font-black text-amber-400 font-mono">3</div>
+        <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold mt-1">App Routes</div>
+      </div>
+      <div class="glass-card p-5 rounded-2xl text-center">
+        <div class="text-3xl font-black text-purple-400 font-mono">PWA</div>
+        <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold mt-1">Offline Capable</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Filter Tabs -->
+  <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+    <div class="flex flex-wrap items-center justify-center gap-2 p-2 glass-panel rounded-2xl border border-white/10 max-w-3xl mx-auto">
+      <button onclick="filterCategory('all')" id="btn-all" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-brand-500 text-slate-950">
+        All Elements
+      </button>
+      <button onclick="filterCategory('page')" id="btn-page" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-400 hover:text-white">
+        Main Pages & Views (15)
+      </button>
+      <button onclick="filterCategory('modal')" id="btn-modal" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-400 hover:text-white">
+        Modals & Drawers (5)
+      </button>
+      <button onclick="filterCategory('route')" id="btn-route" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-400 hover:text-white">
+        App Routes (3)
+      </button>
+    </div>
+  </section>
+
+  <!-- Complete Pages & Views Section -->
+  <section id="pages" class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-10 text-center">
+      <h2 class="text-3xl font-bold tracking-tight text-white">Full Application Breakdown</h2>
+      <p class="text-slate-400 text-sm mt-2 font-mono">Detailed documentation of every user interface component and route in the codebase.</p>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="cards-container">
+
+      <!-- 1. Landing Page -->
+      <div class="card-item glass-card p-6 rounded-3xl flex flex-col justify-between" data-category="page">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-2xl bg-brand-500/20 border border-brand-500/40 flex items-center justify-center text-brand-400 font-bold">01</span>
+            <span class="px-2.5 py-1 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-400 text-xs font-mono font-semibold">Landing View</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Landing Page</h3>
+          <p class="text-xs font-mono text-slate-400 mb-3">Path: <code class="text-brand-300">src/components/views/LandingPage.tsx</code></p>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            The flagship marketing and welcoming screen. Features a high-converting hero section, animated flame branding, live interactive streak demo preview, feature highlights grid, client testimonials, and CTA buttons to start tracking or launch the interactive video demo.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Hero Section</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Demo Trigger</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Value Props</span>
+        </div>
+      </div>
+
+      <!-- 2. Authentication View -->
+      <div class="card-item glass-card p-6 rounded-3xl flex flex-col justify-between" data-category="page">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-2xl bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-blue-400 font-bold">02</span>
+            <span class="px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-mono font-semibold">Auth View</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Login & Signup Page</h3>
+          <p class="text-xs font-mono text-slate-400 mb-3">Path: <code class="text-blue-300">src/components/views/LoginSignupPage.tsx</code></p>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            Authentication portal supporting email/password authentication, role switching (User vs Admin), guest preview mode, instant password show/hide toggles, and seamless integration with Supabase Auth or local credential storage.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Supabase Auth</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Role Switcher</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Guest Mode</span>
+        </div>
+      </div>
+
+      <!-- 3. Dashboard View -->
+      <div class="card-item glass-card p-6 rounded-3xl flex flex-col justify-between" data-category="page">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-bold">03</span>
+            <span class="px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-semibold">Core View</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Dashboard Command Center</h3>
+          <p class="text-xs font-mono text-slate-400 mb-3">Path: <code class="text-emerald-300">src/components/views/DashboardView.tsx</code></p>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            The primary home dashboard for logged-in users. Prominently displays the current streak counter with glowing animated flame effects, daily habit completion progress, level and XP progress bar, quick habit toggle actions, and recent activity log stream.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Streak Counter</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">XP Progress</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Quick Check-in</span>
+        </div>
+      </div>
+
+      <!-- 4. Heatmap View -->
+      <div class="card-item glass-card p-6 rounded-3xl flex flex-col justify-between" data-category="page">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-2xl bg-teal-500/20 border border-teal-500/40 flex items-center justify-center text-teal-400 font-bold">04</span>
+            <span class="px-2.5 py-1 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-400 text-xs font-mono font-semibold">Visualization</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">GitHub-Style Heatmap Matrix</h3>
+          <p class="text-xs font-mono text-slate-400 mb-3">Path: <code class="text-teal-300">src/components/views/HeatmapView.tsx</code></p>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            Visual contribution grid inspired by GitHub's activity graph. Renders a 365-day matrix mapping habit completion intensity per day with emerald color gradient cells, tooltips, month labels, and total check-in count stats.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">365-Day Grid</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Color Intensity</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Interactive Tooltips</span>
+        </div>
+      </div>
+
+      <!-- 5. Statistics View -->
+      <div class="card-item glass-card p-6 rounded-3xl flex flex-col justify-between" data-category="page">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-2xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center text-indigo-400 font-bold">05</span>
+            <span class="px-2.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-mono font-semibold">Analytics</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Analytics & Charts Dashboard</h3>
+          <p class="text-xs font-mono text-slate-400 mb-3">Path: <code class="text-indigo-300">src/components/views/StatisticsView.tsx</code></p>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            In-depth performance analytics featuring weekly and monthly completion rate charts powered by Recharts, total active days calculation, longest vs current streak comparisons, and weekly consistency trends.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Recharts Graphs</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Completion Rate</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Streak Metrics</span>
+        </div>
+      </div>
+
+      <!-- 6. Calendar View -->
+      <div class="card-item glass-card p-6 rounded-3xl flex flex-col justify-between" data-category="page">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-2xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400 font-bold">06</span>
+            <span class="px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono font-semibold">Calendar</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Interactive Calendar View</h3>
+          <p class="text-xs font-mono text-slate-400 mb-3">Path: <code class="text-cyan-300">src/components/views/CalendarView.tsx</code></p>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            Full monthly calendar layout displaying daily completion status indicators for every day of the month. Users can navigate months and click any specific date to open the Day Details modal for journal inspection.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Month Picker</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Status Indicators</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Day Modal Trigger</span>
+        </div>
+      </div>
+
+      <!-- 7. Achievements View -->
+      <div class="card-item glass-card p-6 rounded-3xl flex flex-col justify-between" data-category="page">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 font-bold">07</span>
+            <span class="px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono font-semibold">Gamification</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Achievements Milestones</h3>
+          <p class="text-xs font-mono text-slate-400 mb-3">Path: <code class="text-amber-300">src/components/views/AchievementsView.tsx</code></p>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            Gamified progression milestone board. Unlocks XP rewards and titles as users reach streak targets (e.g. 7-Day Novice, 30-Day Master, 100-Day Champion), complete 100% habit days, and maintain consistency.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">XP Rewards</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Milestone Trackers</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Unlock Confetti</span>
+        </div>
+      </div>
+
+      <!-- 8. Badges View -->
+      <div class="card-item glass-card p-6 rounded-3xl flex flex-col justify-between" data-category="page">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-2xl bg-yellow-500/20 border border-yellow-500/40 flex items-center justify-center text-yellow-400 font-bold">08</span>
+            <span class="px-2.5 py-1 rounded-full bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 text-xs font-mono font-semibold">Collectibles</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Collectible Badges Showcase</h3>
+          <p class="text-xs font-mono text-slate-400 mb-3">Path: <code class="text-yellow-300">src/components/views/BadgesView.tsx</code></p>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            Digital trophy room displaying collectible badges with four rarity tiers: Common, Rare, Epic, and Legendary. Features custom ambient glow aura colors based on rarity and detailed unlock conditions.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">4 Rarity Tiers</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Glow Animations</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Unlock Criteria</span>
+        </div>
+      </div>
+
+      <!-- 9. Leaderboard View -->
+      <div class="card-item glass-card p-6 rounded-3xl flex flex-col justify-between" data-category="page">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-2xl bg-orange-500/20 border border-orange-500/40 flex items-center justify-center text-orange-400 font-bold">09</span>
+            <span class="px-2.5 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-xs font-mono font-semibold">Community</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Community Leaderboard</h3>
+          <p class="text-xs font-mono text-slate-400 mb-3">Path: <code class="text-orange-300">src/components/views/LeaderboardView.tsx</code></p>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            Global community rankings listing top performers by active streak, level, and accumulated XP points. Highlights the logged-in user's rank position and provides friendly social motivation.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Global Ranks</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">XP Leaderboard</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">User Highlight</span>
+        </div>
+      </div>
+
+      <!-- 10. Habits Management View -->
+      <div class="card-item glass-card p-6 rounded-3xl flex flex-col justify-between" data-category="page">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-2xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-rose-400 font-bold">10</span>
+            <span class="px-2.5 py-1 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs font-mono font-semibold">Management</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Habits Management Studio</h3>
+          <p class="text-xs font-mono text-slate-400 mb-3">Path: <code class="text-rose-300">src/components/views/HabitsManagementView.tsx</code></p>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            Habit configuration center. Allows users to create, edit, reorder, or soft-delete custom daily habits, assign icons, set custom color schemes, toggle required vs optional status, and define reminder times.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Habit CRUD</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Custom Icons/Colors</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Required Toggles</span>
+        </div>
+      </div>
+
+      <!-- 11. Profile View -->
+      <div class="card-item glass-card p-6 rounded-3xl flex flex-col justify-between" data-category="page">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-2xl bg-pink-500/20 border border-pink-500/40 flex items-center justify-center text-pink-400 font-bold">11</span>
+            <span class="px-2.5 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-400 text-xs font-mono font-semibold">Profile</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">User Profile & Bio</h3>
+          <p class="text-xs font-mono text-slate-400 mb-3">Path: <code class="text-pink-300">src/components/views/ProfileView.tsx</code></p>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            Comprehensive profile summary card displaying user avatar, level title, total days completed, success rate percentage, join date, editable bio summary, and quick access to account settings.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Avatar Display</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Success Rate</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Bio Editor</span>
+        </div>
+      </div>
+
+      <!-- 12. Activity History View -->
+      <div class="card-item glass-card p-6 rounded-3xl flex flex-col justify-between" data-category="page">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-2xl bg-purple-500/20 border border-purple-500/40 flex items-center justify-center text-purple-400 font-bold">12</span>
+            <span class="px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-mono font-semibold">History Log</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Activity & Journal Log</h3>
+          <p class="text-xs font-mono text-slate-400 mb-3">Path: <code class="text-purple-300">src/components/views/ActivityHistoryView.tsx</code></p>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            Chronological feed of all past daily check-ins and journal reflections. Displays completed habit lists for each date, mood indicators (Great, Good, Okay, Bad), journal titles, and reflection text.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Journal Feed</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Mood Tags</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Habit History</span>
+        </div>
+      </div>
+
+      <!-- 13. Settings View -->
+      <div class="card-item glass-card p-6 rounded-3xl flex flex-col justify-between" data-category="page">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-2xl bg-slate-500/20 border border-slate-500/40 flex items-center justify-center text-slate-300 font-bold">13</span>
+            <span class="px-2.5 py-1 rounded-full bg-slate-500/10 border border-slate-500/30 text-slate-300 text-xs font-mono font-semibold">Preferences</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">System Settings & Data Control</h3>
+          <p class="text-xs font-mono text-slate-400 mb-3">Path: <code class="text-slate-300">src/components/views/SettingsView.tsx</code></p>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            Application settings center. Controls visual theme selection (Dark, Light, AMOLED), notification delivery preferences, JSON data export & import backup tools, and account data reset options.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Theme Toggles</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">JSON Backup</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Danger Zone</span>
+        </div>
+      </div>
+
+      <!-- 14. Admin Control Panel -->
+      <div class="card-item glass-card p-6 rounded-3xl flex flex-col justify-between" data-category="page">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-2xl bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-400 font-bold">14</span>
+            <span class="px-2.5 py-1 rounded-full bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-mono font-semibold">Admin Panel</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Admin Management Panel</h3>
+          <p class="text-xs font-mono text-slate-400 mb-3">Path: <code class="text-red-300">src/components/views/AdminView.tsx</code></p>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            System administration control console for managing system credentials, modifying user permissions (Admin/User), changing account statuses (Active/Suspended), and inspecting global system telemetry metrics.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">User Management</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Role Assignment</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">System Status</span>
+        </div>
+      </div>
+
+      <!-- 15. Notifications Drawer -->
+      <div class="card-item glass-card p-6 rounded-3xl flex flex-col justify-between" data-category="modal">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-2xl bg-violet-500/20 border border-violet-500/40 flex items-center justify-center text-violet-400 font-bold">15</span>
+            <span class="px-2.5 py-1 rounded-full bg-violet-500/10 border border-violet-500/30 text-violet-400 text-xs font-mono font-semibold">Drawer</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Notifications Slide-out Drawer</h3>
+          <p class="text-xs font-mono text-slate-400 mb-3">Path: <code class="text-violet-300">src/components/views/NotificationsDrawer.tsx</code></p>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            Slide-over notification center showing real-time streak alerts, streak loss warning warnings, achievement unlock announcements, daily reminder prompts, and unread notification badge counters.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Streak Alerts</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Read/Unread</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Slide Panel</span>
+        </div>
+      </div>
+
+      <!-- 16. Daily Check-In Modal -->
+      <div class="card-item glass-card p-6 rounded-3xl flex flex-col justify-between" data-category="modal">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-bold">16</span>
+            <span class="px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-semibold">Modal Dialog</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Daily Check-In & Journal Modal</h3>
+          <p class="text-xs font-mono text-slate-400 mb-3">Path: <code class="text-emerald-300">src/components/modals/DailyCheckInModal.tsx</code></p>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            Interactive daily check-in popup modal. Allows users to check off completed habits, rate their daily mood (Great, Good, Okay, Bad, Terrible), record journal notes, attach details, and trigger XP reward celebrations with confetti.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Habit Checkboxes</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Mood Selector</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Confetti Burst</span>
+        </div>
+      </div>
+
+      <!-- 17. Day Details Modal -->
+      <div class="card-item glass-card p-6 rounded-3xl flex flex-col justify-between" data-category="modal">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-2xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400 font-bold">17</span>
+            <span class="px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono font-semibold">Modal Dialog</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Day Details Inspection Modal</h3>
+          <p class="text-xs font-mono text-slate-400 mb-3">Path: <code class="text-cyan-300">src/components/modals/DayDetailsModal.tsx</code></p>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            Inspection overlay triggered from the Calendar or Heatmap. Reads historical check-in records, displaying which habits were completed on that date, XP earned, mood emoji, and full journal entry text.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Historical View</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Journal Reader</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Date Metrics</span>
+        </div>
+      </div>
+
+      <!-- 18. Habit Form Modal -->
+      <div class="card-item glass-card p-6 rounded-3xl flex flex-col justify-between" data-category="modal">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-2xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-rose-400 font-bold">18</span>
+            <span class="px-2.5 py-1 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs font-mono font-semibold">Modal Dialog</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Habit Form & Creator Modal</h3>
+          <p class="text-xs font-mono text-slate-400 mb-3">Path: <code class="text-rose-300">src/components/modals/HabitFormModal.tsx</code></p>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            Creation and editing modal for habit definitions. Includes inputs for habit title, category selection, custom color hex selection, icon picker, daily reminder timing, and required status toggle.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Color Picker</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Icon Selector</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Form Validation</span>
+        </div>
+      </div>
+
+      <!-- 19. Watch Demo Modal -->
+      <div class="card-item glass-card p-6 rounded-3xl flex flex-col justify-between" data-category="modal">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 font-bold">19</span>
+            <span class="px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono font-semibold">Modal Dialog</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Watch Interactive Demo Overlay</h3>
+          <p class="text-xs font-mono text-slate-400 mb-3">Path: <code class="text-amber-300">src/components/modals/WatchDemoModal.tsx</code></p>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            Video demo lightbox overlay launched from the Landing Page. Showcases product features, streak tracking flow, and mobile PWA responsiveness in an interactive video container.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Video Lightbox</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Landing Demo</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Feature Preview</span>
+        </div>
+      </div>
+
+      <!-- 20. Android PWA Route (/download) -->
+      <div class="card-item glass-card p-6 rounded-3xl flex flex-col justify-between" data-category="route">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-bold">20</span>
+            <span class="px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-semibold">Route: /download</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Android App & PWA Download Hub</h3>
+          <p class="text-xs font-mono text-slate-400 mb-3">Path: <code class="text-emerald-300">src/app/download/page.tsx</code></p>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            Dedicated mobile installation page with PWA event triggers (<code class="text-brand-300">beforeinstallprompt</code>), detection of standalone PWA execution, direct APK fallback link, and feature highlight cards.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">PWA Prompt</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">APK Download</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Standalone Detect</span>
+        </div>
+      </div>
+
+      <!-- 21. Standalone Admin Route (/admin) -->
+      <div class="card-item glass-card p-6 rounded-3xl flex flex-col justify-between" data-category="route">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-2xl bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-400 font-bold">21</span>
+            <span class="px-2.5 py-1 rounded-full bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-mono font-semibold">Route: /admin</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Standalone Admin Route</h3>
+          <p class="text-xs font-mono text-slate-400 mb-3">Path: <code class="text-red-300">src/app/admin/page.tsx</code></p>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            Dedicated Next.js page route serving the full-screen Admin Management View alongside desktop navigation sidebars and global notification drawers for administrative personnel.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Admin Layout</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Sidebar Shell</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Direct Access</span>
+        </div>
+      </div>
+
+      <!-- 22. About Documentation Route -->
+      <div class="card-item glass-card p-6 rounded-3xl flex flex-col justify-between" data-category="route">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="w-10 h-10 rounded-2xl bg-purple-500/20 border border-purple-500/40 flex items-center justify-center text-purple-400 font-bold">22</span>
+            <span class="px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-mono font-semibold">Route: /about.html</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">About & Documentation Page</h3>
+          <p class="text-xs font-mono text-slate-400 mb-3">Path: <code class="text-purple-300">public/about.html</code></p>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            This comprehensive static documentation file detailing the entire project architecture, database schemas, page list, gamification rules, and tech stack details.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Static Blueprint</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Interactive Filter</span>
+          <span class="px-2 py-1 rounded-md bg-slate-900 border border-white/10">Full Tech Spec</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Technical Architecture Section -->
+  <section id="tech" class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="glass-panel p-8 sm:p-12 rounded-3xl border border-white/10">
+      <div class="max-w-3xl mb-8">
+        <h2 class="text-3xl font-black text-white tracking-tight">Technical Architecture & Stack</h2>
+        <p class="text-slate-400 font-mono text-sm mt-2">Built with modern web standards and high-performance libraries.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Tech Item 1 -->
+        <div class="p-5 rounded-2xl bg-slate-900/60 border border-white/10">
+          <div class="text-brand-400 font-bold font-mono text-xs uppercase tracking-wider mb-2">Core Framework</div>
+          <h4 class="text-lg font-bold text-white mb-1">Next.js 16 (App Router)</h4>
+          <p class="text-xs text-slate-400 leading-relaxed">Server and client components, dynamic routing, and fast SSR page rendering.</p>
+        </div>
+
+        <!-- Tech Item 2 -->
+        <div class="p-5 rounded-2xl bg-slate-900/60 border border-white/10">
+          <div class="text-blue-400 font-bold font-mono text-xs uppercase tracking-wider mb-2">UI & Rendering</div>
+          <h4 class="text-lg font-bold text-white mb-1">React 19 & Tailwind CSS v4</h4>
+          <p class="text-xs text-slate-400 leading-relaxed">State management via <code class="text-brand-300">StreakContext</code>, glassmorphism tokens, and Lucide React icons.</p>
+        </div>
+
+        <!-- Tech Item 3 -->
+        <div class="p-5 rounded-2xl bg-slate-900/60 border border-white/10">
+          <div class="text-amber-400 font-bold font-mono text-xs uppercase tracking-wider mb-2">Backend & Database</div>
+          <h4 class="text-lg font-bold text-white mb-1">Supabase SSR & Client</h4>
+          <p class="text-xs text-slate-400 leading-relaxed">Authentication, persistent user profiles, daily check-in logs, and habit definitions in Postgres database.</p>
+        </div>
+
+        <!-- Tech Item 4 -->
+        <div class="p-5 rounded-2xl bg-slate-900/60 border border-white/10">
+          <div class="text-purple-400 font-bold font-mono text-xs uppercase tracking-wider mb-2">Mobile & PWA</div>
+          <h4 class="text-lg font-bold text-white mb-1">Service Worker & Web Manifest</h4>
+          <p class="text-xs text-slate-400 leading-relaxed">PWA manifest with offline caching strategy via <code class="text-purple-300">public/sw.js</code> for native app feel.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="relative z-10 border-t border-white/10 py-12 glass-panel mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-slate-400 font-mono">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-brand-500/20 border border-brand-500/40 flex items-center justify-center text-brand-400 glow-green">
+          <svg class="w-5 h-5 animate-fire-flicker" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+          </svg>
+        </div>
+        <span>&copy; <script>document.write(new Date().getFullYear())</script> Streakify. All rights reserved.</span>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <a href="/" class="hover:text-white transition-colors">Main App</a>
+        <a href="/download" class="hover:text-white transition-colors">Android App</a>
+        <a href="/admin" class="hover:text-white transition-colors">Admin Panel</a>
+        <a href="/about.html" class="text-brand-400 hover:text-brand-300 transition-colors">About & Docs</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Filter JavaScript Script -->
+  <script type="text/javascript">
+    function filterCategory(category) {
+      const cards = document.querySelectorAll('.card-item');
+      const buttons = document.querySelectorAll('.tab-btn');
+
+      // Reset all buttons
+      buttons.forEach(btn => {
+        btn.classList.remove('bg-brand-500', 'text-slate-950');
+        btn.classList.add('text-slate-400');
+      });
+
+      // Highlight active button
+      const activeBtn = document.getElementById('btn-' + category);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-400');
+        activeBtn.classList.add('bg-brand-500', 'text-slate-950');
+      }
+
+      // Filter cards
+      cards.forEach(card => {
+        if (category === 'all' || card.getAttribute('data-category') === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>

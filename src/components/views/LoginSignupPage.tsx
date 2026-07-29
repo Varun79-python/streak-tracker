@@ -17,11 +17,11 @@ export const LoginSignupPage: React.FC = () => {
   const [adminKeyInput, setAdminKeyInput] = useState('');
   const [adminKeyError, setAdminKeyError] = useState('');
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
 
-    const res = loginWithCredentials(email, password);
+    const res = await loginWithCredentials(email, password);
     if (!res.success) {
       setErrorMessage(res.message);
     }

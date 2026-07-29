@@ -1,0 +1,41 @@
+{
+  "name": "Streakify — Build Discipline Daily",
+  "short_name": "Streakify",
+  "description": "Track your daily habits, build streaks, and never break the chain with Streakify's beautiful dark-themed tracker.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0f19",
+  "theme_color": "#10b981",
+  "orientation": "portrait-primary",
+  "categories": ["productivity", "health", "lifestyle"],
+  "lang": "en-US",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "url": "/",
+      "description": "View your habit dashboard"
+    },
+    {
+      "name": "Admin Panel",
+      "short_name": "Admin",
+      "url": "/admin",
+      "description": "Admin user management"
+    }
+  ]
+}

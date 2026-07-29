@@ -15,7 +15,15 @@ export const LandingNavbar: React.FC = () => {
           onClick={() => setActiveView('landing')}
           className="flex items-center gap-2.5 cursor-pointer group"
         >
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:scale-105 transition-transform glow-green">
+          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:scale-105 transition-transform glow-green overflow-hidden">
+            <img 
+              src="/logo.png" 
+              alt="Streakify Logo" 
+              className="w-full h-full object-cover" 
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }} 
+            />
             <Flame className="w-6 h-6 text-emerald-400 fire-animated" />
           </div>
           <span className="text-xl font-bold tracking-tight text-white flex items-center gap-1">

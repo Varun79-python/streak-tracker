@@ -34,12 +34,12 @@ export const Sidebar: React.FC = () => {
     { id: 'checkin_trigger', label: 'Daily Check-in', icon: CheckSquare, isAction: true },
     { id: 'achievements', label: 'Achievements', icon: Trophy },
     { id: 'badges', label: 'Badges & Trophies', icon: Award },
-    { id: 'journal', label: 'Journal & Notes', icon: BookOpen },
     { id: 'leaderboard', label: 'Leaderboard', icon: Medal },
     { id: 'habits', label: 'Habit Management', icon: Sliders },
     { id: 'activity', label: 'Activity History', icon: Clock },
     { id: 'profile', label: 'My Profile', icon: User },
     { id: 'settings', label: 'Settings', icon: Settings },
+    { id: 'about', label: 'About & Docs', icon: BookOpen, isRoute: true, href: '/about' },
     { id: 'admin', label: 'Admin Panel 🔐', icon: ShieldCheck, isRoute: true, href: '/admin' },
   ];
 
@@ -47,8 +47,16 @@ export const Sidebar: React.FC = () => {
     <aside className="hidden lg:flex flex-col w-64 border-r border-white/10 bg-[#0f172a]/80 backdrop-blur-xl h-screen sticky top-0 z-40 select-none">
       {/* Brand Logo */}
       <div className="p-6 border-b border-white/10 flex items-center gap-3">
-        <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 glow-green">
-          <Flame className="w-5 h-5 fire-animated" />
+        <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 glow-green overflow-hidden">
+          <img 
+            src="/logo.png" 
+            alt="Streakify Logo" 
+            className="w-full h-full object-cover" 
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+            }} 
+          />
+          <Flame className="w-5 h-5 fire-animated text-emerald-400" />
         </div>
         <div>
           <h1 className="font-bold text-slate-100 tracking-tight text-lg">Streakify</h1>

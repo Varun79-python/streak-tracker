@@ -2,9 +2,8 @@
 
 import React from 'react';
 import { useStreak } from '@/lib/StreakContext';
-import { Sidebar } from '@/components/Sidebar';
 import { TopNav } from '@/components/TopNav';
-import { MobileBottomNav } from '@/components/MobileBottomNav';
+import { BottomNav } from '@/components/BottomNav';
 
 // Views
 import { LandingPage } from '@/components/views/LandingPage';
@@ -13,7 +12,6 @@ import { DashboardView } from '@/components/views/DashboardView';
 import { HeatmapView } from '@/components/views/HeatmapView';
 import { StatisticsView } from '@/components/views/StatisticsView';
 import { CalendarView } from '@/components/views/CalendarView';
-import { JournalView } from '@/components/views/JournalView';
 import { AchievementsView } from '@/components/views/AchievementsView';
 import { BadgesView } from '@/components/views/BadgesView';
 import { LeaderboardView } from '@/components/views/LeaderboardView';
@@ -61,8 +59,6 @@ export default function Home() {
         return <StatisticsView />;
       case 'calendar':
         return <CalendarView />;
-      case 'journal':
-        return <JournalView />;
       case 'achievements':
         return <AchievementsView />;
       case 'badges':
@@ -87,20 +83,17 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen bg-background text-foreground">
-      {/* Desktop Sidebar */}
-      <Sidebar />
-
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 pb-20 lg:pb-8">
+      <div className="flex-1 flex flex-col min-w-0 pb-20">
         <TopNav />
 
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+        <main className="flex-1 px-3 py-4 w-full mx-auto max-w-lg">
           {renderActiveView()}
         </main>
       </div>
 
-      {/* Mobile Bottom Navigation */}
-      <MobileBottomNav />
+      {/* Bottom Navigation */}
+      <BottomNav />
 
       {/* Global Modals & Drawers */}
       <DailyCheckInModal />

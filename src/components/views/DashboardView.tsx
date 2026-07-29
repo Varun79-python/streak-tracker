@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useStreak } from '@/lib/StreakContext';
 import { HeatmapGraph } from '../HeatmapGraph';
 import { 
@@ -34,6 +34,40 @@ export const DashboardView: React.FC = () => {
   const activeHabits = habits.filter(h => h.active);
   const completedTodayCount = todayCheckIn?.completedHabits?.length || 0;
   const isTodayComplete = todayCheckIn?.completed || false;
+
+  // Derive recent activity from actual history
+  const recentActivity = useMemo(() => {
+    const entries = Object.entries(history)
+      .sort(([dateA], [dateB]) => dateB.localeCompare(dateA))
+      .slice(0, 5);
+
+    if (entries.length === 0) return [];
+
+    return entries.map(([date, checkIn]) => {
+      const isToday = date === todayStr;
+      const displayDate = isToday
+        ? 'Today'
+        : format(new Date(date + 'T00:00:00'), 'MMM d');
+
+      const completedCount = checkIn.completedHabits?.length || 0;
+      const pct = checkIn.completionPercentage || 0;
+
+      if (checkIn.completed) {
+        return {
+          id: date,
+          icon: <Flame className="w-4 h-4 text-emerald-400" />,
+          label: `All habits done — ${completedCount}/${completedCount} completed`,
+          time: displayDate,
+        };
+      }
+      return {
+        id: date,
+        icon: <CheckCircle2 className="w-4 h-4 text-blue-400" />,
+        label: `${completedCount} habits checked in (${pct}%)`,
+        time: displayDate,
+      };
+    });
+  }, [history, todayStr]);
 
   return (
     <div className="space-y-6 select-none">
@@ -153,34 +187,53 @@ export const DashboardView: React.FC = () => {
           </div>
 
           <div className="space-y-2.5">
-            {activeHabits.slice(0, 5).map((habit) => {
-              const isDone = todayCheckIn?.completedHabits?.includes(habit.id);
-              return (
-                <div
-                  key={habit.id}
-                  onClick={() => setShowCheckInModal(true)}
-                  className={`flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer ${
-                    isDone
-                      ? 'bg-emerald-500/10 border-emerald-500/30 text-white'
-                      : 'bg-slate-900/60 border-white/5 text-slate-400 hover:border-white/20'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="text-lg">{habit.icon}</span>
-                    <div>
-                      <p className="text-xs font-semibold text-slate-200">{habit.name}</p>
-                      <p className="text-[10px] text-slate-400">{habit.description}</p>
-                    </div>
-                  </div>
-
-                  <span className={`text-xs font-mono px-2 py-1 rounded-lg ${
-                    isDone ? 'bg-emerald-500/20 text-emerald-300 font-bold' : 'bg-slate-800 text-slate-500'
-                  }`}>
-                    {isDone ? '✓ Completed' : 'Pending'}
-                  </span>
+            {activeHabits.length === 0 ? (
+              <div className="p-8 rounded-2xl bg-slate-900/40 border border-dashed border-white/10 text-center space-y-3">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mx-auto">
+                  <Plus className="w-6 h-6" />
                 </div>
-              );
-            })}
+                <div>
+                  <p className="text-sm font-semibold text-slate-200">No habits yet</p>
+                  <p className="text-xs text-slate-400 mt-1">Create your first habit to start tracking your daily progress.</p>
+                </div>
+                <button
+                  onClick={() => setActiveView('habits')}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-all glow-green cursor-pointer"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Create a Habit</span>
+                </button>
+              </div>
+            ) : (
+              activeHabits.slice(0, 5).map((habit) => {
+                const isDone = todayCheckIn?.completedHabits?.includes(habit.id);
+                return (
+                  <div
+                    key={habit.id}
+                    onClick={() => setShowCheckInModal(true)}
+                    className={`flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer ${
+                      isDone
+                        ? 'bg-emerald-500/10 border-emerald-500/30 text-white'
+                        : 'bg-slate-900/60 border-white/5 text-slate-400 hover:border-white/20'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-lg">{habit.icon}</span>
+                      <div>
+                        <p className="text-xs font-semibold text-slate-200">{habit.name}</p>
+                        <p className="text-[10px] text-slate-400">{habit.description}</p>
+                      </div>
+                    </div>
+
+                    <span className={`text-xs font-mono px-2 py-1 rounded-lg ${
+                      isDone ? 'bg-emerald-500/20 text-emerald-300 font-bold' : 'bg-slate-800 text-slate-500'
+                    }`}>
+                      {isDone ? '✓ Completed' : 'Pending'}
+                    </span>
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
 
@@ -201,29 +254,26 @@ export const DashboardView: React.FC = () => {
           </div>
 
           <div className="space-y-3 font-mono text-xs">
-            <div className="p-3 rounded-xl bg-slate-900/60 border border-white/5 flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <Flame className="w-4 h-4 text-emerald-400" />
-                <span className="text-slate-200">Streak continued 🔥</span>
+            {recentActivity.length === 0 ? (
+              <div className="p-6 rounded-xl bg-slate-900/40 border border-dashed border-white/10 text-center space-y-2">
+                <Clock className="w-8 h-8 text-slate-600 mx-auto" />
+                <p className="text-slate-400 text-xs">No activity yet</p>
+                <p className="text-slate-500 text-[10px]">Complete your first check-in to see activity here.</p>
               </div>
-              <span className="text-slate-500 text-[10px]">Today</span>
-            </div>
-
-            <div className="p-3 rounded-xl bg-slate-900/60 border border-white/5 flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <Trophy className="w-4 h-4 text-amber-400" />
-                <span className="text-slate-200">Achievement: 7 Days Streak</span>
-              </div>
-              <span className="text-slate-500 text-[10px]">Yesterday</span>
-            </div>
-
-            <div className="p-3 rounded-xl bg-slate-900/60 border border-white/5 flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-blue-400" />
-                <span className="text-slate-200">Logged Journal Entry</span>
-              </div>
-              <span className="text-slate-500 text-[10px]">2 days ago</span>
-            </div>
+            ) : (
+              recentActivity.map((entry) => (
+                <div
+                  key={entry.id}
+                  className="p-3 rounded-xl bg-slate-900/60 border border-white/5 flex items-center justify-between"
+                >
+                  <div className="flex items-center gap-2.5">
+                    {entry.icon}
+                    <span className="text-slate-200">{entry.label}</span>
+                  </div>
+                  <span className="text-slate-500 text-[10px]">{entry.time}</span>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>

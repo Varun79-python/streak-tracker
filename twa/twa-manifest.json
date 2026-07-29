@@ -1,0 +1,32 @@
+{
+  "packageId": "com.streakify.app",
+  "host": "streaktracker7.vercel.app",
+  "name": "Streakify",
+  "shortName": "Streakify",
+  "launcherName": "Streakify",
+  "display": "standalone",
+  "orientation": "portrait",
+  "startUrl": "/",
+  "themeColor": "#10b981",
+  "backgroundColor": "#0b0f19",
+  "navigationColor": "#0f172a",
+  "navigationColorDark": "#0f172a",
+  "navigationDividerColor": "#1e293b",
+  "navigationDividerColorDark": "#1e293b",
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "enableNotifications": false,
+  "enableSiteSettingsShortcut": true,
+  "signing": {
+    "store": "streakify.keystore",
+    "alias": "streakify",
+    "storePassword": "streakify123",
+    "keyPassword": "streakify123",
+    "algorithm": "SHA256withRSA"
+  },
+  "appVersion": "1.0.0",
+  "iconUrl": "https://streaktracker7.vercel.app/icons/icon-512x512.png",
+  "maskableIconUrl": "https://streaktracker7.vercel.app/icons/icon-512x512.png",
+  "splashScreenFadeOutDuration": 300,
+  "appVersionIsAndroid": true
+}
