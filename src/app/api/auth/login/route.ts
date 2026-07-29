@@ -3,7 +3,32 @@ import { createAdminClient } from '@/lib/supabase/server';
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
+    // Check content type
+    const contentType = request.headers.get('content-type');
+    console.log('Content-Type:', contentType);
+    
+    // Get raw body first
+    const rawBody = await request.text();
+    console.log('Raw body:', rawBody);
+    
+    if (!rawBody) {
+      return NextResponse.json(
+        { error: 'Empty request body' },
+        { status: 400 }
+      );
+    }
+    
+    let body;
+    try {
+      body = JSON.parse(rawBody);
+    } catch (e) {
+      console.error('JSON parse error:', e);
+      return NextResponse.json(
+        { error: 'Invalid JSON in request body' },
+        { status: 400 }
+      );
+    }
+    
     const { email, password } = body || {};
 
     if (!email || !password) {
@@ -64,7 +89,8 @@ export async function POST(request: Request) {
         profile: profile || null,
       },
     });
-  } catch {
-    return NextResponse.json({ error: 'Malformed request payload' }, { status: 400 });
+  } catch (error) {
+    console.error('Login error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
