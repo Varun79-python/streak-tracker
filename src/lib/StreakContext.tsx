@@ -68,6 +68,7 @@ interface StreakContextType {
   markAllNotificationsRead: () => void;
   resetAllData: () => void;
   refreshUserData: () => Promise<void>;
+  updateUserProfile: (updates: Partial<UserProfile>) => Promise<void>;
 }
 
 const StreakContext = createContext<StreakContextType | undefined>(undefined);
@@ -102,7 +103,7 @@ const transformProfile = (p: any): UserProfile => ({
   id: p.id,
   name: p.display_name || p.username || 'User',
   email: p.username || '',
-  avatar: p.avatar_url || '',
+  avatar: p.avatar_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(p.display_name || p.username || 'User')}`,
   level: p.level || 1,
   xp: p.xp || 0,
   nextLevelXp: (p.level || 1) * 100,
@@ -564,6 +565,30 @@ export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   };
 
+  const updateUserProfile = async (updates: Partial<UserProfile>) => {
+    const userId = localStorage.getItem('streakify_user_id');
+
+    // Optimistic local update
+    setUser(prev => ({ ...prev, ...updates }));
+
+    if (userId) {
+      try {
+        await fetch('/api/user/profile', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId,
+            avatar: updates.avatar,
+            name: updates.name,
+            bio: updates.bio,
+          }),
+        });
+      } catch (error) {
+        console.warn('Failed to save profile to server:', error);
+      }
+    }
+  };
+
   return (
     <StreakContext.Provider value={{
       isLoggedIn, setIsLoggedIn,
@@ -593,6 +618,7 @@ export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       markAllNotificationsRead,
       resetAllData,
       refreshUserData,
+      updateUserProfile,
     }}>
       {children}
     </StreakContext.Provider>

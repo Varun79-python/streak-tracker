@@ -2,18 +2,20 @@
 
 import React, { useState } from 'react';
 import { useStreak } from '@/lib/StreakContext';
-import { User, Flame, Trophy, Calendar, Award, Zap, Edit2, Check } from 'lucide-react';
+import { User, Flame, Trophy, Calendar, Award, Edit2, Check, Camera, Sparkles } from 'lucide-react';
+import { AvatarPicker } from '../AvatarPicker';
 
 export const ProfileView: React.FC = () => {
-  const { user, setUser, achievements } = useStreak();
+  const { user, updateUserProfile, achievements } = useStreak();
   const [isEditingBio, setIsEditingBio] = useState(false);
+  const [showAvatarPicker, setShowAvatarPicker] = useState(false);
   const [bio, setBio] = useState(user.bio);
   const [name, setName] = useState(user.name);
 
   const unlockedAchievementsCount = achievements.filter((a) => a.unlocked).length;
 
-  const handleSaveBio = () => {
-    setUser({ ...user, bio, name });
+  const handleSaveBio = async () => {
+    await updateUserProfile({ bio, name });
     setIsEditingBio(false);
   };
 
@@ -24,16 +26,22 @@ export const ProfileView: React.FC = () => {
         <div className="absolute top-0 right-0 w-80 h-80 gradient-teal/10 rounded-full blur-[100px] pointer-events-none" />
 
         <div className="flex items-center gap-6 flex-wrap">
-          <div className="clay-avatar">
-            <img
-              src={user.avatar}
-              alt={user.name}
-              className="w-24 h-24 rounded-full object-cover"
-            />
+          {/* Avatar Container with Edit Camera Badge */}
+          <div className="relative group cursor-pointer" onClick={() => setShowAvatarPicker(!showAvatarPicker)}>
+            <div className="clay-avatar">
+              <img
+                src={user.avatar}
+                alt={user.name}
+                className="w-24 h-24 rounded-full object-cover group-hover:opacity-90 transition-opacity"
+              />
+            </div>
+            <div className="absolute bottom-0 right-0 p-2 rounded-full gradient-coral text-white shadow-lg group-hover:scale-110 transition-transform flex items-center justify-center">
+              <Camera className="w-4 h-4" />
+            </div>
           </div>
 
           <div className="space-y-2 flex-1 min-w-64">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-wrap gap-2">
               <div>
                 {isEditingBio ? (
                   <input
@@ -50,16 +58,26 @@ export const ProfileView: React.FC = () => {
                     </span>
                   </h2>
                 )}
-                <p className="text-xs text-[#9A9A9A] font-mono">Member since {user.joinedDate}</p>
+                <p className="text-xs text-[#9A9A9A] font-mono">Member since {user.joinedDate || '2025'}</p>
               </div>
 
-              <button
-                onClick={() => (isEditingBio ? handleSaveBio() : setIsEditingBio(true))}
-                className="neu-btn px-4 py-2 rounded-xl text-xs font-bold text-[#6B6B6B] flex items-center gap-1.5 transition-colors cursor-pointer"
-              >
-                {isEditingBio ? <Check className="w-4 h-4 text-[#A8C4B8]" /> : <Edit2 className="w-3.5 h-3.5" />}
-                <span>{isEditingBio ? 'Save Changes' : 'Edit Bio'}</span>
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setShowAvatarPicker(!showAvatarPicker)}
+                  className="neu-btn px-3.5 py-2 rounded-xl text-xs font-bold text-[#3D3D3D] flex items-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-[#7C9EB2]" />
+                  <span>{showAvatarPicker ? 'Hide Avatars' : 'Choose Photo'}</span>
+                </button>
+
+                <button
+                  onClick={() => (isEditingBio ? handleSaveBio() : setIsEditingBio(true))}
+                  className="neu-btn px-4 py-2 rounded-xl text-xs font-bold text-[#6B6B6B] flex items-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  {isEditingBio ? <Check className="w-4 h-4 text-[#A8C4B8]" /> : <Edit2 className="w-3.5 h-3.5" />}
+                  <span>{isEditingBio ? 'Save Changes' : 'Edit Bio'}</span>
+                </button>
+              </div>
             </div>
 
             {/* Bio */}
@@ -71,7 +89,7 @@ export const ProfileView: React.FC = () => {
                 className="neu-input w-full rounded-xl p-2.5 text-xs text-[#6B6B6B]"
               />
             ) : (
-              <p className="text-xs text-[#6B6B6B] italic">"{user.bio}"</p>
+              <p className="text-xs text-[#6B6B6B] italic">"{user.bio || 'Keep building daily habits!'}"</p>
             )}
 
             {/* Level Progress Bar */}
@@ -83,12 +101,19 @@ export const ProfileView: React.FC = () => {
               <div className="w-full h-2 rounded-full neu-pressed overflow-hidden">
                 <div
                   className="h-full rounded-full gradient-teal"
-                  style={{ width: `${(user.xp / user.nextLevelXp) * 100}%` }}
+                  style={{ width: `${Math.min(100, (user.xp / (user.nextLevelXp || 100)) * 100)}%` }}
                 />
               </div>
             </div>
           </div>
         </div>
+
+        {/* Collapsible Avatar Picker Section */}
+        {showAvatarPicker && (
+          <div className="mt-6 pt-6 border-t border-[#D5CCC4]/50 animate-fadeIn">
+            <AvatarPicker onSelect={() => setShowAvatarPicker(false)} />
+          </div>
+        )}
       </div>
 
       {/* Summary Grid */}

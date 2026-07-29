@@ -2,10 +2,11 @@
 
 import React from 'react';
 import { useStreak } from '@/lib/StreakContext';
-import { Settings, Moon, Sun, Monitor, Bell, Shield, Download, RefreshCw, Trash2 } from 'lucide-react';
+import { Settings, Moon, Sun, Monitor, Shield, Download, Trash2, User } from 'lucide-react';
+import { AvatarPicker } from '../AvatarPicker';
 
 export const SettingsView: React.FC = () => {
-  const { user, setUser, theme, setTheme, resetAllData, history, habits } = useStreak();
+  const { user, updateUserProfile, theme, setTheme, resetAllData, history, habits } = useStreak();
 
   const exportJSON = () => {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ user, habits, history }, null, 2));
@@ -92,8 +93,11 @@ export const SettingsView: React.FC = () => {
       </div>
 
       {/* Section 2: General Profile Settings */}
-      <div className="neu-card p-6 rounded-3xl space-y-4">
-        <h3 className="text-base font-bold text-[#3D3D3D]">General Preferences</h3>
+      <div className="neu-card p-6 rounded-3xl space-y-6">
+        <h3 className="text-base font-bold text-[#3D3D3D] flex items-center gap-2">
+          <User className="w-4 h-4 text-[#7C9EB2]" />
+          <span>General Profile Settings</span>
+        </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1">
@@ -101,7 +105,7 @@ export const SettingsView: React.FC = () => {
             <input
               type="text"
               value={user.name}
-              onChange={(e) => setUser({ ...user, name: e.target.value })}
+              onChange={(e) => updateUserProfile({ name: e.target.value })}
               className="w-full neu-input rounded-xl px-4 py-2.5 text-sm text-[#3D3D3D]"
             />
           </div>
@@ -111,10 +115,15 @@ export const SettingsView: React.FC = () => {
             <input
               type="email"
               value={user.email}
-              onChange={(e) => setUser({ ...user, email: e.target.value })}
+              onChange={(e) => updateUserProfile({ email: e.target.value })}
               className="w-full neu-input rounded-xl px-4 py-2.5 text-sm text-[#3D3D3D]"
             />
           </div>
+        </div>
+
+        {/* Avatar Picker Component embedded directly in Settings */}
+        <div className="pt-4 border-t border-[#D5CCC4]/40">
+          <AvatarPicker />
         </div>
       </div>
 
