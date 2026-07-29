@@ -12,7 +12,6 @@ export async function POST(request: Request) {
       xpEarned, 
       isCompleted, 
       journalEntry, 
-      journalTitle, 
       mood 
     } = body;
 
@@ -22,6 +21,16 @@ export async function POST(request: Request) {
 
     const supabase = await createAdminClient();
 
+    // Get total active questions for accurate total_questions
+    const { count: totalQuestions } = await supabase
+      .from('questions')
+      .select('id', { count: 'exact', head: true })
+      .eq('user_id', userId)
+      .eq('is_active', true);
+
+    const completedCount = completedHabitIds?.length || 0;
+    const totalCount = totalQuestions || completedCount;
+
     // Upsert daily_completion
     const { data: completion, error: completionError } = await supabase
       .from('daily_completion')
@@ -30,8 +39,8 @@ export async function POST(request: Request) {
         completion_date: date,
         is_completed: isCompleted,
         completion_percentage: completionPercentage,
-        total_questions: completedHabitIds?.length || 0,
-        completed_questions: completedHabitIds?.length || 0,
+        total_questions: totalCount,
+        completed_questions: completedCount,
         xp_earned: xpEarned,
         journal_entry: journalEntry,
         mood,

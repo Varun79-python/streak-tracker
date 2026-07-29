@@ -93,3 +93,24 @@ export interface UserCredential {
   createdAt: string;
   status: 'active' | 'suspended';
 }
+
+export interface AIMessage {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: string;
+}
+
+export interface AIInsight {
+  id: string;
+  userId: string;
+  insightType: 'quote' | 'weekly' | 'streak_alert';
+  content: { text: string; emoji?: string; actionable?: string };
+  generatedAt: string;
+  expiresAt?: string;
+}
+
+export interface AIErrorResponse {
+  error: string;
+  fallback: boolean;
+}

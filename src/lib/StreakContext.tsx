@@ -23,6 +23,7 @@ interface StreakContextType {
   isLoggedIn: boolean;
   setIsLoggedIn: (val: boolean) => void;
   currentUserEmail: string | null;
+  sessionId: string | null;
   theme: 'dark' | 'amoled' | 'light';
   setTheme: (t: 'dark' | 'amoled' | 'light') => void;
   activeView: string;
@@ -58,10 +59,8 @@ interface StreakContextType {
 
   // Key operations & Admin functions
   loginWithCredentials: (email: string, pass: string) => Promise<{ success: boolean; message: string }>;
+  logout: () => Promise<void>;
   verifyAndUnlockAdmin: (keyInput: string) => boolean;
-  createManagedUser: (name: string, email: string, pass: string) => Promise<void>;
-  updateManagedUser: (id: string, updates: Partial<UserCredential>) => Promise<void>;
-  deleteManagedUser: (id: string) => Promise<void>;
   submitDailyCheckIn: (completedIds: string[], journalText?: string, journalTitle?: string, mood?: string) => Promise<void>;
   addNewHabit: (habitData: Omit<Habit, 'id'>) => Promise<void>;
   updateHabit: (id: string, updates: Partial<Habit>) => Promise<void>;
@@ -128,6 +127,7 @@ const transformCredential = (u: any): UserCredential => ({
 export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUserEmail, setCurrentUserEmail] = useState<string | null>(null);
+  const [sessionId, setSessionId] = useState<string | null>(null);
   const [theme, setThemeState] = useState<'dark' | 'amoled' | 'light'>('dark');
   const [activeView, setActiveView] = useState<string>('login');
   const [isLoading, setIsLoading] = useState(true);
@@ -218,27 +218,65 @@ export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   // Load credentials for admin view
   const loadCredentials = useCallback(async () => {
     try {
-      const res = await fetch('/api/admin/credentials');
+      const res = await fetch('/api/auth/admin/users', {
+        headers: { 'Authorization': `Bearer ${ADMIN_SECRET_KEY}` },
+      });
       if (res.ok) {
         const data = await res.json();
-        setCredentials(data.map(transformCredential));
+        if (data.users) {
+          setCredentials(data.users.map(transformCredential));
+        }
       }
     } catch (error) {
       console.error('Failed to load credentials:', error);
     }
   }, []);
 
-  // Initial load - check for existing session
+  // Initial load - check for existing session from Redis
   useEffect(() => {
     const init = async () => {
-      // Check if there's a stored user email and ID
+      const storedSessionId = localStorage.getItem('streakify_session_id');
       const storedEmail = localStorage.getItem('streakify_user_email');
       const storedUserId = localStorage.getItem('streakify_user_id');
-      if (storedEmail && storedUserId) {
-        setCurrentUserEmail(storedEmail);
-        setIsLoggedIn(true);
-        setActiveView('dashboard');
-        await loadUserData(storedUserId);
+      
+      if (storedSessionId && storedEmail && storedUserId) {
+        // Verify session with Redis
+        try {
+          const res = await fetch('/api/session/verify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sessionId: storedSessionId }),
+          });
+          
+          if (res.ok) {
+            const data = await res.json();
+            if (data.valid) {
+              setSessionId(storedSessionId);
+              setCurrentUserEmail(storedEmail);
+              setIsLoggedIn(true);
+              setActiveView('dashboard');
+              await loadUserData(storedUserId);
+            } else {
+              // Session expired, clear local storage
+              localStorage.removeItem('streakify_session_id');
+              localStorage.removeItem('streakify_user_email');
+              localStorage.removeItem('streakify_user_id');
+            }
+          } else {
+            // Session invalid, clear local storage
+            localStorage.removeItem('streakify_session_id');
+            localStorage.removeItem('streakify_user_email');
+            localStorage.removeItem('streakify_user_id');
+          }
+        } catch (error) {
+          // If Redis is unavailable, fallback to local session
+          console.warn('Session verification failed, using local session:', error);
+          setSessionId(storedSessionId);
+          setCurrentUserEmail(storedEmail);
+          setIsLoggedIn(true);
+          setActiveView('dashboard');
+          await loadUserData(storedUserId);
+        }
       }
       setIsLoading(false);
     };
@@ -261,11 +299,13 @@ export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       }
 
       setCurrentUserEmail(data.user.email);
+      setSessionId(data.sessionId);
       setUser(prev => ({ ...prev, name: data.user.name, email: data.user.email }));
       setIsLoggedIn(true);
       setActiveView('dashboard');
       
-      // Store email and user ID for session persistence
+      // Store session data in localStorage for persistence
+      localStorage.setItem('streakify_session_id', data.sessionId);
       localStorage.setItem('streakify_user_email', data.user.email);
       localStorage.setItem('streakify_user_id', data.user.id);
       
@@ -282,6 +322,7 @@ export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const verifyAndUnlockAdmin = (keyInput: string) => {
     if (keyInput.trim() === ADMIN_SECRET_KEY) {
       setIsAdminUnlocked(true);
+      setIsLoggedIn(true);
       setActiveView('admin');
       loadCredentials();
       return true;
@@ -289,211 +330,189 @@ export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     return false;
   };
 
-  // Admin User Creation
-  const createManagedUser = async (name: string, email: string, pass: string) => {
-    try {
-      const res = await fetch('/api/auth/create-user', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password: pass, adminKey: ADMIN_SECRET_KEY }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to create user');
+  // Logout function - destroys Redis session
+  const logout = async () => {
+    const userId = localStorage.getItem('streakify_user_id');
+    const currentSessionId = localStorage.getItem('streakify_session_id');
+    
+    // Destroy session in Redis
+    if (currentSessionId || userId) {
+      try {
+        await fetch('/api/session/destroy', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            sessionId: currentSessionId, 
+            userId 
+          }),
+        });
+      } catch (error) {
+        console.warn('Failed to destroy Redis session:', error);
       }
-
-      // Refresh credentials list
-      await loadCredentials();
-    } catch (error) {
-      console.error('Failed to create user:', error);
-      throw error;
     }
-  };
-
-  // Admin User Credential Update
-  const updateManagedUser = async (id: string, updates: Partial<UserCredential>) => {
-    try {
-      const res = await fetch(`/api/admin/credentials/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ updates, adminKey: ADMIN_SECRET_KEY }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || 'Failed to update user');
-      }
-
-      // Refresh credentials list
-      await loadCredentials();
-    } catch (error) {
-      console.error('Failed to update user:', error);
-      throw error;
-    }
-  };
-
-  // Admin User Deletion
-  const deleteManagedUser = async (id: string) => {
-    try {
-      const res = await fetch(`/api/admin/credentials/${id}`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ adminKey: ADMIN_SECRET_KEY }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || 'Failed to delete user');
-      }
-
-      // Refresh credentials list
-      await loadCredentials();
-    } catch (error) {
-      console.error('Failed to delete user:', error);
-      throw error;
-    }
+    
+    // Clear local storage
+    localStorage.removeItem('streakify_session_id');
+    localStorage.removeItem('streakify_user_email');
+    localStorage.removeItem('streakify_user_id');
+    
+    // Reset state
+    setSessionId(null);
+    setCurrentUserEmail(null);
+    setIsLoggedIn(false);
+    setIsAdminUnlocked(false);
+    setActiveView('login');
+    setUser(INITIAL_USER);
+    setHabits([]);
+    setHistory({});
+    setNotifications([]);
   };
 
   // Submit Daily Check-in
   const submitDailyCheckIn = async (completedIds: string[], journalText?: string, journalTitle?: string, mood?: string) => {
     const userId = localStorage.getItem('streakify_user_id');
-    if (!userId) return;
-
     const todayStr = format(new Date(), 'yyyy-MM-dd');
     const requiredHabits = habits.filter(h => h.required && h.active);
     const completedReqCount = requiredHabits.filter(h => completedIds.includes(h.id)).length;
-    const isPerfect = completedReqCount === requiredHabits.length;
+    const isPerfect = requiredHabits.length > 0 ? completedReqCount === requiredHabits.length : completedIds.length > 0;
 
     const totalHabitsCount = habits.filter(h => h.active).length;
     const pct = totalHabitsCount > 0 ? Math.round((completedIds.length / totalHabitsCount) * 100) : 0;
-    const xpGained = isPerfect ? 50 : Math.round((completedIds.length / totalHabitsCount) * 25);
+    const xpGained = isPerfect ? 50 : Math.round((completedIds.length / (totalHabitsCount || 1)) * 25);
 
-    try {
-      const res = await fetch('/api/user/checkin', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId,
-          date: todayStr,
-          completedHabitIds: completedIds,
-          completionPercentage: pct,
-          xpEarned: xpGained,
-          isCompleted: isPerfect,
-          journalEntry: journalText,
-          journalTitle: journalTitle || 'Daily Reflection',
-          mood: mood || 'Productive',
-        }),
+    // Prepare local update
+    const updatedCheckIn: DayCheckIn = {
+      date: todayStr,
+      completedHabits: completedIds,
+      completionPercentage: pct,
+      xpEarned: xpGained,
+      completed: isPerfect,
+      journal: journalText ? {
+        title: journalTitle || 'Daily Reflection',
+        content: journalText,
+        mood: mood || 'Productive'
+      } : undefined
+    };
+
+    // Update local state first for instant responsiveness
+    setHistory(prev => ({ ...prev, [todayStr]: updatedCheckIn }));
+
+    if (isPerfect) {
+      setUser(prev => {
+        const newStreak = prev.currentStreak + 1;
+        const newLongest = Math.max(prev.longestStreak, newStreak);
+        const newXp = prev.xp + xpGained;
+        const newTotalDays = prev.totalDays + 1;
+        return {
+          ...prev,
+          currentStreak: newStreak,
+          longestStreak: newLongest,
+          xp: newXp,
+          totalDays: newTotalDays,
+          level: Math.floor(newXp / 100) + 1
+        };
       });
 
-      if (!res.ok) throw new Error('Failed to submit check-in');
+      setNotifications(prev => [
+        {
+          id: `n_${Date.now()}`,
+          title: '🔥 Streak Continued!',
+          message: `Awesome work! You completed all required habits for today. +${xpGained} XP!`,
+          type: 'streak',
+          timestamp: 'Just now',
+          read: false
+        },
+        ...prev
+      ]);
+    }
 
-      // Update local state
-      const updatedCheckIn: DayCheckIn = {
-        date: todayStr,
-        completedHabits: completedIds,
-        completionPercentage: pct,
-        xpEarned: xpGained,
-        completed: isPerfect,
-        journal: journalText ? {
-          title: journalTitle || 'Daily Reflection',
-          content: journalText,
-          mood: mood || 'Productive'
-        } : undefined
-      };
-
-      const newHistory = { ...history, [todayStr]: updatedCheckIn };
-      setHistory(newHistory);
-
-      if (isPerfect) {
-        setUser(prev => {
-          const newStreak = prev.currentStreak + 1;
-          const newLongest = Math.max(prev.longestStreak, newStreak);
-          const newXp = prev.xp + xpGained;
-          const newTotalDays = prev.totalDays + 1;
-          return {
-            ...prev,
-            currentStreak: newStreak,
-            longestStreak: newLongest,
-            xp: newXp,
-            totalDays: newTotalDays,
-            level: Math.floor(newXp / 100) + 1
-          };
+    // Sync to backend if logged in
+    if (userId) {
+      try {
+        await fetch('/api/user/checkin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId,
+            date: todayStr,
+            completedHabitIds: completedIds,
+            completionPercentage: pct,
+            xpEarned: xpGained,
+            isCompleted: isPerfect,
+            journalEntry: journalText,
+            journalTitle: journalTitle || 'Daily Reflection',
+            mood: mood || 'Productive',
+          }),
         });
-
-        setNotifications(prev => [
-          {
-            id: `n_${Date.now()}`,
-            title: '🔥 Streak Continued!',
-            message: `Awesome work! You completed all required habits for today. +${xpGained} XP!`,
-            type: 'streak',
-            timestamp: 'Just now',
-            read: false
-          },
-          ...prev
-        ]);
+      } catch (error) {
+        console.warn('Backend check-in sync skipped or offline:', error);
       }
-
-      // Reload user data to get updated profile
-      await loadUserData(userId);
-    } catch (error) {
-      console.error('Failed to submit check-in:', error);
-      throw error;
     }
   };
 
   const addNewHabit = async (habitData: Omit<Habit, 'id'>) => {
     const userId = localStorage.getItem('streakify_user_id');
-    if (!userId) return;
+    const localId = `h_${Date.now()}`;
+    const newHabitObj: Habit = {
+      id: localId,
+      ...habitData,
+    };
 
-    try {
-      const res = await fetch('/api/user/habits', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, ...habitData }),
-      });
+    // Local state update
+    setHabits(prev => [...prev, newHabitObj]);
 
-      if (!res.ok) throw new Error('Failed to create habit');
+    if (userId) {
+      try {
+        const res = await fetch('/api/user/habits', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId, ...habitData }),
+        });
 
-      const newHabit = await res.json();
-      setHabits(prev => [...prev, transformHabit(newHabit)]);
-    } catch (error) {
-      console.error('Failed to add habit:', error);
-      throw error;
+        if (res.ok) {
+          const created = await res.json();
+          // Replace temporary local ID with server ID
+          setHabits(prev => prev.map(h => h.id === localId ? transformHabit(created) : h));
+        }
+      } catch (error) {
+        console.warn('Backend habit creation skipped or offline:', error);
+      }
     }
   };
 
   const updateHabit = async (id: string, updates: Partial<Habit>) => {
-    try {
-      const res = await fetch(`/api/user/habits/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ updates }),
-      });
+    const userId = localStorage.getItem('streakify_user_id');
 
-      if (!res.ok) throw new Error('Failed to update habit');
+    // Local state update
+    setHabits(prev => prev.map(h => h.id === id ? { ...h, ...updates } : h));
 
-      const updatedHabit = await res.json();
-      setHabits(prev => prev.map(h => h.id === id ? transformHabit(updatedHabit) : h));
-    } catch (error) {
-      console.error('Failed to update habit:', error);
-      throw error;
+    if (userId) {
+      try {
+        await fetch(`/api/user/habits/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ updates }),
+        });
+      } catch (error) {
+        console.warn('Backend habit update skipped or offline:', error);
+      }
     }
   };
 
   const deleteHabit = async (id: string) => {
-    try {
-      const res = await fetch(`/api/user/habits/${id}`, {
-        method: 'DELETE',
-      });
+    const userId = localStorage.getItem('streakify_user_id');
 
-      if (!res.ok) throw new Error('Failed to delete habit');
+    // Local state update
+    setHabits(prev => prev.filter(h => h.id !== id));
 
-      setHabits(prev => prev.filter(h => h.id !== id));
-    } catch (error) {
-      console.error('Failed to delete habit:', error);
-      throw error;
+    if (userId) {
+      try {
+        await fetch(`/api/user/habits/${id}`, {
+          method: 'DELETE',
+        });
+      } catch (error) {
+        console.warn('Backend habit delete skipped or offline:', error);
+      }
     }
   };
 
@@ -501,7 +520,29 @@ export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     setNotifications(prev => prev.map(n => ({ ...n, read: true })));
   };
 
-  const resetAllData = () => {
+  const resetAllData = async () => {
+    // Destroy Redis session
+    const userId = localStorage.getItem('streakify_user_id');
+    const currentSessionId = localStorage.getItem('streakify_session_id');
+    
+    if (currentSessionId || userId) {
+      try {
+        await fetch('/api/session/destroy', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId: currentSessionId, userId }),
+        });
+      } catch (error) {
+        console.warn('Failed to destroy Redis session:', error);
+      }
+    }
+    
+    // Clear local storage
+    localStorage.removeItem('streakify_session_id');
+    localStorage.removeItem('streakify_user_email');
+    localStorage.removeItem('streakify_user_id');
+    
+    // Reset state
     setHistory({});
     setUser(INITIAL_USER);
     setHabits([]);
@@ -510,8 +551,7 @@ export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     setLeaderboard([]);
     setNotifications([]);
     setCredentials(INITIAL_CREDENTIALS);
-    localStorage.removeItem('streakify_user_email');
-    localStorage.removeItem('streakify_user_id');
+    setSessionId(null);
     setIsLoggedIn(false);
     setCurrentUserEmail(null);
     setActiveView('login');
@@ -528,6 +568,7 @@ export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     <StreakContext.Provider value={{
       isLoggedIn, setIsLoggedIn,
       currentUserEmail,
+      sessionId,
       theme, setTheme,
       activeView, setActiveView,
       user, setUser,
@@ -543,10 +584,8 @@ export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       showNotificationDrawer, setShowNotificationDrawer,
       showAdminKeyModal, setShowAdminKeyModal,
       loginWithCredentials,
+      logout,
       verifyAndUnlockAdmin,
-      createManagedUser,
-      updateManagedUser,
-      deleteManagedUser,
       submitDailyCheckIn,
       addNewHabit,
       updateHabit,

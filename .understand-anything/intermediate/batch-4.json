@@ -1,0 +1,1074 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/app/not-found.tsx",
+      "type": "file",
+      "name": "not-found.tsx",
+      "filePath": "src/app/not-found.tsx",
+      "summary": "Custom 404 Not Found page with styled UI and link back to home",
+      "tags": ["nextjs", "page", "error-handling", "ui"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:not-found.tsx:NotFound",
+      "type": "function",
+      "name": "NotFound",
+      "filePath": "src/app/not-found.tsx",
+      "summary": "Default Next.js 404 page component with Streakify branding and navigation link",
+      "tags": ["page-component", "export-default"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "src/app/page.tsx",
+      "summary": "Main application page that routes between views (landing, login, dashboard, etc.) based on activeView state",
+      "tags": ["nextjs", "page", "routing", "layout", "client-component"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:page.tsx:Home",
+      "type": "function",
+      "name": "Home",
+      "filePath": "src/app/page.tsx",
+      "summary": "Root page component that conditionally renders landing, login, or app layout with active view switching",
+      "tags": ["page-component", "export-default", "routing", "layout"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/app/privacy/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "src/app/privacy/page.tsx",
+      "summary": "Privacy Policy page with sections on data protection, information usage, cookies, and contact",
+      "tags": ["nextjs", "page", "legal", "static-content"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:privacy/page.tsx:PrivacyPage",
+      "type": "function",
+      "name": "PrivacyPage",
+      "filePath": "src/app/privacy/page.tsx",
+      "summary": "Privacy policy page component with metadata export and styled sections",
+      "tags": ["page-component", "export-default"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/robots.ts",
+      "type": "file",
+      "name": "robots.ts",
+      "filePath": "src/app/robots.ts",
+      "summary": "Generates robots.txt configuration for SEO crawler directives",
+      "tags": ["nextjs", "seo", "metadata"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:robots.ts:robots",
+      "type": "function",
+      "name": "robots",
+      "filePath": "src/app/robots.ts",
+      "summary": "Returns robots.txt rules allowing all crawlers except admin and API paths",
+      "tags": ["metadata-route", "export-default"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/sitemap.ts",
+      "type": "file",
+      "name": "sitemap.ts",
+      "filePath": "src/app/sitemap.ts",
+      "summary": "Generates XML sitemap with URL entries for SEO indexing",
+      "tags": ["nextjs", "seo", "metadata"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:sitemap.ts:sitemap",
+      "type": "function",
+      "name": "sitemap",
+      "filePath": "src/app/sitemap.ts",
+      "summary": "Returns sitemap array with URLs for home, about, download, privacy, and terms pages",
+      "tags": ["metadata-route", "export-default"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/terms/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "src/app/terms/page.tsx",
+      "summary": "Terms of Service page with sections on acceptance, account access, and PWA support",
+      "tags": ["nextjs", "page", "legal", "static-content"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:terms/page.tsx:TermsPage",
+      "type": "function",
+      "name": "TermsPage",
+      "filePath": "src/app/terms/page.tsx",
+      "summary": "Terms of service page component with metadata export and styled sections",
+      "tags": ["page-component", "export-default"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/BottomNav.tsx",
+      "type": "file",
+      "name": "BottomNav.tsx",
+      "filePath": "src/components/BottomNav.tsx",
+      "summary": "Fixed bottom navigation bar with dashboard, stats, calendar, profile buttons and center FAB for check-in",
+      "tags": ["component", "navigation", "mobile", "client-component"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:BottomNav.tsx:BottomNav",
+      "type": "function",
+      "name": "BottomNav",
+      "filePath": "src/components/BottomNav.tsx",
+      "summary": "Bottom navigation component with 4 nav items and floating action button for daily check-in",
+      "tags": ["component", "export-const", "navigation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/ErrorBoundary.tsx",
+      "type": "file",
+      "name": "ErrorBoundary.tsx",
+      "filePath": "src/components/ErrorBoundary.tsx",
+      "summary": "React class-based error boundary for catching and displaying runtime errors with refresh option",
+      "tags": ["component", "error-handling", "class-component"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:ErrorBoundary.tsx:ErrorBoundary",
+      "type": "class",
+      "name": "ErrorBoundary",
+      "filePath": "src/components/ErrorBoundary.tsx",
+      "summary": "Class component extending React.Component that catches errors and displays fallback UI with error details",
+      "tags": ["class-component", "error-handling", "export-class"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/HeatmapGraph.tsx",
+      "type": "file",
+      "name": "HeatmapGraph.tsx",
+      "filePath": "src/components/HeatmapGraph.tsx",
+      "summary": "GitHub-style 365-day contribution heatmap with intensity coloring, tooltips, and day click interaction",
+      "tags": ["component", "visualization", "data-display", "client-component"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:HeatmapGraph.tsx:HeatmapGraph",
+      "type": "function",
+      "name": "HeatmapGraph",
+      "filePath": "src/components/HeatmapGraph.tsx",
+      "summary": "Interactive heatmap component that renders 365-day grid with completion intensity coloring and hover tooltips",
+      "tags": ["component", "export-const", "visualization", "interactive"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/components/modals/DailyCheckInModal.tsx",
+      "type": "file",
+      "name": "DailyCheckInModal.tsx",
+      "filePath": "src/components/modals/DailyCheckInModal.tsx",
+      "summary": "Modal for daily habit check-in with required habit validation, journal entry, mood tracking, and confetti animation",
+      "tags": ["component", "modal", "form", "client-component"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:DailyCheckInModal.tsx:DailyCheckInModal",
+      "type": "function",
+      "name": "DailyCheckInModal",
+      "filePath": "src/components/modals/DailyCheckInModal.tsx",
+      "summary": "Modal component for completing daily habit check-ins with progress tracking, journal, and confetti effect",
+      "tags": ["component", "export-const", "modal", "form"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:DailyCheckInModal.tsx:fireConfetti",
+      "type": "function",
+      "name": "fireConfetti",
+      "filePath": "src/components/modals/DailyCheckInModal.tsx",
+      "summary": "Creates animated confetti particle effect by appending styled DOM elements",
+      "tags": ["utility", "animation", "dom-manipulation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/modals/DayDetailsModal.tsx",
+      "type": "file",
+      "name": "DayDetailsModal.tsx",
+      "filePath": "src/components/modals/DayDetailsModal.tsx",
+      "summary": "Modal displaying detailed breakdown of a selected day's habits completion and journal reflection",
+      "tags": ["component", "modal", "data-display", "client-component"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:DayDetailsModal.tsx:DayDetailsModal",
+      "type": "function",
+      "name": "DayDetailsModal",
+      "filePath": "src/components/modals/DayDetailsModal.tsx",
+      "summary": "Modal showing habit completion breakdown and journal entry for a specific day",
+      "tags": ["component", "export-const", "modal"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/modals/HabitFormModal.tsx",
+      "type": "file",
+      "name": "HabitFormModal.tsx",
+      "filePath": "src/components/modals/HabitFormModal.tsx",
+      "summary": "Modal form for creating/editing habits with name, description, icon, color, required flag, and reminder time",
+      "tags": ["component", "modal", "form", "crud", "client-component"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:HabitFormModal.tsx:HabitFormModal",
+      "type": "function",
+      "name": "HabitFormModal",
+      "filePath": "src/components/modals/HabitFormModal.tsx",
+      "summary": "Modal form component for creating and editing habits with icon/color selection and validation",
+      "tags": ["component", "export-const", "modal", "form", "crud"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/components/modals/WatchDemoModal.tsx",
+      "type": "file",
+      "name": "WatchDemoModal.tsx",
+      "filePath": "src/components/modals/WatchDemoModal.tsx",
+      "summary": "Modal showing interactive product demo showcase with video placeholder and launch dashboard button",
+      "tags": ["component", "modal", "marketing", "client-component"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:WatchDemoModal.tsx:WatchDemoModal",
+      "type": "function",
+      "name": "WatchDemoModal",
+      "filePath": "src/components/modals/WatchDemoModal.tsx",
+      "summary": "Demo modal component with video showcase card and CTA to launch the dashboard",
+      "tags": ["component", "export-const", "modal", "marketing"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/Navbar.tsx",
+      "type": "file",
+      "name": "Navbar.tsx",
+      "filePath": "src/components/Navbar.tsx",
+      "summary": "Landing page top navigation bar with logo, nav links, sign in, and get started buttons",
+      "tags": ["component", "navigation", "landing-page", "client-component"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:Navbar.tsx:LandingNavbar",
+      "type": "function",
+      "name": "LandingNavbar",
+      "filePath": "src/components/Navbar.tsx",
+      "summary": "Fixed header navigation for landing page with logo, section links, and auth action buttons",
+      "tags": ["component", "export-const", "navigation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/ServiceWorkerRegister.tsx",
+      "type": "file",
+      "name": "ServiceWorkerRegister.tsx",
+      "filePath": "src/components/ServiceWorkerRegister.tsx",
+      "summary": "Client-side service worker registration for PWA support and offline capabilities",
+      "tags": ["component", "pwa", "service-worker", "client-component"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:ServiceWorkerRegister.tsx:ServiceWorkerRegister",
+      "type": "function",
+      "name": "ServiceWorkerRegister",
+      "filePath": "src/components/ServiceWorkerRegister.tsx",
+      "summary": "Registers /sw.js service worker on mount for PWA offline support",
+      "tags": ["component", "export-function", "pwa"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/Sidebar.tsx",
+      "type": "file",
+      "name": "Sidebar.tsx",
+      "filePath": "src/components/Sidebar.tsx",
+      "summary": "Desktop sidebar navigation with all app sections, user profile, motivational quote, and logout",
+      "tags": ["component", "navigation", "desktop", "client-component"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:Sidebar.tsx:Sidebar",
+      "type": "function",
+      "name": "Sidebar",
+      "filePath": "src/components/Sidebar.tsx",
+      "summary": "Sticky sidebar with 14 navigation items, user profile display, and logout functionality",
+      "tags": ["component", "export-const", "navigation"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/components/TopNav.tsx",
+      "type": "file",
+      "name": "TopNav.tsx",
+      "filePath": "src/components/TopNav.tsx",
+      "summary": "Sticky top navigation bar with user greeting, streak counter, notifications, theme toggle, and profile avatar",
+      "tags": ["component", "navigation", "header", "client-component"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:TopNav.tsx:TopNav",
+      "type": "function",
+      "name": "TopNav",
+      "filePath": "src/components/TopNav.tsx",
+      "summary": "Top header bar with streak badge, notification bell, theme cycle button, and profile avatar",
+      "tags": ["component", "export-const", "navigation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/ui/button.tsx",
+      "type": "file",
+      "name": "button.tsx",
+      "filePath": "src/components/ui/button.tsx",
+      "summary": "Reusable Button component with CVA variants (default, outline, secondary, ghost, destructive, link) and sizes",
+      "tags": ["component", "ui-library", "design-system", "variants"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:button.tsx:Button",
+      "type": "function",
+      "name": "Button",
+      "filePath": "src/components/ui/button.tsx",
+      "summary": "Styled button component wrapping Base UI ButtonPrimitive with CVA variant classes",
+      "tags": ["component", "export-function", "ui-primitive"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/views/AchievementsView.tsx",
+      "type": "file",
+      "name": "AchievementsView.tsx",
+      "filePath": "src/components/views/AchievementsView.tsx",
+      "summary": "View displaying achievements grid with progress bars, unlock status, and XP rewards",
+      "tags": ["component", "view", "achievements", "gamification", "client-component"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:AchievementsView.tsx:AchievementsView",
+      "type": "function",
+      "name": "AchievementsView",
+      "filePath": "src/components/views/AchievementsView.tsx",
+      "summary": "Grid layout displaying all achievements with progress tracking and XP reward summary",
+      "tags": ["component", "export-const", "view", "gamification"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/views/ActivityHistoryView.tsx",
+      "type": "file",
+      "name": "ActivityHistoryView.tsx",
+      "filePath": "src/components/views/ActivityHistoryView.tsx",
+      "summary": "Chronological activity history timeline with filter tabs for All, Completed, Missed, and Journal entries",
+      "tags": ["component", "view", "history", "filtering", "client-component"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:ActivityHistoryView.tsx:ActivityHistoryView",
+      "type": "function",
+      "name": "ActivityHistoryView",
+      "filePath": "src/components/views/ActivityHistoryView.tsx",
+      "summary": "Timeline view with filterable list of daily check-in history entries",
+      "tags": ["component", "export-const", "view", "filtering"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/views/AdminView.tsx",
+      "type": "file",
+      "name": "AdminView.tsx",
+      "filePath": "src/components/views/AdminView.tsx",
+      "summary": "Admin panel with secret key authentication, user provisioning CRUD, and credential management",
+      "tags": ["component", "view", "admin", "auth", "crud", "client-component"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:AdminView.tsx:AdminView",
+      "type": "function",
+      "name": "AdminView",
+      "filePath": "src/components/views/AdminView.tsx",
+      "summary": "Admin view with key gate, create user form, and inline-editable credentials table with API calls",
+      "tags": ["component", "export-const", "view", "admin", "crud"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/components/views/BadgesView.tsx",
+      "type": "file",
+      "name": "BadgesView.tsx",
+      "filePath": "src/components/views/BadgesView.tsx",
+      "summary": "Badges showcase grid with filter tabs (all/unlocked/locked), rarity tags, and glow effects",
+      "tags": ["component", "view", "badges", "gamification", "client-component"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:BadgesView.tsx:BadgesView",
+      "type": "function",
+      "name": "BadgesView",
+      "filePath": "src/components/views/BadgesView.tsx",
+      "summary": "Filterable grid displaying earned and locked badges with rarity and glow styling",
+      "tags": ["component", "export-const", "view", "gamification"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/views/CalendarView.tsx",
+      "type": "file",
+      "name": "CalendarView.tsx",
+      "filePath": "src/components/views/CalendarView.tsx",
+      "summary": "Monthly calendar view with day status coloring (completed/partial/missed/future) and navigation",
+      "tags": ["component", "view", "calendar", "date-fns", "client-component"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:CalendarView.tsx:CalendarView",
+      "type": "function",
+      "name": "CalendarView",
+      "filePath": "src/components/views/CalendarView.tsx",
+      "summary": "Monthly calendar grid with month navigation, day status coloring, and click-to-view details",
+      "tags": ["component", "export-const", "view", "calendar"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/components/views/DashboardView.tsx",
+      "type": "file",
+      "name": "DashboardView.tsx",
+      "filePath": "src/components/views/DashboardView.tsx",
+      "summary": "Main dashboard with stat cards, heatmap widget, today's habits checklist, and recent activity feed",
+      "tags": ["component", "view", "dashboard", "main", "client-component"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:DashboardView.tsx:DashboardView",
+      "type": "function",
+      "name": "DashboardView",
+      "filePath": "src/components/views/DashboardView.tsx",
+      "summary": "Dashboard layout with 4 stat cards, HeatmapGraph, habits preview, and activity feed",
+      "tags": ["component", "export-const", "view", "dashboard", "layout"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/components/views/HabitsManagementView.tsx",
+      "type": "file",
+      "name": "HabitsManagementView.tsx",
+      "filePath": "src/components/views/HabitsManagementView.tsx",
+      "summary": "Habits management list with toggle required/active states, edit, delete, and add new habit button",
+      "tags": ["component", "view", "habits", "crud", "client-component"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:HabitsManagementView.tsx:HabitsManagementView",
+      "type": "function",
+      "name": "HabitsManagementView",
+      "filePath": "src/components/views/HabitsManagementView.tsx",
+      "summary": "List view for managing habits with toggle controls, edit, delete, and add new habit actions",
+      "tags": ["component", "export-const", "view", "habits", "crud"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge:not-found.tsx:imports:link",
+      "source": "file:src/app/not-found.tsx",
+      "target": "file:src/components/ui/button.tsx",
+      "type": "import",
+      "label": "imports Link from next/link"
+    },
+    {
+      "id": "edge:not-found.tsx:exports:NotFound",
+      "source": "file:src/app/not-found.tsx",
+      "target": "function:not-found.tsx:NotFound",
+      "type": "exports",
+      "label": "exports NotFound"
+    },
+    {
+      "id": "edge:page.tsx:exports:Home",
+      "source": "file:src/app/page.tsx",
+      "target": "function:page.tsx:Home",
+      "type": "exports",
+      "label": "exports Home"
+    },
+    {
+      "id": "edge:page.tsx:imports:StreakContext",
+      "source": "file:src/app/page.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "import",
+      "label": "imports useStreak from StreakContext"
+    },
+    {
+      "id": "edge:page.tsx:imports:TopNav",
+      "source": "file:src/app/page.tsx",
+      "target": "file:src/components/TopNav.tsx",
+      "type": "import",
+      "label": "imports TopNav"
+    },
+    {
+      "id": "edge:page.tsx:imports:BottomNav",
+      "source": "file:src/app/page.tsx",
+      "target": "file:src/components/BottomNav.tsx",
+      "type": "import",
+      "label": "imports BottomNav"
+    },
+    {
+      "id": "edge:page.tsx:imports:DashboardView",
+      "source": "file:src/app/page.tsx",
+      "target": "file:src/components/views/DashboardView.tsx",
+      "type": "import",
+      "label": "imports DashboardView"
+    },
+    {
+      "id": "edge:page.tsx:imports:CalendarView",
+      "source": "file:src/app/page.tsx",
+      "target": "file:src/components/views/CalendarView.tsx",
+      "type": "import",
+      "label": "imports CalendarView"
+    },
+    {
+      "id": "edge:page.tsx:imports:AchievementsView",
+      "source": "file:src/app/page.tsx",
+      "target": "file:src/components/views/AchievementsView.tsx",
+      "type": "import",
+      "label": "imports AchievementsView"
+    },
+    {
+      "id": "edge:page.tsx:imports:BadgesView",
+      "source": "file:src/app/page.tsx",
+      "target": "file:src/components/views/BadgesView.tsx",
+      "type": "import",
+      "label": "imports BadgesView"
+    },
+    {
+      "id": "edge:page.tsx:imports:HabitsManagementView",
+      "source": "file:src/app/page.tsx",
+      "target": "file:src/components/views/HabitsManagementView.tsx",
+      "type": "import",
+      "label": "imports HabitsManagementView"
+    },
+    {
+      "id": "edge:page.tsx:imports:AdminView",
+      "source": "file:src/app/page.tsx",
+      "target": "file:src/components/views/AdminView.tsx",
+      "type": "import",
+      "label": "imports AdminView"
+    },
+    {
+      "id": "edge:page.tsx:imports:ActivityHistoryView",
+      "source": "file:src/app/page.tsx",
+      "target": "file:src/components/views/ActivityHistoryView.tsx",
+      "type": "import",
+      "label": "imports ActivityHistoryView"
+    },
+    {
+      "id": "edge:page.tsx:imports:DailyCheckInModal",
+      "source": "file:src/app/page.tsx",
+      "target": "file:src/components/modals/DailyCheckInModal.tsx",
+      "type": "import",
+      "label": "imports DailyCheckInModal"
+    },
+    {
+      "id": "edge:page.tsx:imports:DayDetailsModal",
+      "source": "file:src/app/page.tsx",
+      "target": "file:src/components/modals/DayDetailsModal.tsx",
+      "type": "import",
+      "label": "imports DayDetailsModal"
+    },
+    {
+      "id": "edge:page.tsx:imports:HabitFormModal",
+      "source": "file:src/app/page.tsx",
+      "target": "file:src/components/modals/HabitFormModal.tsx",
+      "type": "import",
+      "label": "imports HabitFormModal"
+    },
+    {
+      "id": "edge:page.tsx:imports:WatchDemoModal",
+      "source": "file:src/app/page.tsx",
+      "target": "file:src/components/modals/WatchDemoModal.tsx",
+      "type": "import",
+      "label": "imports WatchDemoModal"
+    },
+    {
+      "id": "edge:privacy/page.tsx:exports:PrivacyPage",
+      "source": "file:src/app/privacy/page.tsx",
+      "target": "function:privacy/page.tsx:PrivacyPage",
+      "type": "exports",
+      "label": "exports PrivacyPage"
+    },
+    {
+      "id": "edge:robots.ts:exports:robots",
+      "source": "file:src/app/robots.ts",
+      "target": "function:robots.ts:robots",
+      "type": "exports",
+      "label": "exports robots"
+    },
+    {
+      "id": "edge:sitemap.ts:exports:sitemap",
+      "source": "file:src/app/sitemap.ts",
+      "target": "function:sitemap.ts:sitemap",
+      "type": "exports",
+      "label": "exports sitemap"
+    },
+    {
+      "id": "edge:terms/page.tsx:exports:TermsPage",
+      "source": "file:src/app/terms/page.tsx",
+      "target": "function:terms/page.tsx:TermsPage",
+      "type": "exports",
+      "label": "exports TermsPage"
+    },
+    {
+      "id": "edge:BottomNav.tsx:exports:BottomNav",
+      "source": "file:src/components/BottomNav.tsx",
+      "target": "function:BottomNav.tsx:BottomNav",
+      "type": "exports",
+      "label": "exports BottomNav"
+    },
+    {
+      "id": "edge:BottomNav.tsx:imports:StreakContext",
+      "source": "file:src/components/BottomNav.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "import",
+      "label": "imports useStreak from StreakContext"
+    },
+    {
+      "id": "edge:ErrorBoundary.tsx:exports:ErrorBoundary",
+      "source": "file:src/components/ErrorBoundary.tsx",
+      "target": "class:ErrorBoundary.tsx:ErrorBoundary",
+      "type": "exports",
+      "label": "exports ErrorBoundary"
+    },
+    {
+      "id": "edge:HeatmapGraph.tsx:exports:HeatmapGraph",
+      "source": "file:src/components/HeatmapGraph.tsx",
+      "target": "function:HeatmapGraph.tsx:HeatmapGraph",
+      "type": "exports",
+      "label": "exports HeatmapGraph"
+    },
+    {
+      "id": "edge:HeatmapGraph.tsx:imports:types",
+      "source": "file:src/components/HeatmapGraph.tsx",
+      "target": "file:src/lib/types.ts",
+      "type": "import",
+      "label": "imports DayCheckIn from types"
+    },
+    {
+      "id": "edge:HeatmapGraph.tsx:imports:date-fns",
+      "source": "file:src/components/HeatmapGraph.tsx",
+      "target": "file:node_modules/date-fns",
+      "type": "import",
+      "label": "imports format, subDays, eachDayOfInterval, isSameMonth, parseISO from date-fns"
+    },
+    {
+      "id": "edge:DailyCheckInModal.tsx:exports:DailyCheckInModal",
+      "source": "file:src/components/modals/DailyCheckInModal.tsx",
+      "target": "function:DailyCheckInModal.tsx:DailyCheckInModal",
+      "type": "exports",
+      "label": "exports DailyCheckInModal"
+    },
+    {
+      "id": "edge:DailyCheckInModal.tsx:exports:fireConfetti",
+      "source": "file:src/components/modals/DailyCheckInModal.tsx",
+      "target": "function:DailyCheckInModal.tsx:fireConfetti",
+      "type": "exports",
+      "label": "exports fireConfetti (internal)"
+    },
+    {
+      "id": "edge:DailyCheckInModal.tsx:imports:StreakContext",
+      "source": "file:src/components/modals/DailyCheckInModal.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "import",
+      "label": "imports useStreak from StreakContext"
+    },
+    {
+      "id": "edge:DailyCheckInModal.tsx:imports:date-fns",
+      "source": "file:src/components/modals/DailyCheckInModal.tsx",
+      "target": "file:node_modules/date-fns",
+      "type": "import",
+      "label": "imports format from date-fns"
+    },
+    {
+      "id": "edge:DayDetailsModal.tsx:exports:DayDetailsModal",
+      "source": "file:src/components/modals/DayDetailsModal.tsx",
+      "target": "function:DayDetailsModal.tsx:DayDetailsModal",
+      "type": "exports",
+      "label": "exports DayDetailsModal"
+    },
+    {
+      "id": "edge:DayDetailsModal.tsx:imports:StreakContext",
+      "source": "file:src/components/modals/DayDetailsModal.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "import",
+      "label": "imports useStreak from StreakContext"
+    },
+    {
+      "id": "edge:HabitFormModal.tsx:exports:HabitFormModal",
+      "source": "file:src/components/modals/HabitFormModal.tsx",
+      "target": "function:HabitFormModal.tsx:HabitFormModal",
+      "type": "exports",
+      "label": "exports HabitFormModal"
+    },
+    {
+      "id": "edge:HabitFormModal.tsx:imports:StreakContext",
+      "source": "file:src/components/modals/HabitFormModal.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "import",
+      "label": "imports useStreak from StreakContext"
+    },
+    {
+      "id": "edge:WatchDemoModal.tsx:exports:WatchDemoModal",
+      "source": "file:src/components/modals/WatchDemoModal.tsx",
+      "target": "function:WatchDemoModal.tsx:WatchDemoModal",
+      "type": "exports",
+      "label": "exports WatchDemoModal"
+    },
+    {
+      "id": "edge:WatchDemoModal.tsx:imports:StreakContext",
+      "source": "file:src/components/modals/WatchDemoModal.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "import",
+      "label": "imports useStreak from StreakContext"
+    },
+    {
+      "id": "edge:Navbar.tsx:exports:LandingNavbar",
+      "source": "file:src/components/Navbar.tsx",
+      "target": "function:Navbar.tsx:LandingNavbar",
+      "type": "exports",
+      "label": "exports LandingNavbar"
+    },
+    {
+      "id": "edge:Navbar.tsx:imports:StreakContext",
+      "source": "file:src/components/Navbar.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "import",
+      "label": "imports useStreak from StreakContext"
+    },
+    {
+      "id": "edge:ServiceWorkerRegister.tsx:exports:ServiceWorkerRegister",
+      "source": "file:src/components/ServiceWorkerRegister.tsx",
+      "target": "function:ServiceWorkerRegister.tsx:ServiceWorkerRegister",
+      "type": "exports",
+      "label": "exports ServiceWorkerRegister"
+    },
+    {
+      "id": "edge:Sidebar.tsx:exports:Sidebar",
+      "source": "file:src/components/Sidebar.tsx",
+      "target": "function:Sidebar.tsx:Sidebar",
+      "type": "exports",
+      "label": "exports Sidebar"
+    },
+    {
+      "id": "edge:Sidebar.tsx:imports:StreakContext",
+      "source": "file:src/components/Sidebar.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "import",
+      "label": "imports useStreak from StreakContext"
+    },
+    {
+      "id": "edge:Sidebar.tsx:imports:next-navigation",
+      "source": "file:src/components/Sidebar.tsx",
+      "target": "file:node_modules/next/navigation",
+      "type": "import",
+      "label": "imports useRouter from next/navigation"
+    },
+    {
+      "id": "edge:TopNav.tsx:exports:TopNav",
+      "source": "file:src/components/TopNav.tsx",
+      "target": "function:TopNav.tsx:TopNav",
+      "type": "exports",
+      "label": "exports TopNav"
+    },
+    {
+      "id": "edge:TopNav.tsx:imports:StreakContext",
+      "source": "file:src/components/TopNav.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "import",
+      "label": "imports useStreak from StreakContext"
+    },
+    {
+      "id": "edge:button.tsx:exports:Button",
+      "source": "file:src/components/ui/button.tsx",
+      "target": "function:button.tsx:Button",
+      "type": "exports",
+      "label": "exports Button and buttonVariants"
+    },
+    {
+      "id": "edge:button.tsx:imports:base-ui",
+      "source": "file:src/components/ui/button.tsx",
+      "target": "file:node_modules/@base-ui/react",
+      "type": "import",
+      "label": "imports Button from @base-ui/react"
+    },
+    {
+      "id": "edge:button.tsx:imports:cva",
+      "source": "file:src/components/ui/button.tsx",
+      "target": "file:node_modules/class-variance-authority",
+      "type": "import",
+      "label": "imports cva from class-variance-authority"
+    },
+    {
+      "id": "edge:button.tsx:imports:utils",
+      "source": "file:src/components/ui/button.tsx",
+      "target": "file:src/lib/utils.ts",
+      "type": "import",
+      "label": "imports cn from utils"
+    },
+    {
+      "id": "edge:AchievementsView.tsx:exports:AchievementsView",
+      "source": "file:src/components/views/AchievementsView.tsx",
+      "target": "function:AchievementsView.tsx:AchievementsView",
+      "type": "exports",
+      "label": "exports AchievementsView"
+    },
+    {
+      "id": "edge:AchievementsView.tsx:imports:StreakContext",
+      "source": "file:src/components/views/AchievementsView.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "import",
+      "label": "imports useStreak from StreakContext"
+    },
+    {
+      "id": "edge:ActivityHistoryView.tsx:exports:ActivityHistoryView",
+      "source": "file:src/components/views/ActivityHistoryView.tsx",
+      "target": "function:ActivityHistoryView.tsx:ActivityHistoryView",
+      "type": "exports",
+      "label": "exports ActivityHistoryView"
+    },
+    {
+      "id": "edge:ActivityHistoryView.tsx:imports:StreakContext",
+      "source": "file:src/components/views/ActivityHistoryView.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "import",
+      "label": "imports useStreak from StreakContext"
+    },
+    {
+      "id": "edge:ActivityHistoryView.tsx:imports:date-fns",
+      "source": "file:src/components/views/ActivityHistoryView.tsx",
+      "target": "file:node_modules/date-fns",
+      "type": "import",
+      "label": "imports format from date-fns"
+    },
+    {
+      "id": "edge:AdminView.tsx:exports:AdminView",
+      "source": "file:src/components/views/AdminView.tsx",
+      "target": "function:AdminView.tsx:AdminView",
+      "type": "exports",
+      "label": "exports AdminView"
+    },
+    {
+      "id": "edge:AdminView.tsx:imports:StreakContext",
+      "source": "file:src/components/views/AdminView.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "import",
+      "label": "imports useStreak and ADMIN_SECRET_KEY from StreakContext"
+    },
+    {
+      "id": "edge:AdminView.tsx:imports:types",
+      "source": "file:src/components/views/AdminView.tsx",
+      "target": "file:src/lib/types.ts",
+      "type": "import",
+      "label": "imports UserCredential from types"
+    },
+    {
+      "id": "edge:AdminView.tsx:api:create-user",
+      "source": "function:AdminView.tsx:AdminView",
+      "target": "file:src/app/api/auth/create-user/route.ts",
+      "type": "api-call",
+      "label": "POST /api/auth/create-user"
+    },
+    {
+      "id": "edge:AdminView.tsx:api:admin/users",
+      "source": "function:AdminView.tsx:AdminView",
+      "target": "file:src/app/api/auth/admin/users/route.ts",
+      "type": "api-call",
+      "label": "GET/PATCH/DELETE /api/auth/admin/users"
+    },
+    {
+      "id": "edge:BadgesView.tsx:exports:BadgesView",
+      "source": "file:src/components/views/BadgesView.tsx",
+      "target": "function:BadgesView.tsx:BadgesView",
+      "type": "exports",
+      "label": "exports BadgesView"
+    },
+    {
+      "id": "edge:BadgesView.tsx:imports:StreakContext",
+      "source": "file:src/components/views/BadgesView.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "import",
+      "label": "imports useStreak from StreakContext"
+    },
+    {
+      "id": "edge:CalendarView.tsx:exports:CalendarView",
+      "source": "file:src/components/views/CalendarView.tsx",
+      "target": "function:CalendarView.tsx:CalendarView",
+      "type": "exports",
+      "label": "exports CalendarView"
+    },
+    {
+      "id": "edge:CalendarView.tsx:imports:StreakContext",
+      "source": "file:src/components/views/CalendarView.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "import",
+      "label": "imports useStreak from StreakContext"
+    },
+    {
+      "id": "edge:CalendarView.tsx:imports:date-fns",
+      "source": "file:src/components/views/CalendarView.tsx",
+      "target": "file:node_modules/date-fns",
+      "type": "import",
+      "label": "imports format, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, getDay, isSameDay, isFuture from date-fns"
+    },
+    {
+      "id": "edge:DashboardView.tsx:exports:DashboardView",
+      "source": "file:src/components/views/DashboardView.tsx",
+      "target": "function:DashboardView.tsx:DashboardView",
+      "type": "exports",
+      "label": "exports DashboardView"
+    },
+    {
+      "id": "edge:DashboardView.tsx:imports:StreakContext",
+      "source": "file:src/components/views/DashboardView.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "import",
+      "label": "imports useStreak from StreakContext"
+    },
+    {
+      "id": "edge:DashboardView.tsx:imports:HeatmapGraph",
+      "source": "file:src/components/views/DashboardView.tsx",
+      "target": "file:src/components/HeatmapGraph.tsx",
+      "type": "import",
+      "label": "imports HeatmapGraph"
+    },
+    {
+      "id": "edge:DashboardView.tsx:imports:date-fns",
+      "source": "file:src/components/views/DashboardView.tsx",
+      "target": "file:node_modules/date-fns",
+      "type": "import",
+      "label": "imports format from date-fns"
+    },
+    {
+      "id": "edge:HabitsManagementView.tsx:exports:HabitsManagementView",
+      "source": "file:src/components/views/HabitsManagementView.tsx",
+      "target": "function:HabitsManagementView.tsx:HabitsManagementView",
+      "type": "exports",
+      "label": "exports HabitsManagementView"
+    },
+    {
+      "id": "edge:HabitsManagementView.tsx:imports:StreakContext",
+      "source": "file:src/components/views/HabitsManagementView.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "import",
+      "label": "imports useStreak from StreakContext"
+    },
+    {
+      "id": "edge:DashboardView.tsx:uses:HeatmapGraph",
+      "source": "function:DashboardView.tsx:DashboardView",
+      "target": "function:HeatmapGraph.tsx:HeatmapGraph",
+      "type": "calls",
+      "label": "renders HeatmapGraph"
+    },
+    {
+      "id": "edge:page.tsx:uses:Home",
+      "source": "file:src/app/page.tsx",
+      "target": "function:page.tsx:Home",
+      "type": "contains",
+      "label": "contains Home component"
+    },
+    {
+      "id": "edge:page.tsx:uses:TopNav",
+      "source": "function:page.tsx:Home",
+      "target": "function:TopNav.tsx:TopNav",
+      "type": "calls",
+      "label": "renders TopNav"
+    },
+    {
+      "id": "edge:page.tsx:uses:BottomNav",
+      "source": "function:page.tsx:Home",
+      "target": "function:BottomNav.tsx:BottomNav",
+      "type": "calls",
+      "label": "renders BottomNav"
+    },
+    {
+      "id": "edge:page.tsx:uses:DashboardView",
+      "source": "function:page.tsx:Home",
+      "target": "function:DashboardView.tsx:DashboardView",
+      "type": "calls",
+      "label": "renders DashboardView (default)"
+    },
+    {
+      "id": "edge:page.tsx:uses:CalendarView",
+      "source": "function:page.tsx:Home",
+      "target": "function:CalendarView.tsx:CalendarView",
+      "type": "calls",
+      "label": "renders CalendarView"
+    },
+    {
+      "id": "edge:page.tsx:uses:AchievementsView",
+      "source": "function:page.tsx:Home",
+      "target": "function:AchievementsView.tsx:AchievementsView",
+      "type": "calls",
+      "label": "renders AchievementsView"
+    },
+    {
+      "id": "edge:page.tsx:uses:BadgesView",
+      "source": "function:page.tsx:Home",
+      "target": "function:BadgesView.tsx:BadgesView",
+      "type": "calls",
+      "label": "renders BadgesView"
+    },
+    {
+      "id": "edge:page.tsx:uses:HabitsManagementView",
+      "source": "function:page.tsx:Home",
+      "target": "function:HabitsManagementView.tsx:HabitsManagementView",
+      "type": "calls",
+      "label": "renders HabitsManagementView"
+    },
+    {
+      "id": "edge:page.tsx:uses:AdminView",
+      "source": "function:page.tsx:Home",
+      "target": "function:AdminView.tsx:AdminView",
+      "type": "calls",
+      "label": "renders AdminView"
+    },
+    {
+      "id": "edge:page.tsx:uses:ActivityHistoryView",
+      "source": "function:page.tsx:Home",
+      "target": "function:ActivityHistoryView.tsx:ActivityHistoryView",
+      "type": "calls",
+      "label": "renders ActivityHistoryView"
+    },
+    {
+      "id": "edge:page.tsx:uses:DailyCheckInModal",
+      "source": "function:page.tsx:Home",
+      "target": "function:DailyCheckInModal.tsx:DailyCheckInModal",
+      "type": "calls",
+      "label": "renders DailyCheckInModal"
+    },
+    {
+      "id": "edge:page.tsx:uses:DayDetailsModal",
+      "source": "function:page.tsx:Home",
+      "target": "function:DayDetailsModal.tsx:DayDetailsModal",
+      "type": "calls",
+      "label": "renders DayDetailsModal"
+    },
+    {
+      "id": "edge:page.tsx:uses:HabitFormModal",
+      "source": "function:page.tsx:Home",
+      "target": "function:HabitFormModal.tsx:HabitFormModal",
+      "type": "calls",
+      "label": "renders HabitFormModal"
+    },
+    {
+      "id": "edge:page.tsx:uses:WatchDemoModal",
+      "source": "function:page.tsx:Home",
+      "target": "function:WatchDemoModal.tsx:WatchDemoModal",
+      "type": "calls",
+      "label": "renders WatchDemoModal"
+    },
+    {
+      "id": "edge:DailyCheckInModal:calls:fireConfetti",
+      "source": "function:DailyCheckInModal.tsx:DailyCheckInModal",
+      "target": "function:DailyCheckInModal.tsx:fireConfetti",
+      "type": "calls",
+      "label": "calls fireConfetti on all required done"
+    },
+    {
+      "id": "edge:Sidebar:uses:setShowCheckInModal",
+      "source": "function:Sidebar.tsx:Sidebar",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "calls",
+      "label": "calls setShowCheckInModal from context"
+    }
+  ]
+}

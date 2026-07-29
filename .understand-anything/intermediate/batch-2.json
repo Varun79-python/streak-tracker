@@ -1,0 +1,88 @@
+{
+  "nodes": [
+    {
+      "id": "document:AGENTS.md",
+      "type": "document",
+      "name": "AGENTS.md",
+      "filePath": "AGENTS.md",
+      "summary": "Next.js agent rules document warning about breaking API changes and directing to documentation in node_modules/next/dist/docs/",
+      "tags": ["nextjs", "agent-rules", "documentation", "breaking-changes"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:CLAUDE.md",
+      "type": "document",
+      "name": "CLAUDE.md",
+      "filePath": "CLAUDE.md",
+      "summary": "Claude agent configuration file that imports AGENTS.md for Next.js development rules",
+      "tags": ["claude", "agent-config", "nextjs"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "README.md",
+      "summary": "Standard Next.js project documentation with getting started instructions, development server commands, and deployment guidance for Vercel",
+      "tags": ["nextjs", "documentation", "getting-started", "deployment", "vercel"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:components.json",
+      "type": "config",
+      "name": "components.json",
+      "filePath": "components.json",
+      "summary": "shadcn/ui component library configuration defining style, RSC support, Tailwind settings, path aliases, and icon library",
+      "tags": ["shadcn", "ui-components", "tailwind", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:package.json",
+      "type": "config",
+      "name": "package.json",
+      "filePath": "package.json",
+      "summary": "Node.js package manifest for streak-tracker project defining dependencies (Next.js 16, React 19, Supabase, TanStack Query, Recharts, Zod) and build scripts",
+      "tags": ["nodejs", "dependencies", "scripts", "nextjs", "react", "supabase"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:tsconfig.json",
+      "type": "config",
+      "name": "tsconfig.json",
+      "filePath": "tsconfig.json",
+      "summary": "TypeScript compiler configuration with ES2017 target, strict mode, Next.js plugin, and path alias for src/ directory",
+      "tags": ["typescript", "compiler", "configuration", "nextjs"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:CLAUDE.md",
+      "target": "document:AGENTS.md",
+      "type": "imports",
+      "weight": 0.7,
+      "description": "CLAUDE.md imports AGENTS.md via @AGENTS.md directive to inherit Next.js agent rules"
+    },
+    {
+      "source": "config:package.json",
+      "target": "config:tsconfig.json",
+      "type": "configures",
+      "weight": 0.6,
+      "description": "package.json defines the project structure that tsconfig.json configures TypeScript compilation for"
+    },
+    {
+      "source": "config:package.json",
+      "target": "config:components.json",
+      "type": "configures",
+      "weight": 0.6,
+      "description": "package.json includes shadcn/ui dependencies configured by components.json"
+    },
+    {
+      "source": "document:README.md",
+      "target": "config:package.json",
+      "type": "documents",
+      "weight": 0.5,
+      "description": "README.md documents the project defined by package.json including dev commands and deployment"
+    }
+  ]
+}

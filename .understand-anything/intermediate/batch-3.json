@@ -1,0 +1,670 @@
+{
+  "nodes": [
+    {
+      "id": "file:.understand-anything/.understandignore",
+      "type": "config",
+      "name": ".understandignore",
+      "filePath": ".understand-anything/.understandignore",
+      "summary": "Configuration file specifying patterns for files/directories to exclude from understand-anything analysis. Uses .gitignore-compatible syntax with glob patterns, comments, and negation support.",
+      "tags": ["config", "ignore-patterns", "analysis-tool"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:docs/superpowers/specs/2026-07-29-database-connection-design.md",
+      "type": "document",
+      "name": "2026-07-29-database-connection-design.md",
+      "filePath": "docs/superpowers/specs/2026-07-29-database-connection-design.md",
+      "summary": "Design specification for connecting the Streak Tracker app to Supabase. Documents the migration from localStorage to a database layer, including new users table schema, Supabase client setup (browser, server, service layer), StreakContext integration changes, password handling with bcryptjs, API routes for auth, and migration strategy.",
+      "tags": ["design-spec", "database", "supabase", "auth", "migration", "architecture"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:eslint.config.mjs",
+      "type": "config",
+      "name": "eslint.config.mjs",
+      "filePath": "eslint.config.mjs",
+      "summary": "ESLint flat configuration file using Next.js core-web-vitals and TypeScript presets. Configures global ignores for .next, out, build directories and next-env.d.ts.",
+      "tags": ["config", "eslint", "linting", "nextjs"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:next.config.ts",
+      "type": "config",
+      "name": "next.config.ts",
+      "filePath": "next.config.ts",
+      "summary": "Next.js configuration enabling reactStrictMode, compression, hiding poweredByHeader, and setting security headers (HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy).",
+      "tags": ["config", "nextjs", "security-headers", "performance"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:postcss.config.mjs",
+      "type": "config",
+      "name": "postcss.config.mjs",
+      "filePath": "postcss.config.mjs",
+      "summary": "PostCSS configuration using the @tailwindcss/postcss plugin for Tailwind CSS v4 integration.",
+      "tags": ["config", "postcss", "tailwindcss"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:public/about.html",
+      "type": "markup",
+      "name": "about.html",
+      "filePath": "public/about.html",
+      "summary": "Comprehensive static HTML documentation page for Streakify. Showcases all 15+ interactive views, 5 global modals, 3 app routes, and the technical architecture. Features glassmorphism styling, animated elements, and JavaScript-based category filtering.",
+      "tags": ["documentation", "static-html", "showcase", "pwa", "tailwindcss"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:public/manifest.json",
+      "type": "config",
+      "name": "manifest.json",
+      "filePath": "public/manifest.json",
+      "summary": "PWA web app manifest defining app name (Streakify), display mode (standalone), theme color (#10b981), icons, shortcuts for Dashboard and Admin Panel, and category metadata.",
+      "tags": ["config", "pwa", "manifest", "icons"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:public/sw.js",
+      "type": "code",
+      "name": "sw.js",
+      "filePath": "public/sw.js",
+      "summary": "Service Worker implementing a cache-first strategy for static assets and network-first strategy for navigation requests. Manages app shell caching with cache versioning (streakify-v1) and handles offline fallbacks.",
+      "tags": ["service-worker", "pwa", "caching", "offline-support"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/app/about/page.tsx",
+      "type": "code",
+      "name": "page.tsx",
+      "filePath": "src/app/about/page.tsx",
+      "summary": "Next.js client component rendering the About page for Streakify. Displays architecture overview with categories (15 Interactive Views, 5 Global Modals, Android PWA & Routes) and provides link to the full HTML blueprint documentation.",
+      "tags": ["nextjs", "page", "about", "documentation", "client-component"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "node:src/app/about/page.tsx:AboutPage",
+      "type": "function",
+      "name": "AboutPage",
+      "filePath": "src/app/about/page.tsx",
+      "summary": "Default exported React component for the About page. Renders navigation with back link and full blueprint link, header section, quick access card to about.html, and three category overview cards.",
+      "tags": ["component", "page", "about"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/app/admin/page.tsx",
+      "type": "code",
+      "name": "page.tsx",
+      "filePath": "src/app/admin/page.tsx",
+      "summary": "Next.js client component for the standalone Admin route (/admin). Composes the admin layout with Sidebar, TopNav, BottomNav, AdminView, and global modals (DailyCheckInModal, DayDetailsModal, HabitFormModal, NotificationsDrawer).",
+      "tags": ["nextjs", "page", "admin", "layout", "client-component"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "node:src/app/admin/page.tsx:AdminPage",
+      "type": "function",
+      "name": "AdminPage",
+      "filePath": "src/app/admin/page.tsx",
+      "summary": "Default exported React component for the Admin page. Renders flex layout with desktop Sidebar, main content area with TopNav and AdminView, and mobile navigation components.",
+      "tags": ["component", "page", "admin"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/app/api/auth/admin/users/route.ts",
+      "type": "code",
+      "name": "route.ts",
+      "filePath": "src/app/api/auth/admin/users/route.ts",
+      "summary": "Next.js API route for admin user management. Exposes GET (list all users), PATCH (update user details including password hashing with bcryptjs), and DELETE (remove non-admin users with cascade). All endpoints require ADMIN_SECRET_KEY bearer token authentication.",
+      "tags": ["api-route", "admin", "users", "crud", "auth", "bcrypt"],
+      "complexity": "complex"
+    },
+    {
+      "id": "node:src/app/api/auth/admin/users/route.ts:GET",
+      "type": "function",
+      "name": "GET",
+      "filePath": "src/app/api/auth/admin/users/route.ts",
+      "summary": "Handles GET requests to list all users. Validates Authorization header against ADMIN_SECRET_KEY, queries users table ordered by created_at descending.",
+      "tags": ["api-handler", "GET", "admin", "users"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "node:src/app/api/auth/admin/users/route.ts:PATCH",
+      "type": "function",
+      "name": "PATCH",
+      "filePath": "src/app/api/auth/admin/users/route.ts",
+      "summary": "Handles PATCH requests to update user details. Supports updating name, email, password (with bcrypt hashing), and status. Also updates the profiles table when name or email changes.",
+      "tags": ["api-handler", "PATCH", "admin", "users", "password-hashing"],
+      "complexity": "complex"
+    },
+    {
+      "id": "node:src/app/api/auth/admin/users/route.ts:DELETE",
+      "type": "function",
+      "name": "DELETE",
+      "filePath": "src/app/api/auth/admin/users/route.ts",
+      "summary": "Handles DELETE requests to remove a user. Prevents deletion of admin users. Cascades deletion to profiles, questions, and related data.",
+      "tags": ["api-handler", "DELETE", "admin", "users"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/app/api/auth/create-user/route.ts",
+      "type": "code",
+      "name": "route.ts",
+      "filePath": "src/app/api/auth/create-user/route.ts",
+      "summary": "Next.js API route for admin-only user creation. Hashes password with bcryptjs, creates user record, then creates associated profile, settings, and streaks records with rollback on failure. Requires ADMIN_SECRET_KEY authentication.",
+      "tags": ["api-route", "admin", "user-creation", "auth", "bcrypt", "transactional"],
+      "complexity": "complex"
+    },
+    {
+      "id": "node:src/app/api/auth/create-user/route.ts:POST",
+      "type": "function",
+      "name": "POST",
+      "filePath": "src/app/api/auth/create-user/route.ts",
+      "summary": "Handles POST requests to create a new user. Validates admin key, hashes password, inserts into users table, then creates profile, settings, and streaks records. Cleans up on partial failure.",
+      "tags": ["api-handler", "POST", "user-creation", "auth"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/app/api/auth/login/route.ts",
+      "type": "code",
+      "name": "route.ts",
+      "filePath": "src/app/api/auth/login/route.ts",
+      "summary": "Next.js API route for user login. Validates email/password credentials against the users table using bcrypt password comparison. Checks account status (suspended users blocked). Returns user data with profile on success.",
+      "tags": ["api-route", "auth", "login", "bcrypt", "authentication"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "node:src/app/api/auth/login/route.ts:POST",
+      "type": "function",
+      "name": "POST",
+      "filePath": "src/app/api/auth/login/route.ts",
+      "summary": "Handles POST requests for user login. Parses JSON body, looks up user by email/username, verifies password with bcrypt.compareSync, checks suspended status, fetches profile data, and returns user+profile.",
+      "tags": ["api-handler", "POST", "login", "authentication"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/app/api/user/achievements/route.ts",
+      "type": "code",
+      "name": "route.ts",
+      "filePath": "src/app/api/user/achievements/route.ts",
+      "summary": "Next.js API route for fetching user achievements. GET endpoint queries achievements table by userId, ordered by achieved_at descending.",
+      "tags": ["api-route", "achievements", "read-only"],
+      "complexity": "simple"
+    },
+    {
+      "id": "node:src/app/api/user/achievements/route.ts:GET",
+      "type": "function",
+      "name": "GET",
+      "filePath": "src/app/api/user/achievements/route.ts",
+      "summary": "Handles GET requests to fetch achievements for a given userId from query params.",
+      "tags": ["api-handler", "GET", "achievements"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/api/user/badges/route.ts",
+      "type": "code",
+      "name": "route.ts",
+      "filePath": "src/app/api/user/badges/route.ts",
+      "summary": "Next.js API route for fetching user badges. GET endpoint queries badges table by userId, ordered by earned_at descending.",
+      "tags": ["api-route", "badges", "read-only"],
+      "complexity": "simple"
+    },
+    {
+      "id": "node:src/app/api/user/badges/route.ts:GET",
+      "type": "function",
+      "name": "GET",
+      "filePath": "src/app/api/user/badges/route.ts",
+      "summary": "Handles GET requests to fetch badges for a given userId from query params.",
+      "tags": ["api-handler", "GET", "badges"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/api/user/checkin/route.ts",
+      "type": "code",
+      "name": "route.ts",
+      "filePath": "src/app/api/user/checkin/route.ts",
+      "summary": "Next.js API route for daily check-in submission. POST endpoint upserts daily_completion, creates daily_answers for completed habits, updates streaks (current/longest), adds XP history, and updates profile XP/level. Core gamification endpoint.",
+      "tags": ["api-route", "checkin", "gamification", "streaks", "xp", "daily-completion"],
+      "complexity": "complex"
+    },
+    {
+      "id": "node:src/app/api/user/checkin/route.ts:POST",
+      "type": "function",
+      "name": "POST",
+      "filePath": "src/app/api/user/checkin/route.ts",
+      "summary": "Handles POST requests for daily check-in. Validates userId and date, upserts daily_completion, bulk creates daily_answers, updates streak counters, inserts XP history, and updates profile XP/level calculation.",
+      "tags": ["api-handler", "POST", "checkin", "streaks", "xp"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/app/api/user/habits/route.ts",
+      "type": "code",
+      "name": "route.ts",
+      "filePath": "src/app/api/user/habits/route.ts",
+      "summary": "Next.js API route for habit management. GET fetches habits (questions table) ordered by sort_order. POST creates a new habit with auto-incremented sort_order.",
+      "tags": ["api-route", "habits", "crud", "questions-table"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "node:src/app/api/user/habits/route.ts:GET",
+      "type": "function",
+      "name": "GET",
+      "filePath": "src/app/api/user/habits/route.ts",
+      "summary": "Handles GET requests to fetch habits for a given userId, ordered by sort_order ascending.",
+      "tags": ["api-handler", "GET", "habits"],
+      "complexity": "simple"
+    },
+    {
+      "id": "node:src/app/api/user/habits/route.ts:POST",
+      "type": "function",
+      "name": "POST",
+      "filePath": "src/app/api/user/habits/route.ts",
+      "summary": "Handles POST requests to create a new habit. Validates userId and title, calculates next sort_order, inserts into questions table with defaults for icon, is_required, and is_active.",
+      "tags": ["api-handler", "POST", "habits", "create"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/app/api/user/history/route.ts",
+      "type": "code",
+      "name": "route.ts",
+      "filePath": "src/app/api/user/history/route.ts",
+      "summary": "Next.js API route for fetching user check-in history. GET endpoint queries daily_completion table by userId, ordered by completion_date descending.",
+      "tags": ["api-route", "history", "daily-completion", "read-only"],
+      "complexity": "simple"
+    },
+    {
+      "id": "node:src/app/api/user/history/route.ts:GET",
+      "type": "function",
+      "name": "GET",
+      "filePath": "src/app/api/user/history/route.ts",
+      "summary": "Handles GET requests to fetch daily completion history for a given userId.",
+      "tags": ["api-handler", "GET", "history"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/api/user/notifications/route.ts",
+      "type": "code",
+      "name": "route.ts",
+      "filePath": "src/app/api/user/notifications/route.ts",
+      "summary": "Next.js API route for fetching user notifications. GET endpoint queries notifications table by userId, ordered by created_at descending.",
+      "tags": ["api-route", "notifications", "read-only"],
+      "complexity": "simple"
+    },
+    {
+      "id": "node:src/app/api/user/notifications/route.ts:GET",
+      "type": "function",
+      "name": "GET",
+      "filePath": "src/app/api/user/notifications/route.ts",
+      "summary": "Handles GET requests to fetch notifications for a given userId.",
+      "tags": ["api-handler", "GET", "notifications"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/api/user/profile/route.ts",
+      "type": "code",
+      "name": "route.ts",
+      "filePath": "src/app/api/user/profile/route.ts",
+      "summary": "Next.js API route for fetching user profile. GET endpoint queries profiles table by userId, returns single profile record.",
+      "tags": ["api-route", "profile", "read-only"],
+      "complexity": "simple"
+    },
+    {
+      "id": "node:src/app/api/user/profile/route.ts:GET",
+      "type": "function",
+      "name": "GET",
+      "filePath": "src/app/api/user/profile/route.ts",
+      "summary": "Handles GET requests to fetch profile for a given userId from query params.",
+      "tags": ["api-handler", "GET", "profile"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/download/page.tsx",
+      "type": "code",
+      "name": "page.tsx",
+      "filePath": "src/app/download/page.tsx",
+      "summary": "Next.js client component for the PWA download page (/download). Handles beforeinstallprompt event for PWA installation, detects standalone mode, displays install button with APK fallback, and showcases app features (instant loading, native feel, offline support, auto-updates).",
+      "tags": ["nextjs", "page", "download", "pwa", "install", "client-component"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "node:src/app/download/page.tsx:DownloadPage",
+      "type": "function",
+      "name": "DownloadPage",
+      "filePath": "src/app/download/page.tsx",
+      "summary": "Default exported React component for the Download page. Manages deferredPrompt state for PWA install, detects standalone mode, renders app card with install/APK buttons, and feature grid.",
+      "tags": ["component", "page", "download", "pwa"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "node:src/app/download/page.tsx:handleInstall",
+      "type": "function",
+      "name": "handleInstall",
+      "filePath": "src/app/download/page.tsx",
+      "summary": "Async function that triggers the PWA install prompt, awaits user choice, and updates installed state on acceptance.",
+      "tags": ["function", "pwa", "install"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/error.tsx",
+      "type": "code",
+      "name": "error.tsx",
+      "filePath": "src/app/error.tsx",
+      "summary": "Next.js App Router error boundary component. Displays a styled error card with the error message, a 'Try Again' button that calls reset(), and a 'Go Home' link. Logs unhandled errors to console.",
+      "tags": ["nextjs", "error-boundary", "ui", "client-component"],
+      "complexity": "simple"
+    },
+    {
+      "id": "node:src/app/error.tsx:Error",
+      "type": "function",
+      "name": "Error",
+      "filePath": "src/app/error.tsx",
+      "summary": "Default exported React component acting as the App Router error boundary. Accepts error and reset props, logs error on mount, renders error UI with retry and home navigation.",
+      "tags": ["component", "error-boundary"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/globals.css",
+      "type": "markup",
+      "name": "globals.css",
+      "filePath": "src/app/globals.css",
+      "summary": "Global CSS file for the Streakify app. Imports Tailwind CSS v4, tw-animate-css, and shadcn/tailwind.css. Defines CSS custom properties for theming (default dark, .theme-amoled, .theme-light), glassmorphism utility classes (glass-panel, glass-card, glass-modal), glow effects, custom scrollbar styles, and fire/pulse keyframe animations.",
+      "tags": ["css", "tailwindcss", "theming", "glassmorphism", "animations", "design-system"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/app/layout.tsx",
+      "type": "code",
+      "name": "layout.tsx",
+      "filePath": "src/app/layout.tsx",
+      "summary": "Next.js root layout component. Configures Geist fonts, viewport theme color, comprehensive metadata (OpenGraph, Twitter cards, robots, icons), JSON-LD structured data for SEO. Wraps children in StreakProvider context and ErrorBoundary. Registers service worker.",
+      "tags": ["nextjs", "layout", "root", "metadata", "seo", "context-provider", "pwa"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "node:src/app/layout.tsx:RootLayout",
+      "type": "function",
+      "name": "RootLayout",
+      "filePath": "src/app/layout.tsx",
+      "summary": "Default exported React component for the root layout. Renders html/body with Geist font variables, StreakProvider wrapping, ErrorBoundary, and ServiceWorkerRegister.",
+      "tags": ["component", "layout", "root"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/app/loading.tsx",
+      "type": "code",
+      "name": "loading.tsx",
+      "filePath": "src/app/loading.tsx",
+      "summary": "Next.js App Router loading UI component. Displays a pulsing animated flame icon with 'Loading Streakify...' text while pages are loading.",
+      "tags": ["nextjs", "loading", "ui", "animation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "node:src/app/loading.tsx:Loading",
+      "type": "function",
+      "name": "Loading",
+      "filePath": "src/app/loading.tsx",
+      "summary": "Default exported React component for the loading state. Renders centered flame icon with pulse animation and loading text.",
+      "tags": ["component", "loading"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge:admin-users-imports-server",
+      "source": "file:src/app/api/auth/admin/users/route.ts",
+      "target": "file:src/app/api/auth/admin/users/route.ts",
+      "type": "imports",
+      "label": "imports createAdminClient from @/lib/supabase/server"
+    },
+    {
+      "id": "edge:create-user-imports-server",
+      "source": "file:src/app/api/auth/create-user/route.ts",
+      "target": "file:src/app/api/auth/create-user/route.ts",
+      "type": "imports",
+      "label": "imports createAdminClient from @/lib/supabase/server"
+    },
+    {
+      "id": "edge:login-imports-server-bcrypt",
+      "source": "file:src/app/api/auth/login/route.ts",
+      "target": "file:src/app/api/auth/login/route.ts",
+      "type": "imports",
+      "label": "imports createAdminClient and bcryptjs"
+    },
+    {
+      "id": "edge:achievements-imports-server",
+      "source": "file:src/app/api/user/achievements/route.ts",
+      "target": "file:src/app/api/user/achievements/route.ts",
+      "type": "imports",
+      "label": "imports createAdminClient from @/lib/supabase/server"
+    },
+    {
+      "id": "edge:badges-imports-server",
+      "source": "file:src/app/api/user/badges/route.ts",
+      "target": "file:src/app/api/user/badges/route.ts",
+      "type": "imports",
+      "label": "imports createAdminClient from @/lib/supabase/server"
+    },
+    {
+      "id": "edge:checkin-imports-server",
+      "source": "file:src/app/api/user/checkin/route.ts",
+      "target": "file:src/app/api/user/checkin/route.ts",
+      "type": "imports",
+      "label": "imports createAdminClient from @/lib/supabase/server"
+    },
+    {
+      "id": "edge:habits-imports-server",
+      "source": "file:src/app/api/user/habits/route.ts",
+      "target": "file:src/app/api/user/habits/route.ts",
+      "type": "imports",
+      "label": "imports createAdminClient from @/lib/supabase/server"
+    },
+    {
+      "id": "edge:history-imports-server",
+      "source": "file:src/app/api/user/history/route.ts",
+      "target": "file:src/app/api/user/history/route.ts",
+      "type": "imports",
+      "label": "imports createAdminClient from @/lib/supabase/server"
+    },
+    {
+      "id": "edge:notifications-imports-server",
+      "source": "file:src/app/api/user/notifications/route.ts",
+      "target": "file:src/app/api/user/notifications/route.ts",
+      "type": "imports",
+      "label": "imports createAdminClient from @/lib/supabase/server"
+    },
+    {
+      "id": "edge:profile-imports-server",
+      "source": "file:src/app/api/user/profile/route.ts",
+      "target": "file:src/app/api/user/profile/route.ts",
+      "type": "imports",
+      "label": "imports createAdminClient from @/lib/supabase/server"
+    },
+    {
+      "id": "edge:admin-page-imports-components",
+      "source": "file:src/app/admin/page.tsx",
+      "target": "file:src/app/admin/page.tsx",
+      "type": "imports",
+      "label": "imports Sidebar, TopNav, BottomNav, AdminView, DailyCheckInModal, DayDetailsModal, HabitFormModal, NotificationsDrawer"
+    },
+    {
+      "id": "edge:layout-imports-context-boundary-sw",
+      "source": "file:src/app/layout.tsx",
+      "target": "file:src/app/layout.tsx",
+      "type": "imports",
+      "label": "imports StreakProvider, ErrorBoundary, ServiceWorkerRegister"
+    },
+    {
+      "id": "edge:layout-imports-globals-css",
+      "source": "file:src/app/layout.tsx",
+      "target": "file:src/app/globals.css",
+      "type": "imports",
+      "label": "imports global styles"
+    },
+    {
+      "id": "edge:about-page-imports-icons",
+      "source": "file:src/app/about/page.tsx",
+      "target": "file:src/app/about/page.tsx",
+      "type": "imports",
+      "label": "imports Flame, ExternalLink, ArrowLeft, Layers, Layout, Smartphone, ShieldCheck, Database, Award from lucide-react"
+    },
+    {
+      "id": "edge:download-page-imports-icons",
+      "source": "file:src/app/download/page.tsx",
+      "target": "file:src/app/download/page.tsx",
+      "type": "imports",
+      "label": "imports Flame, Download, Smartphone, Zap, Wifi, RefreshCw, ShieldCheck, ChevronRight, ArrowLeft from lucide-react"
+    },
+    {
+      "id": "edge:error-imports-icons",
+      "source": "file:src/app/error.tsx",
+      "target": "file:src/app/error.tsx",
+      "type": "imports",
+      "label": "imports AlertTriangle, RefreshCw, Home from lucide-react"
+    },
+    {
+      "id": "edge:loading-imports-icons",
+      "source": "file:src/app/loading.tsx",
+      "target": "file:src/app/loading.tsx",
+      "type": "imports",
+      "label": "imports Flame from lucide-react"
+    },
+    {
+      "id": "edge:layout-references-manifest",
+      "source": "file:src/app/layout.tsx",
+      "target": "file:public/manifest.json",
+      "type": "references",
+      "label": "links to manifest.json in head"
+    },
+    {
+      "id": "edge:layout-references-error",
+      "source": "file:src/app/layout.tsx",
+      "target": "file:src/app/error.tsx",
+      "type": "uses",
+      "label": "wraps children in ErrorBoundary"
+    },
+    {
+      "id": "edge:admin-page-uses-admin-view",
+      "source": "file:src/app/admin/page.tsx",
+      "target": "file:src/app/admin/page.tsx",
+      "type": "uses",
+      "label": "renders AdminView component"
+    },
+    {
+      "id": "edge:admin-users-queries-users-table",
+      "source": "file:src/app/api/auth/admin/users/route.ts",
+      "target": "file:docs/superpowers/specs/2026-07-29-database-connection-design.md",
+      "type": "references",
+      "label": "queries users table defined in design spec"
+    },
+    {
+      "id": "edge:create-user-creates-users-profiles-settings-streaks",
+      "source": "file:src/app/api/auth/create-user/route.ts",
+      "target": "file:docs/superpowers/specs/2026-07-29-database-connection-design.md",
+      "type": "references",
+      "label": "creates records in users, profiles, settings, streaks tables per design spec"
+    },
+    {
+      "id": "edge:login-queries-users-profiles",
+      "source": "file:src/app/api/auth/login/route.ts",
+      "target": "file:docs/superpowers/specs/2026-07-29-database-connection-design.md",
+      "type": "references",
+      "label": "queries users and profiles tables per design spec"
+    },
+    {
+      "id": "edge:checkin-queries-daily-completion-answers-streaks-xp-profile",
+      "source": "file:src/app/api/user/checkin/route.ts",
+      "target": "file:docs/superpowers/specs/2026-07-29-database-connection-design.md",
+      "type": "references",
+      "label": "queries daily_completion, daily_answers, streaks, xp_history, profiles tables per design spec"
+    },
+    {
+      "id": "edge:habits-queries-questions-table",
+      "source": "file:src/app/api/user/habits/route.ts",
+      "target": "file:docs/superpowers/specs/2026-07-29-database-connection-design.md",
+      "type": "references",
+      "label": "queries questions table (habits) per design spec"
+    },
+    {
+      "id": "edge:about-page-links-about-html",
+      "source": "file:src/app/about/page.tsx",
+      "target": "file:public/about.html",
+      "type": "links-to",
+      "label": "links to about.html static documentation"
+    },
+    {
+      "id": "edge:layout-provides-streak-context",
+      "source": "file:src/app/layout.tsx",
+      "target": "file:src/app/admin/page.tsx",
+      "type": "provides-context",
+      "label": "StreakProvider wraps all pages including admin"
+    },
+    {
+      "id": "edge:globals-css-defines-theming",
+      "source": "file:src/app/globals.css",
+      "target": "file:src/app/layout.tsx",
+      "type": "defines",
+      "label": "defines CSS variables and utility classes used by layout"
+    },
+    {
+      "id": "edge:sw-caches-manifest",
+      "source": "file:public/sw.js",
+      "target": "file:public/manifest.json",
+      "type": "caches",
+      "label": "service worker caches manifest.json as static asset"
+    },
+    {
+      "id": "edge:download-page-uses-pwa-prompt",
+      "source": "file:src/app/download/page.tsx",
+      "target": "file:public/sw.js",
+      "type": "uses",
+      "label": "relies on service worker for PWA installation prompt"
+    },
+    {
+      "id": "edge:eslint-configures-nextjs",
+      "source": "file:eslint.config.mjs",
+      "target": "file:next.config.ts",
+      "type": "configures",
+      "label": "ESLint config works with Next.js project settings"
+    },
+    {
+      "id": "edge:postcss-configures-tailwind",
+      "source": "file:postcss.config.mjs",
+      "target": "file:src/app/globals.css",
+      "type": "processes",
+      "label": "PostCSS processes globals.css through Tailwind CSS"
+    },
+    {
+      "id": "edge:about-html-links-about-page",
+      "source": "file:public/about.html",
+      "target": "file:src/app/about/page.tsx",
+      "type": "alternate-version",
+      "label": "static HTML version of the about page documentation"
+    },
+    {
+      "id": "edge:admin-users-creates-with-bcrypt",
+      "source": "node:src/app/api/auth/admin/users/route.ts:PATCH",
+      "target": "file:src/app/api/auth/admin/users/route.ts",
+      "type": "contains",
+      "label": "PATCH handler hashes passwords with bcryptjs"
+    },
+    {
+      "id": "edge:create-user-post-creates-transactional",
+      "source": "node:src/app/api/auth/create-user/route.ts:POST",
+      "target": "file:src/app/api/auth/create-user/route.ts",
+      "type": "contains",
+      "label": "POST handler creates user with rollback on failure"
+    },
+    {
+      "id": "edge:checkin-post-updates-streaks-xp",
+      "source": "node:src/app/api/user/checkin/route.ts:POST",
+      "target": "file:src/app/api/user/checkin/route.ts",
+      "type": "contains",
+      "label": "POST handler updates streaks, XP history, and profile"
+    },
+    {
+      "id": "edge:habits-post-creates-with-sort-order",
+      "source": "node:src/app/api/user/habits/route.ts:POST",
+      "target": "file:src/app/api/user/habits/route.ts",
+      "type": "contains",
+      "label": "POST handler creates habit with auto-incremented sort_order"
+    }
+  ]
+}

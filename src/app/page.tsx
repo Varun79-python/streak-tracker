@@ -21,6 +21,7 @@ import { NotificationsDrawer } from '@/components/views/NotificationsDrawer';
 import { ProfileView } from '@/components/views/ProfileView';
 import { ActivityHistoryView } from '@/components/views/ActivityHistoryView';
 import { AdminView } from '@/components/views/AdminView';
+import { AICoachView } from '@/components/views/AICoachView';
 
 // Modals
 import { DailyCheckInModal } from '@/components/modals/DailyCheckInModal';
@@ -41,8 +42,8 @@ export default function Home() {
     );
   }
 
-  // Login / Signup View
-  if (activeView === 'login' || !isLoggedIn) {
+  // Login / Signup View (but allow admin panel access)
+  if ((activeView === 'login' || !isLoggedIn) && activeView !== 'admin') {
     return (
       <main className="min-h-screen flex flex-col">
         <LoginSignupPage />
@@ -73,6 +74,8 @@ export default function Home() {
         return <ProfileView />;
       case 'activity':
         return <ActivityHistoryView />;
+      case 'coach':
+        return <AICoachView />;
       case 'admin':
         return <AdminView />;
       case 'dashboard':

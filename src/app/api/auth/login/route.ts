@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/server';
+import { redis, SESSION_TTL, SESSION_PREFIX, SessionData } from '@/lib/redis';
 import bcrypt from 'bcryptjs';
 
 export async function POST(request: Request) {
@@ -62,8 +63,36 @@ export async function POST(request: Request) {
       .eq('id', user.id)
       .single();
 
+    // Create Redis session
+    const sessionId = crypto.randomUUID();
+    const now = Date.now();
+
+    const sessionData: SessionData = {
+      userId: user.id,
+      email: user.username,
+      name: user.display_name || user.username,
+      role: user.role,
+      loginAt: now,
+      lastActivity: now,
+    };
+
+    // Store session in Redis with 30-day TTL
+    await redis.setex(
+      `${SESSION_PREFIX}${sessionId}`,
+      SESSION_TTL,
+      JSON.stringify(sessionData)
+    );
+
+    // Store reverse lookup: userId -> sessionId (single session per user)
+    await redis.setex(
+      `streakify:user_session:${user.id}`,
+      SESSION_TTL,
+      sessionId
+    );
+
     return NextResponse.json({
       success: true,
+      sessionId,
       user: {
         id: user.id,
         name: user.display_name || user.username,

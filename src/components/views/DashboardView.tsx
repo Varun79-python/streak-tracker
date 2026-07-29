@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useStreak } from '@/lib/StreakContext';
 import { HeatmapGraph } from '../HeatmapGraph';
 import { 
@@ -34,6 +34,24 @@ export const DashboardView: React.FC = () => {
   const activeHabits = habits.filter(h => h.active);
   const completedTodayCount = todayCheckIn?.completedHabits?.length || 0;
   const isTodayComplete = todayCheckIn?.completed || false;
+  const [dailyQuote, setDailyQuote] = useState<{ text: string } | null>(null);
+  const [quoteLoading, setQuoteLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchQuote = async () => {
+      try {
+        const res = await fetch('/api/ai/insights', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: user.id, type: 'quote' }),
+        });
+        const data = await res.json();
+        setDailyQuote(data.insight);
+      } catch { /* ignore */ }
+      finally { setQuoteLoading(false) }
+    };
+    if (user.id) fetchQuote();
+  }, [user.id]);
 
   // Derive recent activity from actual history
   const recentActivity = useMemo(() => {
@@ -55,14 +73,14 @@ export const DashboardView: React.FC = () => {
       if (checkIn.completed) {
         return {
           id: date,
-          icon: <Flame className="w-4 h-4 text-emerald-400" />,
+          icon: <Flame className="w-4 h-4 text-[#D4A574]" />,
           label: `All habits done — ${completedCount}/${completedCount} completed`,
           time: displayDate,
         };
       }
       return {
         id: date,
-        icon: <CheckCircle2 className="w-4 h-4 text-blue-400" />,
+        icon: <CheckCircle2 className="w-4 h-4 text-[#7C9EB2]" />,
         label: `${completedCount} habits checked in (${pct}%)`,
         time: displayDate,
       };
@@ -72,94 +90,111 @@ export const DashboardView: React.FC = () => {
   return (
     <div className="space-y-6 select-none">
       {/* Top Banner Stats Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         {/* Stat 1: Current Streak */}
-        <div className="glass-card p-5 rounded-2xl border border-white/10 flex items-center justify-between relative overflow-hidden group">
+        <div className="neu-card p-5 flex items-center justify-between relative overflow-hidden group">
           <div className="space-y-1">
-            <p className="text-xs text-slate-400 font-mono">Current Streak</p>
-            <h3 className="text-3xl font-extrabold text-white font-mono flex items-baseline gap-1">
+            <p className="text-[10px] text-[#6B6B6B] font-mono uppercase tracking-wider">Current Streak</p>
+            <h3 className="text-3xl font-extrabold text-[#3D3D3D] font-mono flex items-baseline gap-1">
               <span>{user.currentStreak}</span>
-              <span className="text-xs text-emerald-400 font-normal">days</span>
+              <span className="text-xs text-[#D4A574] font-normal">days</span>
             </h3>
-            <p className="text-[11px] text-emerald-400 font-medium">🔥 Active streak multiplier</p>
+            <p className="text-[10px] text-[#D4A574] font-medium">🔥 Active streak</p>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 glow-green group-hover:scale-110 transition-transform">
-            <Flame className="w-7 h-7 fire-animated" />
+          <div className="w-12 h-12 rounded-2xl gradient-coral flex items-center justify-center clay-icon group-hover:scale-110 transition-transform">
+            <Flame className="w-7 h-7 fire-animated text-white" />
           </div>
         </div>
 
         {/* Stat 2: Longest Streak */}
-        <div className="glass-card p-5 rounded-2xl border border-white/10 flex items-center justify-between">
+        <div className="neu-card p-5 flex items-center justify-between">
           <div className="space-y-1">
-            <p className="text-xs text-slate-400 font-mono">Longest Streak</p>
-            <h3 className="text-3xl font-extrabold text-white font-mono flex items-baseline gap-1">
+            <p className="text-[10px] text-[#6B6B6B] font-mono uppercase tracking-wider">Longest Streak</p>
+            <h3 className="text-3xl font-extrabold text-[#3D3D3D] font-mono flex items-baseline gap-1">
               <span>{user.longestStreak}</span>
-              <span className="text-xs text-amber-400 font-normal">days</span>
+              <span className="text-xs text-[#C4A8D4] font-normal">days</span>
             </h3>
-            <p className="text-[11px] text-amber-400 font-medium">🏆 All-time personal record</p>
+            <p className="text-[10px] text-[#C4A8D4] font-medium">🏆 Personal record</p>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
-            <Trophy className="w-6 h-6" />
+          <div className="w-12 h-12 rounded-2xl gradient-lavender flex items-center justify-center clay-icon">
+            <Trophy className="w-6 h-6 text-white" />
           </div>
         </div>
 
         {/* Stat 3: Consistency Rate */}
-        <div className="glass-card p-5 rounded-2xl border border-white/10 flex items-center justify-between">
+        <div className="neu-card p-5 flex items-center justify-between">
           <div className="space-y-1">
-            <p className="text-xs text-slate-400 font-mono">Consistency Rate</p>
-            <h3 className="text-3xl font-extrabold text-white font-mono">
+            <p className="text-[10px] text-[#6B6B6B] font-mono uppercase tracking-wider">Consistency</p>
+            <h3 className="text-3xl font-extrabold text-[#3D3D3D] font-mono">
               {user.successRate}%
             </h3>
-            <p className="text-[11px] text-blue-400 font-medium">🎯 Last 90 days performance</p>
+            <p className="text-[10px] text-[#7C9EB2] font-medium">🎯 Performance</p>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400">
-            <Target className="w-6 h-6" />
+          <div className="w-12 h-12 rounded-2xl gradient-teal flex items-center justify-center clay-icon">
+            <Target className="w-6 h-6 text-white" />
           </div>
         </div>
 
         {/* Stat 4: Total XP & Level */}
-        <div className="glass-card p-5 rounded-2xl border border-white/10 flex items-center justify-between">
+        <div className="neu-card p-5 flex items-center justify-between">
           <div className="space-y-1">
-            <p className="text-xs text-slate-400 font-mono">Level {user.level} Progress</p>
-            <h3 className="text-2xl font-extrabold text-white font-mono">
-              {user.xp} <span className="text-xs text-slate-400">/ 2,000 XP</span>
+            <p className="text-[10px] text-[#6B6B6B] font-mono uppercase tracking-wider">Level {user.level}</p>
+            <h3 className="text-2xl font-extrabold text-[#3D3D3D] font-mono">
+              {user.xp} <span className="text-xs text-[#9A9A9A]">/ 2,000 XP</span>
             </h3>
-            <div className="w-32 h-1.5 rounded-full bg-slate-800 overflow-hidden border border-white/5">
+            <div className="w-full h-2 neu-pressed rounded-full overflow-hidden mt-1">
               <div
-                className="h-full bg-emerald-400 glow-green"
+                className="h-full gradient-teal rounded-full"
                 style={{ width: `${(user.xp / user.nextLevelXp) * 100}%` }}
               />
             </div>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400">
-            <Zap className="w-6 h-6" />
+          <div className="w-12 h-12 rounded-2xl gradient-mint flex items-center justify-center clay-icon">
+            <Zap className="w-6 h-6 text-white" />
+          </div>
+        </div>
+      </div>
+
+      {/* AI Insight Card */}
+      <div className="neu-card p-5 border-l-4 border-[#7C9EB2]">
+        <div className="flex items-start gap-3">
+          <div className="w-10 h-10 rounded-2xl gradient-teal flex items-center justify-center clay-icon flex-shrink-0">
+            <Sparkles className="w-5 h-5 text-white" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-[10px] text-[#7C9EB2] font-mono mb-1 uppercase tracking-wider">Daily Insight</p>
+            {quoteLoading ? (
+              <p className="text-sm text-[#9A9A9A] animate-pulse">Finding your spark...</p>
+            ) : (
+              <p className="text-sm text-[#3D3D3D] leading-relaxed">{dailyQuote?.text || 'Small steps lead to big changes. Keep showing up! 🔥'}</p>
+            )}
           </div>
         </div>
       </div>
 
       {/* Main Heatmap Matrix Widget */}
-      <div className="glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
+      <div className="neu-card p-6 space-y-4">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div>
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
-              <span>Your Contribution Heatmap</span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-mono border border-emerald-500/30">
+            <h3 className="text-lg font-bold text-[#3D3D3D] flex items-center gap-2">
+              <span>Contribution Heatmap</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full gradient-teal text-white font-mono clay-badge">
                 365 Days
               </span>
             </h3>
-            <p className="text-xs text-slate-400 font-mono">Every green square represents a step toward mastery.</p>
+            <p className="text-xs text-[#6B6B6B] font-mono">Every square represents a step toward mastery.</p>
           </div>
 
           <button
             onClick={() => setActiveView('heatmap')}
-            className="px-3.5 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-white/10 text-xs text-slate-300 hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer"
+            className="px-4 py-2 neu-btn text-xs text-[#6B6B6B] hover:text-[#3D3D3D] transition-colors flex items-center gap-1.5 cursor-pointer rounded-xl"
           >
-            <span>Full Heatmap View</span>
+            <span>Full View</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
 
-        <div className="bg-slate-950/70 p-4 rounded-2xl border border-white/5">
+        <div className="neu-pressed p-4 rounded-2xl">
           <HeatmapGraph
             history={history}
             onDayClick={(dateStr) => setSelectedDayDetailsDate(dateStr)}
@@ -170,35 +205,35 @@ export const DashboardView: React.FC = () => {
       {/* Middle Grid: Today's Habits Preview & Recent Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Today's Habit Preview */}
-        <div className="lg:col-span-7 glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
+        <div className="lg:col-span-7 neu-card p-6 space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-base font-bold text-white">Today's Habits Checklist</h3>
-              <p className="text-xs text-slate-400 font-mono">{format(new Date(), 'EEEE, MMMM d')}</p>
+              <h3 className="text-base font-bold text-[#3D3D3D]">Today's Habits</h3>
+              <p className="text-xs text-[#6B6B6B] font-mono">{format(new Date(), 'EEEE, MMMM d')}</p>
             </div>
 
             <button
               onClick={() => setShowCheckInModal(true)}
-              className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-all glow-green flex items-center gap-1.5 cursor-pointer"
+              className="px-4 py-2 rounded-xl gradient-coral text-white font-bold text-xs transition-all clay-badge flex items-center gap-1.5 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
             >
-              <span>{isTodayComplete ? 'Edit Check-in' : 'Open Check-in Modal'}</span>
+              <span>{isTodayComplete ? 'Edit Check-in' : 'Check-in'}</span>
               <Sparkles className="w-3.5 h-3.5" />
             </button>
           </div>
 
           <div className="space-y-2.5">
             {activeHabits.length === 0 ? (
-              <div className="p-8 rounded-2xl bg-slate-900/40 border border-dashed border-white/10 text-center space-y-3">
-                <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mx-auto">
-                  <Plus className="w-6 h-6" />
+              <div className="p-8 neu-pressed rounded-2xl text-center space-y-3">
+                <div className="w-12 h-12 rounded-2xl gradient-teal flex items-center justify-center clay-icon mx-auto">
+                  <Plus className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-slate-200">No habits yet</p>
-                  <p className="text-xs text-slate-400 mt-1">Create your first habit to start tracking your daily progress.</p>
+                  <p className="text-sm font-semibold text-[#3D3D3D]">No habits yet</p>
+                  <p className="text-xs text-[#6B6B6B] mt-1">Create your first habit to start tracking.</p>
                 </div>
                 <button
                   onClick={() => setActiveView('habits')}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-all glow-green cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl gradient-coral text-white font-bold text-xs transition-all clay-badge cursor-pointer hover:scale-[1.02]"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Create a Habit</span>
@@ -211,24 +246,24 @@ export const DashboardView: React.FC = () => {
                   <div
                     key={habit.id}
                     onClick={() => setShowCheckInModal(true)}
-                    className={`flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer ${
+                    className={`flex items-center justify-between p-3 rounded-2xl transition-all cursor-pointer ${
                       isDone
-                        ? 'bg-emerald-500/10 border-emerald-500/30 text-white'
-                        : 'bg-slate-900/60 border-white/5 text-slate-400 hover:border-white/20'
+                        ? 'neu-pressed border-l-4 border-[#7C9EB2]'
+                        : 'neu-card-sm hover:shadow-lg'
                     }`}
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-lg">{habit.icon}</span>
                       <div>
-                        <p className="text-xs font-semibold text-slate-200">{habit.name}</p>
-                        <p className="text-[10px] text-slate-400">{habit.description}</p>
+                        <p className="text-xs font-semibold text-[#3D3D3D]">{habit.name}</p>
+                        <p className="text-[10px] text-[#9A9A9A]">{habit.description}</p>
                       </div>
                     </div>
 
-                    <span className={`text-xs font-mono px-2 py-1 rounded-lg ${
-                      isDone ? 'bg-emerald-500/20 text-emerald-300 font-bold' : 'bg-slate-800 text-slate-500'
+                    <span className={`text-[10px] font-mono px-2.5 py-1 rounded-xl clay-badge ${
+                      isDone ? 'gradient-teal text-white' : 'neu-pressed text-[#9A9A9A]'
                     }`}>
-                      {isDone ? '✓ Completed' : 'Pending'}
+                      {isDone ? '✓ Done' : 'Pending'}
                     </span>
                   </div>
                 );
@@ -238,39 +273,41 @@ export const DashboardView: React.FC = () => {
         </div>
 
         {/* Right Column: Recent Activity Feed */}
-        <div className="lg:col-span-5 glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
+        <div className="lg:col-span-5 neu-card p-6 space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <Clock className="w-4 h-4 text-emerald-400" />
+            <h3 className="text-base font-bold text-[#3D3D3D] flex items-center gap-2">
+              <div className="w-7 h-7 rounded-xl gradient-lavender flex items-center justify-center clay-icon">
+                <Clock className="w-4 h-4 text-white" />
+              </div>
               <span>Recent Activity</span>
             </h3>
 
             <button
               onClick={() => setActiveView('activity')}
-              className="text-xs text-emerald-400 hover:underline cursor-pointer"
+              className="text-xs text-[#7C9EB2] hover:underline cursor-pointer font-medium"
             >
               View All
             </button>
           </div>
 
-          <div className="space-y-3 font-mono text-xs">
+          <div className="space-y-2 font-mono text-xs">
             {recentActivity.length === 0 ? (
-              <div className="p-6 rounded-xl bg-slate-900/40 border border-dashed border-white/10 text-center space-y-2">
-                <Clock className="w-8 h-8 text-slate-600 mx-auto" />
-                <p className="text-slate-400 text-xs">No activity yet</p>
-                <p className="text-slate-500 text-[10px]">Complete your first check-in to see activity here.</p>
+              <div className="p-6 neu-pressed rounded-2xl text-center space-y-2">
+                <Clock className="w-8 h-8 text-[#C5BDB5] mx-auto" />
+                <p className="text-[#9A9A9A] text-xs">No activity yet</p>
+                <p className="text-[#C5BDB5] text-[10px]">Complete your first check-in to see activity here.</p>
               </div>
             ) : (
               recentActivity.map((entry) => (
                 <div
                   key={entry.id}
-                  className="p-3 rounded-xl bg-slate-900/60 border border-white/5 flex items-center justify-between"
+                  className="p-3 neu-card-sm flex items-center justify-between"
                 >
                   <div className="flex items-center gap-2.5">
                     {entry.icon}
-                    <span className="text-slate-200">{entry.label}</span>
+                    <span className="text-[#3D3D3D] text-[11px]">{entry.label}</span>
                   </div>
-                  <span className="text-slate-500 text-[10px]">{entry.time}</span>
+                  <span className="text-[#9A9A9A] text-[10px]">{entry.time}</span>
                 </div>
               ))
             )}

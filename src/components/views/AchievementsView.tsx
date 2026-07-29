@@ -14,16 +14,16 @@ export const AchievementsView: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-white flex items-center gap-2.5">
-            <Trophy className="w-6 h-6 text-amber-400" />
+          <h2 className="text-2xl font-bold text-[#3D3D3D] flex items-center gap-2.5">
+            <Trophy className="w-6 h-6 text-[#D4A574]" />
             <span>Achievements & Milestones</span>
           </h2>
-          <p className="text-xs text-slate-400 font-mono">
+          <p className="text-xs text-[#9A9A9A] font-mono">
             Unlocked: {unlockedCount} / {achievements.length} Milestones
           </p>
         </div>
 
-        <div className="px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono font-bold">
+        <div className="clay-badge px-4 py-2 rounded-xl border border-[#D4A574]/50 text-[#D4A574] text-xs font-mono font-bold">
           🏆 Total XP Rewards: {achievements.reduce((acc, curr) => acc + (curr.unlocked ? curr.rewardXp : 0), 0)} XP
         </div>
       </div>
@@ -35,22 +35,26 @@ export const AchievementsView: React.FC = () => {
           return (
             <div
               key={item.id}
-              className={`glass-panel p-6 rounded-3xl border space-y-4 transition-all relative overflow-hidden ${
+              className={`p-6 rounded-3xl border space-y-4 transition-all relative overflow-hidden ${
                 item.unlocked
-                  ? 'border-emerald-500/40 bg-emerald-950/20'
-                  : 'border-white/10 opacity-80'
+                  ? 'neu-card border-[#A8C4B8]'
+                  : 'neu-card-sm opacity-80'
               }`}
             >
               <div className="flex items-center justify-between">
-                <div className="w-12 h-12 rounded-2xl bg-slate-900 border border-white/10 flex items-center justify-center text-2xl">
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-2xl ${
+                  item.unlocked
+                    ? 'gradient-teal'
+                    : 'neu-pressed'
+                }`}>
                   {item.icon}
                 </div>
 
                 <span
-                  className={`text-xs px-2.5 py-1 rounded-full font-mono font-bold border ${
+                  className={`clay-badge text-xs px-2.5 py-1 rounded-full font-mono font-bold border ${
                     item.unlocked
-                      ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40 glow-green'
-                      : 'bg-slate-800 text-slate-400 border-white/10'
+                      ? 'gradient-teal text-[#3D3D3D] border-[#7C9EB2]/40'
+                      : 'neu-pressed text-[#9A9A9A]'
                   }`}
                 >
                   {item.unlocked ? '✓ Unlocked' : 'Locked'}
@@ -58,25 +62,25 @@ export const AchievementsView: React.FC = () => {
               </div>
 
               <div className="space-y-1">
-                <h3 className="text-base font-bold text-white flex items-center justify-between">
+                <h3 className="text-base font-bold text-[#3D3D3D] flex items-center justify-between">
                   <span>{item.title}</span>
-                  <span className="text-xs text-amber-400 font-mono">+{item.rewardXp} XP</span>
+                  <span className="text-xs text-[#D4A574] font-mono">+{item.rewardXp} XP</span>
                 </h3>
-                <p className="text-xs text-slate-400">{item.description}</p>
+                <p className="text-xs text-[#9A9A9A]">{item.description}</p>
               </div>
 
               {/* Progress Bar */}
               <div className="space-y-1.5 pt-2">
-                <div className="flex justify-between text-[11px] font-mono text-slate-400">
+                <div className="flex justify-between text-[11px] font-mono text-[#9A9A9A]">
                   <span>Progress</span>
-                  <span className="text-slate-200 font-bold">
+                  <span className="text-[#3D3D3D] font-bold">
                     {item.currentDays} / {item.targetDays} Days ({pct}%)
                   </span>
                 </div>
-                <div className="w-full h-2 rounded-full bg-slate-900 border border-white/5 overflow-hidden">
+                <div className="w-full h-2 rounded-full neu-pressed overflow-hidden">
                   <div
                     className={`h-full transition-all duration-500 ${
-                      item.unlocked ? 'bg-emerald-500 glow-green' : 'bg-blue-500'
+                      item.unlocked ? 'gradient-teal' : 'gradient-coral'
                     }`}
                     style={{ width: `${pct}%` }}
                   />

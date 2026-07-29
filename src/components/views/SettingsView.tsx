@@ -21,17 +21,19 @@ export const SettingsView: React.FC = () => {
     <div className="space-y-6 select-none max-w-4xl">
       {/* Header */}
       <div>
-        <h2 className="text-2xl font-bold text-white flex items-center gap-2.5">
-          <Settings className="w-6 h-6 text-emerald-400" />
+        <h2 className="text-2xl font-bold text-[#3D3D3D] flex items-center gap-2.5">
+          <div className="clay-icon gradient-teal p-2">
+            <Settings className="w-5 h-5 text-white" />
+          </div>
           <span>Application Settings</span>
         </h2>
-        <p className="text-xs text-slate-400 font-mono">Manage account preferences, visual themes, notifications, and data backups.</p>
+        <p className="text-xs text-[#9A9A9A] font-mono">Manage account preferences, visual themes, notifications, and data backups.</p>
       </div>
 
       {/* Section 1: Appearance Theme */}
-      <div className="glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
-        <h3 className="text-base font-bold text-white flex items-center gap-2">
-          <Moon className="w-4 h-4 text-emerald-400" />
+      <div className="neu-card p-6 rounded-3xl space-y-4">
+        <h3 className="text-base font-bold text-[#3D3D3D] flex items-center gap-2">
+          <Moon className="w-4 h-4 text-[#7C9EB2]" />
           <span>Appearance & Theme</span>
         </h3>
 
@@ -39,114 +41,116 @@ export const SettingsView: React.FC = () => {
           {/* Dark Mode */}
           <button
             onClick={() => setTheme('dark')}
-            className={`p-4 rounded-2xl border text-left space-y-2 transition-all cursor-pointer ${
+            className={`p-4 rounded-2xl text-left space-y-2 transition-all cursor-pointer ${
               theme === 'dark'
-                ? 'bg-emerald-500/15 border-emerald-500 text-white glow-green'
-                : 'bg-slate-900/60 border-white/10 text-slate-400 hover:border-white/20'
+                ? 'neu-card border-2 border-[#D4A574]'
+                : 'neu-btn'
             }`}
           >
             <div className="flex items-center justify-between">
-              <Moon className="w-5 h-5 text-emerald-400" />
-              {theme === 'dark' && <span className="text-[10px] font-mono text-emerald-400 font-bold">Active</span>}
+              <Moon className="w-5 h-5 text-[#7C9EB2]" />
+              {theme === 'dark' && <span className="text-[10px] font-mono text-[#D4A574] font-bold">Active</span>}
             </div>
-            <h4 className="font-bold text-sm text-slate-100">Midnight Dark</h4>
-            <p className="text-xs text-slate-400">Deep slate dark mode (#0B0F19)</p>
+            <h4 className="font-bold text-sm text-[#3D3D3D]">Midnight Dark</h4>
+            <p className="text-xs text-[#9A9A9A]">Deep slate dark mode (#0B0F19)</p>
           </button>
 
           {/* AMOLED Black */}
           <button
             onClick={() => setTheme('amoled')}
-            className={`p-4 rounded-2xl border text-left space-y-2 transition-all cursor-pointer ${
+            className={`p-4 rounded-2xl text-left space-y-2 transition-all cursor-pointer ${
               theme === 'amoled'
-                ? 'bg-emerald-500/15 border-emerald-500 text-white glow-green'
-                : 'bg-slate-900/60 border-white/10 text-slate-400 hover:border-white/20'
+                ? 'neu-card border-2 border-[#D4A574]'
+                : 'neu-btn'
             }`}
           >
             <div className="flex items-center justify-between">
-              <Monitor className="w-5 h-5 text-indigo-400" />
-              {theme === 'amoled' && <span className="text-[10px] font-mono text-indigo-400 font-bold">Active</span>}
+              <Monitor className="w-5 h-5 text-[#C4A8D4]" />
+              {theme === 'amoled' && <span className="text-[10px] font-mono text-[#D4A574] font-bold">Active</span>}
             </div>
-            <h4 className="font-bold text-sm text-slate-100">AMOLED Pitch Black</h4>
-            <p className="text-xs text-slate-400">Pure black background (#000000)</p>
+            <h4 className="font-bold text-sm text-[#3D3D3D]">AMOLED Pitch Black</h4>
+            <p className="text-xs text-[#9A9A9A]">Pure black background (#000000)</p>
           </button>
 
           {/* Light Mode */}
           <button
             onClick={() => setTheme('light')}
-            className={`p-4 rounded-2xl border text-left space-y-2 transition-all cursor-pointer ${
+            className={`p-4 rounded-2xl text-left space-y-2 transition-all cursor-pointer ${
               theme === 'light'
-                ? 'bg-emerald-500/15 border-emerald-500 text-white glow-green'
-                : 'bg-slate-900/60 border-white/10 text-slate-400 hover:border-white/20'
+                ? 'neu-card border-2 border-[#D4A574]'
+                : 'neu-btn'
             }`}
           >
             <div className="flex items-center justify-between">
-              <Sun className="w-5 h-5 text-amber-400" />
-              {theme === 'light' && <span className="text-[10px] font-mono text-amber-400 font-bold">Active</span>}
+              <Sun className="w-5 h-5 text-[#D4A574]" />
+              {theme === 'light' && <span className="text-[10px] font-mono text-[#D4A574] font-bold">Active</span>}
             </div>
-            <h4 className="font-bold text-sm text-slate-100">Clean Light</h4>
-            <p className="text-xs text-slate-400">High contrast bright theme</p>
+            <h4 className="font-bold text-sm text-[#3D3D3D]">Clean Light</h4>
+            <p className="text-xs text-[#9A9A9A]">High contrast bright theme</p>
           </button>
         </div>
       </div>
 
       {/* Section 2: General Profile Settings */}
-      <div className="glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
-        <h3 className="text-base font-bold text-white">General Preferences</h3>
+      <div className="neu-card p-6 rounded-3xl space-y-4">
+        <h3 className="text-base font-bold text-[#3D3D3D]">General Preferences</h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-slate-300">Display Name</label>
+            <label className="text-xs font-semibold text-[#6B6B6B]">Display Name</label>
             <input
               type="text"
               value={user.name}
               onChange={(e) => setUser({ ...user, name: e.target.value })}
-              className="w-full bg-slate-950/80 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-slate-100 focus:border-emerald-500"
+              className="w-full neu-input rounded-xl px-4 py-2.5 text-sm text-[#3D3D3D]"
             />
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-slate-300">Email Address</label>
+            <label className="text-xs font-semibold text-[#6B6B6B]">Email Address</label>
             <input
               type="email"
               value={user.email}
               onChange={(e) => setUser({ ...user, email: e.target.value })}
-              className="w-full bg-slate-950/80 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-slate-100 focus:border-emerald-500"
+              className="w-full neu-input rounded-xl px-4 py-2.5 text-sm text-[#3D3D3D]"
             />
           </div>
         </div>
       </div>
 
       {/* Section 3: Data & Export */}
-      <div className="glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
-        <h3 className="text-base font-bold text-white flex items-center gap-2">
-          <Shield className="w-4 h-4 text-blue-400" />
+      <div className="neu-card p-6 rounded-3xl space-y-4">
+        <h3 className="text-base font-bold text-[#3D3D3D] flex items-center gap-2">
+          <Shield className="w-4 h-4 text-[#7C9EB2]" />
           <span>Data Privacy & Backup</span>
         </h3>
 
         <div className="flex items-center justify-between flex-wrap gap-4 pt-2">
           <div>
-            <h4 className="text-sm font-semibold text-slate-200">Export All Activity Data</h4>
-            <p className="text-xs text-slate-400">Download a JSON backup file containing your habits, streaks, and journal notes.</p>
+            <h4 className="text-sm font-semibold text-[#3D3D3D]">Export All Activity Data</h4>
+            <p className="text-xs text-[#9A9A9A]">Download a JSON backup file containing your habits, streaks, and journal notes.</p>
           </div>
 
           <button
             onClick={exportJSON}
-            className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-white/10 text-xs font-bold text-slate-200 flex items-center gap-2 transition-colors cursor-pointer"
+            className="neu-btn px-4 py-2.5 rounded-xl text-xs font-bold text-[#3D3D3D] flex items-center gap-2 transition-colors cursor-pointer"
           >
-            <Download className="w-4 h-4 text-emerald-400" />
+            <div className="clay-icon gradient-teal p-1">
+              <Download className="w-4 h-4 text-white" />
+            </div>
             <span>Export JSON</span>
           </button>
         </div>
 
-        <div className="flex items-center justify-between flex-wrap gap-4 pt-4 border-t border-white/10">
+        <div className="flex items-center justify-between flex-wrap gap-4 pt-4 border-t border-[#C5BDB5]/40">
           <div>
-            <h4 className="text-sm font-semibold text-rose-400">Reset Local Account Data</h4>
-            <p className="text-xs text-slate-400">Wipe local storage and re-initialize seed history.</p>
+            <h4 className="text-sm font-semibold text-[#C47C7C]">Reset Local Account Data</h4>
+            <p className="text-xs text-[#9A9A9A]">Wipe local storage and re-initialize seed history.</p>
           </div>
 
           <button
             onClick={resetAllData}
-            className="px-4 py-2.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-xs font-bold text-rose-400 flex items-center gap-2 transition-colors cursor-pointer"
+            className="gradient-sunset px-4 py-2.5 rounded-xl text-xs font-bold text-white flex items-center gap-2 transition-colors cursor-pointer"
           >
             <Trash2 className="w-4 h-4" />
             <span>Reset Data</span>

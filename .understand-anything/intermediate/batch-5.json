@@ -1,0 +1,1101 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/components/views/HeatmapView.tsx",
+      "type": "file",
+      "name": "HeatmapView.tsx",
+      "filePath": "src/components/views/HeatmapView.tsx",
+      "summary": "React component that displays a 365-day contribution heatmap matrix with analytics summary cards showing current streak, longest streak, total tracked days, and success rate.",
+      "tags": ["react", "component", "heatmap", "visualization", "statistics"],
+      "complexity": "simple",
+      "language": "typescript",
+      "languageNotes": "Uses React functional component with useStreak hook for state access"
+    },
+    {
+      "id": "function:src/components/views/HeatmapView.tsx:HeatmapView",
+      "type": "function",
+      "name": "HeatmapView",
+      "filePath": "src/components/views/HeatmapView.tsx",
+      "summary": "Main heatmap view component that renders the contribution matrix and stat cards using data from StreakContext",
+      "tags": ["react", "component", "export"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/views/LandingPage.tsx",
+      "type": "file",
+      "name": "LandingPage.tsx",
+      "filePath": "src/components/views/LandingPage.tsx",
+      "summary": "Marketing landing page component with hero section, statistics, feature cards, and call-to-action buttons to onboard new users.",
+      "tags": ["react", "component", "landing", "marketing", "ui"],
+      "complexity": "moderate",
+      "language": "typescript",
+      "languageNotes": "Uses framer-motion for animations and lucide-react icons"
+    },
+    {
+      "id": "function:src/components/views/LandingPage.tsx:LandingPage",
+      "type": "function",
+      "name": "LandingPage",
+      "filePath": "src/components/views/LandingPage.tsx",
+      "summary": "Landing page component with hero, stats section, features overview, and footer for user acquisition",
+      "tags": ["react", "component", "export"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/views/LeaderboardView.tsx",
+      "type": "file",
+      "name": "LeaderboardView.tsx",
+      "filePath": "src/components/views/LeaderboardView.tsx",
+      "summary": "Leaderboard view component displaying top 3 podium and ranked user table with tab switching for Global, Friends, Weekly, and Monthly views.",
+      "tags": ["react", "component", "leaderboard", "gamification", "social"],
+      "complexity": "moderate",
+      "language": "typescript",
+      "languageNotes": "Uses useState for tab state management"
+    },
+    {
+      "id": "function:src/components/views/LeaderboardView.tsx:LeaderboardView",
+      "type": "function",
+      "name": "LeaderboardView",
+      "filePath": "src/components/views/LeaderboardView.tsx",
+      "summary": "Leaderboard component showing ranked users with podium highlights and sortable tabs",
+      "tags": ["react", "component", "export"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/views/LoginSignupPage.tsx",
+      "type": "file",
+      "name": "LoginSignupPage.tsx",
+      "filePath": "src/components/views/LoginSignupPage.tsx",
+      "summary": "Login page component with email/password form, error handling, and hidden admin master key unlock modal for administrative access.",
+      "tags": ["react", "component", "auth", "login", "admin"],
+      "complexity": "moderate",
+      "language": "typescript",
+      "languageNotes": "Uses useState for form state and modal visibility"
+    },
+    {
+      "id": "function:src/components/views/LoginSignupPage.tsx:LoginSignupPage",
+      "type": "function",
+      "name": "LoginSignupPage",
+      "filePath": "src/components/views/LoginSignupPage.tsx",
+      "summary": "Login page with credentials form and admin secret key modal for administrative panel access",
+      "tags": ["react", "component", "export"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/views/NotificationsDrawer.tsx",
+      "type": "file",
+      "name": "NotificationsDrawer.tsx",
+      "filePath": "src/components/views/NotificationsDrawer.tsx",
+      "summary": "Slide-in notification drawer component displaying timeline of notifications with read/unread states and mark-all-read functionality.",
+      "tags": ["react", "component", "notifications", "drawer", "ui"],
+      "complexity": "simple",
+      "language": "typescript",
+      "languageNotes": "Uses framer-motion AnimatePresence for drawer animation"
+    },
+    {
+      "id": "function:src/components/views/NotificationsDrawer.tsx:NotificationsDrawer",
+      "type": "function",
+      "name": "NotificationsDrawer",
+      "filePath": "src/components/views/NotificationsDrawer.tsx",
+      "summary": "Animated drawer component showing notifications list with read/unread status",
+      "tags": ["react", "component", "export"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/views/ProfileView.tsx",
+      "type": "file",
+      "name": "ProfileView.tsx",
+      "filePath": "src/components/views/ProfileView.tsx",
+      "summary": "User profile view component with editable bio, avatar, XP progress bar, and summary cards for streaks, check-ins, and achievements.",
+      "tags": ["react", "component", "profile", "user", "editing"],
+      "complexity": "moderate",
+      "language": "typescript",
+      "languageNotes": "Uses useState for editing mode and bio/name state"
+    },
+    {
+      "id": "function:src/components/views/ProfileView.tsx:ProfileView",
+      "type": "function",
+      "name": "ProfileView",
+      "filePath": "src/components/views/ProfileView.tsx",
+      "summary": "Profile component with editable user info, XP progress, and achievement stats",
+      "tags": ["react", "component", "export"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/components/views/SettingsView.tsx",
+      "type": "file",
+      "name": "SettingsView.tsx",
+      "filePath": "src/components/views/SettingsView.tsx",
+      "summary": "Application settings view with theme selector (dark/amoled/light), profile editing, JSON data export, and data reset functionality.",
+      "tags": ["react", "component", "settings", "preferences", "data-export"],
+      "complexity": "moderate",
+      "language": "typescript",
+      "languageNotes": "Uses theme state from context, creates dynamic download links"
+    },
+    {
+      "id": "function:src/components/views/SettingsView.tsx:SettingsView",
+      "type": "function",
+      "name": "SettingsView",
+      "filePath": "src/components/views/SettingsView.tsx",
+      "summary": "Settings view with theme picker, profile form, export, and data reset features",
+      "tags": ["react", "component", "export"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/components/views/SettingsView.tsx:exportJSON",
+      "type": "function",
+      "name": "exportJSON",
+      "filePath": "src/components/views/SettingsView.tsx",
+      "summary": "Creates and triggers download of JSON backup file containing user data, habits, and history",
+      "tags": ["utility", "export", "backup"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/components/views/StatisticsView.tsx",
+      "type": "file",
+      "name": "StatisticsView.tsx",
+      "filePath": "src/components/views/StatisticsView.tsx",
+      "summary": "Statistics and analytics view with bar/line charts (recharts), habit performance breakdown, and streak milestone tracking.",
+      "tags": ["react", "component", "statistics", "charts", "analytics", "recharts"],
+      "complexity": "complex",
+      "language": "typescript",
+      "languageNotes": "Uses recharts library for data visualization, useMemo for computed stats"
+    },
+    {
+      "id": "function:src/components/views/StatisticsView.tsx:StatisticsView",
+      "type": "function",
+      "name": "StatisticsView",
+      "filePath": "src/components/views/StatisticsView.tsx",
+      "summary": "Main statistics component with weekly/monthly charts and habit performance analytics",
+      "tags": ["react", "component", "export"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/components/views/StatisticsView.tsx:dynamicHabitStats",
+      "type": "function",
+      "name": "dynamicHabitStats",
+      "filePath": "src/components/views/StatisticsView.tsx",
+      "summary": "Memoized computation calculating completion rates for each active habit from history data",
+      "tags": ["computed", "memoized", "analytics"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/lib/mockData.ts",
+      "type": "file",
+      "name": "mockData.ts",
+      "filePath": "src/lib/mockData.ts",
+      "summary": "Initial seed data constants for the application - all collections start empty for fresh user experience.",
+      "tags": ["data", "constants", "seed", "initial-state"],
+      "complexity": "simple",
+      "language": "typescript",
+      "languageNotes": "Exports empty arrays and objects as initial application state"
+    },
+    {
+      "id": "file:src/lib/StreakContext.tsx",
+      "type": "file",
+      "name": "StreakContext.tsx",
+      "filePath": "src/lib/StreakContext.tsx",
+      "summary": "Main React Context provider managing all application state including auth, habits, check-ins, achievements, leaderboard, notifications, and admin functions. Connects frontend to Supabase backend via API routes.",
+      "tags": ["react", "context", "state-management", "auth", "provider", "supabase"],
+      "complexity": "complex",
+      "language": "typescript",
+      "languageNotes": "Uses React Context API with useState, useEffect, useCallback hooks for complex state management"
+    },
+    {
+      "id": "function:src/lib/StreakContext.tsx:StreakProvider",
+      "type": "function",
+      "name": "StreakProvider",
+      "filePath": "src/lib/StreakContext.tsx",
+      "summary": "Root context provider component that manages all app state and exposes methods for auth, habits, check-ins, and admin operations",
+      "tags": ["react", "context", "provider", "export"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/lib/StreakContext.tsx:useStreak",
+      "type": "function",
+      "name": "useStreak",
+      "filePath": "src/lib/StreakContext.tsx",
+      "summary": "Custom hook to access StreakContext - throws if used outside provider",
+      "tags": ["react", "hook", "context-consumer", "export"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/StreakContext.tsx:loginWithCredentials",
+      "type": "function",
+      "name": "loginWithCredentials",
+      "filePath": "src/lib/StreakContext.tsx",
+      "summary": "Authenticates user via API, stores session in localStorage, loads user data",
+      "tags": ["auth", "api", "async", "login"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/StreakContext.tsx:verifyAndUnlockAdmin",
+      "type": "function",
+      "name": "verifyAndUnlockAdmin",
+      "filePath": "src/lib/StreakContext.tsx",
+      "summary": "Verifies admin secret key and unlocks admin panel access",
+      "tags": ["auth", "admin", "security"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/StreakContext.tsx:submitDailyCheckIn",
+      "type": "function",
+      "name": "submitDailyCheckIn",
+      "filePath": "src/lib/StreakContext.tsx",
+      "summary": "Processes daily check-in: updates local state, calculates XP, manages streak, syncs to backend",
+      "tags": ["core", "check-in", "streak", "xp", "async"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/lib/StreakContext.tsx:loadUserData",
+      "type": "function",
+      "name": "loadUserData",
+      "filePath": "src/lib/StreakContext.tsx",
+      "summary": "Fetches all user data (habits, history, profile, achievements, badges, notifications) from API in parallel",
+      "tags": ["data-loading", "api", "async", "parallel"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/StreakContext.tsx:transformHabit",
+      "type": "function",
+      "name": "transformHabit",
+      "filePath": "src/lib/StreakContext.tsx",
+      "summary": "Transforms Supabase habit record to frontend Habit type",
+      "tags": ["transform", "data-mapping", "supabase"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/StreakContext.tsx:transformCheckIn",
+      "type": "function",
+      "name": "transformCheckIn",
+      "filePath": "src/lib/StreakContext.tsx",
+      "summary": "Transforms Supabase daily_completion record to frontend DayCheckIn type",
+      "tags": ["transform", "data-mapping", "supabase"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/StreakContext.tsx:transformProfile",
+      "type": "function",
+      "name": "transformProfile",
+      "filePath": "src/lib/StreakContext.tsx",
+      "summary": "Transforms Supabase profiles record to frontend UserProfile type",
+      "tags": ["transform", "data-mapping", "supabase"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/StreakContext.tsx:createManagedUser",
+      "type": "function",
+      "name": "createManagedUser",
+      "filePath": "src/lib/StreakContext.tsx",
+      "summary": "Admin function to create new user via API and refresh credentials list",
+      "tags": ["admin", "user-management", "api", "async"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/StreakContext.tsx:updateManagedUser",
+      "type": "function",
+      "name": "updateManagedUser",
+      "filePath": "src/lib/StreakContext.tsx",
+      "summary": "Admin function to update user credentials via API",
+      "tags": ["admin", "user-management", "api", "async"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/StreakContext.tsx:deleteManagedUser",
+      "type": "function",
+      "name": "deleteManagedUser",
+      "filePath": "src/lib/StreakContext.tsx",
+      "summary": "Admin function to delete user via API",
+      "tags": ["admin", "user-management", "api", "async"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/StreakContext.tsx:addNewHabit",
+      "type": "function",
+      "name": "addNewHabit",
+      "filePath": "src/lib/StreakContext.tsx",
+      "summary": "Creates new habit locally then syncs to backend, replacing temp ID with server ID",
+      "tags": ["habit", "crud", "optimistic-update", "async"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/StreakContext.tsx:updateHabit",
+      "type": "function",
+      "name": "updateHabit",
+      "filePath": "src/lib/StreakContext.tsx",
+      "summary": "Updates habit locally then syncs changes to backend",
+      "tags": ["habit", "crud", "optimistic-update", "async"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/StreakContext.tsx:deleteHabit",
+      "type": "function",
+      "name": "deleteHabit",
+      "filePath": "src/lib/StreakContext.tsx",
+      "summary": "Removes habit locally then deletes from backend",
+      "tags": ["habit", "crud", "optimistic-update", "async"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/StreakContext.tsx:resetAllData",
+      "type": "function",
+      "name": "resetAllData",
+      "filePath": "src/lib/StreakContext.tsx",
+      "summary": "Clears all local state and localStorage, resets app to initial login state",
+      "tags": ["reset", "data-management", "cleanup"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/supabase/client.ts",
+      "type": "file",
+      "name": "client.ts",
+      "filePath": "src/lib/supabase/client.ts",
+      "summary": "Creates Supabase browser client using @supabase/ssr for client-side data access.",
+      "tags": ["supabase", "client", "browser", "config"],
+      "complexity": "simple",
+      "language": "typescript",
+      "languageNotes": "Uses createBrowserClient from @supabase/ssr"
+    },
+    {
+      "id": "function:src/lib/supabase/client.ts:createClient",
+      "type": "function",
+      "name": "createClient",
+      "filePath": "src/lib/supabase/client.ts",
+      "summary": "Factory function creating Supabase browser client with env credentials",
+      "tags": ["supabase", "factory", "export"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/supabase/server.ts",
+      "type": "file",
+      "name": "server.ts",
+      "filePath": "src/lib/supabase/server.ts",
+      "summary": "Creates Supabase server-side clients for Next.js API routes with cookie-based auth and admin client with service role key.",
+      "tags": ["supabase", "server", "api", "auth", "config"],
+      "complexity": "moderate",
+      "language": "typescript",
+      "languageNotes": "Uses createServerClient with Next.js cookies API, createClient from @supabase/supabase-js for admin"
+    },
+    {
+      "id": "function:src/lib/supabase/server.ts:createClient",
+      "type": "function",
+      "name": "createClient",
+      "filePath": "src/lib/supabase/server.ts",
+      "summary": "Creates authenticated Supabase client using Next.js cookie store for server components",
+      "tags": ["supabase", "server", "auth", "export"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/supabase/server.ts:createAdminClient",
+      "type": "function",
+      "name": "createAdminClient",
+      "filePath": "src/lib/supabase/server.ts",
+      "summary": "Creates admin Supabase client with service role key for privileged operations",
+      "tags": ["supabase", "admin", "service-role", "export"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/supabase/service.ts",
+      "type": "file",
+      "name": "service.ts",
+      "filePath": "src/lib/supabase/service.ts",
+      "summary": "Data access layer with service objects for all Supabase tables: users, habits, daily_answers, daily_completion, streaks, achievements, badges, xp_history, notifications, settings, journal, analytics, friends, leaderboard.",
+      "tags": ["supabase", "data-access", "service", "crud", "database"],
+      "complexity": "complex",
+      "language": "typescript",
+      "languageNotes": "Uses admin client for all operations, bcryptjs for password hashing"
+    },
+    {
+      "id": "class:src/lib/supabase/service.ts:UserService",
+      "type": "class",
+      "name": "userService",
+      "filePath": "src/lib/supabase/service.ts",
+      "summary": "Service object for user CRUD operations with Supabase users, profiles, settings, and streaks tables",
+      "tags": ["service", "users", "crud", "export"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/lib/supabase/service.ts:HabitService",
+      "type": "class",
+      "name": "habitService",
+      "filePath": "src/lib/supabase/service.ts",
+      "summary": "Service object for habit CRUD operations with Supabase questions table",
+      "tags": ["service", "habits", "crud", "export"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/lib/supabase/service.ts:DailyAnswerService",
+      "type": "class",
+      "name": "dailyAnswerService",
+      "filePath": "src/lib/supabase/service.ts",
+      "summary": "Service for daily_answers table - per-question daily responses with date range queries",
+      "tags": ["service", "daily-answers", "export"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/lib/supabase/service.ts:DailyCompletionService",
+      "type": "class",
+      "name": "dailyCompletionService",
+      "filePath": "src/lib/supabase/service.ts",
+      "summary": "Service for daily_completion table - daily aggregate completion records with upsert",
+      "tags": ["service", "daily-completion", "export"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/lib/supabase/service.ts:StreakService",
+      "type": "class",
+      "name": "streakService",
+      "filePath": "src/lib/supabase/service.ts",
+      "summary": "Service for streaks table - current streak, longest streak, freeze management",
+      "tags": ["service", "streaks", "export"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/lib/supabase/service.ts:AchievementService",
+      "type": "class",
+      "name": "achievementService",
+      "filePath": "src/lib/supabase/service.ts",
+      "summary": "Service for achievements table - list and create achievements",
+      "tags": ["service", "achievements", "export"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/lib/supabase/service.ts:BadgeService",
+      "type": "class",
+      "name": "badgeService",
+      "filePath": "src/lib/supabase/service.ts",
+      "summary": "Service for badges table - list and create badges",
+      "tags": ["service", "badges", "export"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/lib/supabase/service.ts:XpHistoryService",
+      "type": "class",
+      "name": "xpHistoryService",
+      "filePath": "src/lib/supabase/service.ts",
+      "summary": "Service for xp_history table - XP transaction log",
+      "tags": ["service", "xp-history", "export"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/lib/supabase/service.ts:NotificationService",
+      "type": "class",
+      "name": "notificationService",
+      "filePath": "src/lib/supabase/service.ts",
+      "summary": "Service for notifications table - list, create, mark read",
+      "tags": ["service", "notifications", "export"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/lib/supabase/service.ts:SettingsService",
+      "type": "class",
+      "name": "settingsService",
+      "filePath": "src/lib/supabase/service.ts",
+      "summary": "Service for settings table - get and update user settings",
+      "tags": ["service", "settings", "export"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/lib/supabase/service.ts:JournalService",
+      "type": "class",
+      "name": "journalService",
+      "filePath": "src/lib/supabase/service.ts",
+      "summary": "Service for journal table - daily journal entries with upsert",
+      "tags": ["service", "journal", "export"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/lib/supabase/service.ts:AnalyticsService",
+      "type": "class",
+      "name": "analyticsService",
+      "filePath": "src/lib/supabase/service.ts",
+      "summary": "Service for analytics table - user analytics data",
+      "tags": ["service", "analytics", "export"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/lib/supabase/service.ts:FriendService",
+      "type": "class",
+      "name": "friendService",
+      "filePath": "src/lib/supabase/service.ts",
+      "summary": "Service for friends table - social friend connections with status",
+      "tags": ["service", "friends", "social", "export"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/lib/supabase/service.ts:LeaderboardService",
+      "type": "class",
+      "name": "leaderboardService",
+      "filePath": "src/lib/supabase/service.ts",
+      "summary": "Service for leaderboards table - period-based ranking with upsert",
+      "tags": ["service", "leaderboard", "export"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/types.ts",
+      "type": "file",
+      "name": "types.ts",
+      "filePath": "src/lib/types.ts",
+      "summary": "TypeScript type definitions for all application domain models: Habit, DayCheckIn, Achievement, Badge, NotificationItem, LeaderboardUser, UserProfile, UserCredential.",
+      "tags": ["types", "interfaces", "domain-models", "typescript"],
+      "complexity": "simple",
+      "language": "typescript",
+      "languageNotes": "Pure type definitions with no runtime code"
+    },
+    {
+      "id": "class:src/lib/types.ts:Habit",
+      "type": "class",
+      "name": "Habit",
+      "filePath": "src/lib/types.ts",
+      "summary": "Interface defining habit data structure with name, icon, category, required/active flags, color",
+      "tags": ["interface", "type-definition", "export"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/lib/types.ts:DayCheckIn",
+      "type": "class",
+      "name": "DayCheckIn",
+      "filePath": "src/lib/types.ts",
+      "summary": "Interface for daily check-in records with completion status, XP, and optional journal",
+      "tags": ["interface", "type-definition", "export"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/lib/types.ts:Achievement",
+      "type": "class",
+      "name": "Achievement",
+      "filePath": "src/lib/types.ts",
+      "summary": "Interface for achievements with target/current days, unlock status, category, and XP reward",
+      "tags": ["interface", "type-definition", "export"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/lib/types.ts:Badge",
+      "type": "class",
+      "name": "Badge",
+      "filePath": "src/lib/types.ts",
+      "summary": "Interface for badges with rarity tiers, unlock status, and glow color",
+      "tags": ["interface", "type-definition", "export"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/lib/types.ts:NotificationItem",
+      "type": "class",
+      "name": "NotificationItem",
+      "filePath": "src/lib/types.ts",
+      "summary": "Interface for notifications with type, message, timestamp, and read status",
+      "tags": ["interface", "type-definition", "export"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/lib/types.ts:LeaderboardUser",
+      "type": "class",
+      "name": "LeaderboardUser",
+      "filePath": "src/lib/types.ts",
+      "summary": "Interface for leaderboard entries with rank, avatar, level, XP, and streak",
+      "tags": ["interface", "type-definition", "export"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/lib/types.ts:UserProfile",
+      "type": "class",
+      "name": "UserProfile",
+      "filePath": "src/lib/types.ts",
+      "summary": "Interface for user profile with stats, bio, XP progress, and streak data",
+      "tags": ["interface", "type-definition", "export"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/lib/types.ts:UserCredential",
+      "type": "class",
+      "name": "UserCredential",
+      "filePath": "src/lib/types.ts",
+      "summary": "Interface for user credentials with role, status, and creation date",
+      "tags": ["interface", "type-definition", "export"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/utils.ts",
+      "type": "file",
+      "name": "utils.ts",
+      "filePath": "src/lib/utils.ts",
+      "summary": "Utility function for merging Tailwind CSS class names using clsx and tailwind-merge.",
+      "tags": ["utility", "css", "tailwind", "helper"],
+      "complexity": "simple",
+      "language": "typescript",
+      "languageNotes": "Uses clsx and twMerge from tailwind-merge"
+    },
+    {
+      "id": "function:src/lib/utils.ts:cn",
+      "type": "function",
+      "name": "cn",
+      "filePath": "src/lib/utils.ts",
+      "summary": "Merges class names with Tailwind conflict resolution using clsx and twMerge",
+      "tags": ["utility", "css", "export"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:twa/build-apk.cjs",
+      "type": "file",
+      "name": "build-apk.cjs",
+      "filePath": "twa/build-apk.cjs",
+      "summary": "Node.js build script for generating signed Android APK from TWA manifest using @bubblewrap/core, JDK, and Android SDK tools.",
+      "tags": ["build", "android", "twa", "apk", "script"],
+      "complexity": "moderate",
+      "language": "javascript",
+      "languageNotes": "CommonJS module using bubblewrap TWA tools, filesystem operations"
+    },
+    {
+      "id": "function:twa/build-apk.cjs:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "twa/build-apk.cjs",
+      "summary": "Main build function that loads TWA manifest, generates Android project, builds and signs APK",
+      "tags": ["build", "main", "export"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:twa/streakify.keystore",
+      "type": "file",
+      "name": "streakify.keystore",
+      "filePath": "twa/streakify.keystore",
+      "summary": "Android keystore file for APK signing with streakify alias.",
+      "tags": ["security", "android", "keystore", "binary"],
+      "complexity": "simple",
+      "language": "keystore",
+      "languageNotes": "Binary keystore file - not human-readable"
+    },
+    {
+      "id": "file:twa/twa-manifest.json",
+      "type": "config",
+      "name": "twa-manifest.json",
+      "filePath": "twa/twa-manifest.json",
+      "summary": "Trusted Web Activity manifest configuration defining Android app properties: package ID, display settings, theme colors, signing config, and icon URLs.",
+      "tags": ["config", "android", "twa", "manifest", "pwa"],
+      "complexity": "simple",
+      "language": "json",
+      "languageNotes": "JSON configuration for bubblewrap TWA generation"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/components/views/HeatmapView.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "imports",
+      "weight": 0.7,
+      "label": "imports useStreak hook"
+    },
+    {
+      "source": "function:src/components/views/HeatmapView.tsx:HeatmapView",
+      "target": "function:src/lib/StreakContext.tsx:useStreak",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "calls useStreak to get context"
+    },
+    {
+      "source": "file:src/components/views/LandingPage.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "imports",
+      "weight": 0.7,
+      "label": "imports useStreak hook"
+    },
+    {
+      "source": "function:src/components/views/LandingPage.tsx:LandingPage",
+      "target": "function:src/lib/StreakContext.tsx:useStreak",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "calls useStreak for navigation state"
+    },
+    {
+      "source": "file:src/components/views/LeaderboardView.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "imports",
+      "weight": 0.7,
+      "label": "imports useStreak hook"
+    },
+    {
+      "source": "function:src/components/views/LeaderboardView.tsx:LeaderboardView",
+      "target": "function:src/lib/StreakContext.tsx:useStreak",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "calls useStreak for leaderboard data"
+    },
+    {
+      "source": "file:src/components/views/LoginSignupPage.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "imports",
+      "weight": 0.7,
+      "label": "imports useStreak hook"
+    },
+    {
+      "source": "function:src/components/views/LoginSignupPage.tsx:LoginSignupPage",
+      "target": "function:src/lib/StreakContext.tsx:loginWithCredentials",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "calls loginWithCredentials on form submit"
+    },
+    {
+      "source": "function:src/components/views/LoginSignupPage.tsx:LoginSignupPage",
+      "target": "function:src/lib/StreakContext.tsx:verifyAndUnlockAdmin",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "calls verifyAndUnlockAdmin for admin access"
+    },
+    {
+      "source": "file:src/components/views/NotificationsDrawer.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "imports",
+      "weight": 0.7,
+      "label": "imports useStreak hook"
+    },
+    {
+      "source": "function:src/components/views/NotificationsDrawer.tsx:NotificationsDrawer",
+      "target": "function:src/lib/StreakContext.tsx:useStreak",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "calls useStreak for notifications"
+    },
+    {
+      "source": "file:src/components/views/ProfileView.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "imports",
+      "weight": 0.7,
+      "label": "imports useStreak hook"
+    },
+    {
+      "source": "function:src/components/views/ProfileView.tsx:ProfileView",
+      "target": "function:src/lib/StreakContext.tsx:useStreak",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "calls useStreak for user profile"
+    },
+    {
+      "source": "file:src/components/views/SettingsView.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "imports",
+      "weight": 0.7,
+      "label": "imports useStreak hook"
+    },
+    {
+      "source": "function:src/components/views/SettingsView.tsx:SettingsView",
+      "target": "function:src/lib/StreakContext.tsx:useStreak",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "calls useStreak for settings state"
+    },
+    {
+      "source": "function:src/components/views/SettingsView.tsx:SettingsView",
+      "target": "function:src/lib/StreakContext.tsx:resetAllData",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "calls resetAllData on reset button"
+    },
+    {
+      "source": "file:src/components/views/StatisticsView.tsx",
+      "target": "file:src/lib/StreakContext.tsx",
+      "type": "imports",
+      "weight": 0.7,
+      "label": "imports useStreak hook"
+    },
+    {
+      "source": "function:src/components/views/StatisticsView.tsx:StatisticsView",
+      "target": "function:src/lib/StreakContext.tsx:useStreak",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "calls useStreak for statistics data"
+    },
+    {
+      "source": "file:src/lib/mockData.ts",
+      "target": "file:src/lib/types.ts",
+      "type": "imports",
+      "weight": 0.7,
+      "label": "imports type definitions"
+    },
+    {
+      "source": "file:src/lib/StreakContext.tsx",
+      "target": "file:src/lib/types.ts",
+      "type": "imports",
+      "weight": 0.7,
+      "label": "imports type definitions"
+    },
+    {
+      "source": "file:src/lib/StreakContext.tsx",
+      "target": "file:src/lib/mockData.ts",
+      "type": "imports",
+      "weight": 0.7,
+      "label": "imports initial data constants"
+    },
+    {
+      "source": "function:src/lib/StreakContext.tsx:StreakProvider",
+      "target": "function:src/lib/StreakContext.tsx:loginWithCredentials",
+      "type": "contains",
+      "weight": 1.0,
+      "label": "contains login method"
+    },
+    {
+      "source": "function:src/lib/StreakContext.tsx:StreakProvider",
+      "target": "function:src/lib/StreakContext.tsx:verifyAndUnlockAdmin",
+      "type": "contains",
+      "weight": 1.0,
+      "label": "contains admin verification"
+    },
+    {
+      "source": "function:src/lib/StreakContext.tsx:StreakProvider",
+      "target": "function:src/lib/StreakContext.tsx:submitDailyCheckIn",
+      "type": "contains",
+      "weight": 1.0,
+      "label": "contains check-in logic"
+    },
+    {
+      "source": "function:src/lib/StreakContext.tsx:StreakProvider",
+      "target": "function:src/lib/StreakContext.tsx:loadUserData",
+      "type": "contains",
+      "weight": 1.0,
+      "label": "contains data loading"
+    },
+    {
+      "source": "function:src/lib/StreakContext.tsx:StreakProvider",
+      "target": "function:src/lib/StreakContext.tsx:createManagedUser",
+      "type": "contains",
+      "weight": 1.0,
+      "label": "contains user creation"
+    },
+    {
+      "source": "function:src/lib/StreakContext.tsx:StreakProvider",
+      "target": "function:src/lib/StreakContext.tsx:updateManagedUser",
+      "type": "contains",
+      "weight": 1.0,
+      "label": "contains user update"
+    },
+    {
+      "source": "function:src/lib/StreakContext.tsx:StreakProvider",
+      "target": "function:src/lib/StreakContext.tsx:deleteManagedUser",
+      "type": "contains",
+      "weight": 1.0,
+      "label": "contains user deletion"
+    },
+    {
+      "source": "function:src/lib/StreakContext.tsx:StreakProvider",
+      "target": "function:src/lib/StreakContext.tsx:addNewHabit",
+      "type": "contains",
+      "weight": 1.0,
+      "label": "contains habit creation"
+    },
+    {
+      "source": "function:src/lib/StreakContext.tsx:StreakProvider",
+      "target": "function:src/lib/StreakContext.tsx:updateHabit",
+      "type": "contains",
+      "weight": 1.0,
+      "label": "contains habit update"
+    },
+    {
+      "source": "function:src/lib/StreakContext.tsx:StreakProvider",
+      "target": "function:src/lib/StreakContext.tsx:deleteHabit",
+      "type": "contains",
+      "weight": 1.0,
+      "label": "contains habit deletion"
+    },
+    {
+      "source": "function:src/lib/StreakContext.tsx:StreakProvider",
+      "target": "function:src/lib/StreakContext.tsx:resetAllData",
+      "type": "contains",
+      "weight": 1.0,
+      "label": "contains data reset"
+    },
+    {
+      "source": "function:src/lib/StreakContext.tsx:submitDailyCheckIn",
+      "target": "function:src/lib/StreakContext.tsx:transformHabit",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "uses transformHabit for data"
+    },
+    {
+      "source": "function:src/lib/StreakContext.tsx:loadUserData",
+      "target": "function:src/lib/StreakContext.tsx:transformHabit",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "calls transformHabit on habit data"
+    },
+    {
+      "source": "function:src/lib/StreakContext.tsx:loadUserData",
+      "target": "function:src/lib/StreakContext.tsx:transformCheckIn",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "calls transformCheckIn on history data"
+    },
+    {
+      "source": "function:src/lib/StreakContext.tsx:loadUserData",
+      "target": "function:src/lib/StreakContext.tsx:transformProfile",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "calls transformProfile on profile data"
+    },
+    {
+      "source": "function:src/lib/StreakContext.tsx:StreakProvider",
+      "target": "function:src/lib/StreakContext.tsx:useStreak",
+      "type": "exports",
+      "weight": 0.8,
+      "label": "exports useStreak hook"
+    },
+    {
+      "source": "file:src/lib/supabase/service.ts",
+      "target": "file:src/lib/supabase/server.ts",
+      "type": "imports",
+      "weight": 0.7,
+      "label": "imports createAdminClient"
+    },
+    {
+      "source": "class:src/lib/supabase/service.ts:UserService",
+      "target": "function:src/lib/supabase/server.ts:createAdminClient",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "creates admin client for queries"
+    },
+    {
+      "source": "class:src/lib/supabase/service.ts:HabitService",
+      "target": "function:src/lib/supabase/server.ts:createAdminClient",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "creates admin client for queries"
+    },
+    {
+      "source": "class:src/lib/supabase/service.ts:DailyAnswerService",
+      "target": "function:src/lib/supabase/server.ts:createAdminClient",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "creates admin client for queries"
+    },
+    {
+      "source": "class:src/lib/supabase/service.ts:DailyCompletionService",
+      "target": "function:src/lib/supabase/server.ts:createAdminClient",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "creates admin client for queries"
+    },
+    {
+      "source": "class:src/lib/supabase/service.ts:StreakService",
+      "target": "function:src/lib/supabase/server.ts:createAdminClient",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "creates admin client for queries"
+    },
+    {
+      "source": "class:src/lib/supabase/service.ts:AchievementService",
+      "target": "function:src/lib/supabase/server.ts:createAdminClient",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "creates admin client for queries"
+    },
+    {
+      "source": "class:src/lib/supabase/service.ts:BadgeService",
+      "target": "function:src/lib/supabase/server.ts:createAdminClient",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "creates admin client for queries"
+    },
+    {
+      "source": "class:src/lib/supabase/service.ts:XpHistoryService",
+      "target": "function:src/lib/supabase/server.ts:createAdminClient",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "creates admin client for queries"
+    },
+    {
+      "source": "class:src/lib/supabase/service.ts:NotificationService",
+      "target": "function:src/lib/supabase/server.ts:createAdminClient",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "creates admin client for queries"
+    },
+    {
+      "source": "class:src/lib/supabase/service.ts:SettingsService",
+      "target": "function:src/lib/supabase/server.ts:createAdminClient",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "creates admin client for queries"
+    },
+    {
+      "source": "class:src/lib/supabase/service.ts:JournalService",
+      "target": "function:src/lib/supabase/server.ts:createAdminClient",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "creates admin client for queries"
+    },
+    {
+      "source": "class:src/lib/supabase/service.ts:AnalyticsService",
+      "target": "function:src/lib/supabase/server.ts:createAdminClient",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "creates admin client for queries"
+    },
+    {
+      "source": "class:src/lib/supabase/service.ts:FriendService",
+      "target": "function:src/lib/supabase/server.ts:createAdminClient",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "creates admin client for queries"
+    },
+    {
+      "source": "class:src/lib/supabase/service.ts:LeaderboardService",
+      "target": "function:src/lib/supabase/server.ts:createAdminClient",
+      "type": "calls",
+      "weight": 0.8,
+      "label": "creates admin client for queries"
+    },
+    {
+      "source": "file:src/lib/utils.ts",
+      "target": "file:src/lib/types.ts",
+      "type": "related",
+      "weight": 0.3,
+      "label": "utility functions for type usage"
+    },
+    {
+      "source": "file:twa/build-apk.cjs",
+      "target": "file:twa/twa-manifest.json",
+      "type": "reads_from",
+      "weight": 0.7,
+      "label": "reads TWA manifest config"
+    },
+    {
+      "source": "file:twa/build-apk.cjs",
+      "target": "file:twa/streakify.keystore",
+      "type": "reads_from",
+      "weight": 0.7,
+      "label": "uses keystore for APK signing"
+    },
+    {
+      "source": "file:src/components/views/HeatmapView.tsx",
+      "target": "class:src/lib/types.ts:UserProfile",
+      "type": "related",
+      "weight": 0.4,
+      "label": "uses UserProfile type via context"
+    },
+    {
+      "source": "file:src/components/views/LeaderboardView.tsx",
+      "target": "class:src/lib/types.ts:LeaderboardUser",
+      "type": "related",
+      "weight": 0.4,
+      "label": "uses LeaderboardUser type via context"
+    },
+    {
+      "source": "file:src/components/views/StatisticsView.tsx",
+      "target": "class:src/lib/types.ts:Habit",
+      "type": "related",
+      "weight": 0.4,
+      "label": "uses Habit type via context"
+    },
+    {
+      "source": "file:src/components/views/StatisticsView.tsx",
+      "target": "class:src/lib/types.ts:DayCheckIn",
+      "type": "related",
+      "weight": 0.4,
+      "label": "uses DayCheckIn type via context"
+    },
+    {
+      "source": "function:src/components/views/SettingsView.tsx:exportJSON",
+      "target": "class:src/lib/types.ts:UserProfile",
+      "type": "related",
+      "weight": 0.4,
+      "label": "serializes UserProfile in export"
+    }
+  ]
+}

@@ -16,36 +16,38 @@ export const NotificationsDrawer: React.FC = () => {
   if (!showNotificationDrawer) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-slate-950/70 backdrop-blur-sm select-none">
+    <div className="fixed inset-0 z-50 flex justify-end bg-[#3D3D3D]/30 backdrop-blur-sm select-none">
       <motion.div
         initial={{ x: '100%' }}
         animate={{ x: 0 }}
         exit={{ x: '100%' }}
         transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-        className="w-full max-w-sm h-full glass-panel border-l border-white/10 p-6 space-y-6 flex flex-col justify-between"
+        className="w-full max-w-sm h-full neu-card border-l border-[#C5BDB5] p-6 space-y-6 flex flex-col justify-between"
       >
         {/* Header */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Bell className="w-5 h-5 text-emerald-400" />
-              <h3 className="font-bold text-white text-lg">Notifications</h3>
+              <div className="clay-icon gradient-teal p-2">
+                <Bell className="w-5 h-5 text-white" />
+              </div>
+              <h3 className="font-bold text-[#3D3D3D] text-lg">Notifications</h3>
             </div>
             <button
               onClick={() => setShowNotificationDrawer(false)}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+              className="neu-btn p-2 rounded-lg text-[#9A9A9A] hover:text-[#3D3D3D] transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          <div className="flex items-center justify-between border-b border-white/10 pb-3">
-            <span className="text-xs text-slate-400 font-mono">
+          <div className="flex items-center justify-between border-b border-[#C5BDB5]/40 pb-3">
+            <span className="text-xs text-[#9A9A9A] font-mono">
               {notifications.filter(n => !n.read).length} Unread Notifications
             </span>
             <button
               onClick={markAllNotificationsRead}
-              className="text-xs text-emerald-400 hover:underline font-semibold cursor-pointer flex items-center gap-1"
+              className="text-xs text-[#7C9EB2] hover:underline font-semibold cursor-pointer flex items-center gap-1"
             >
               <Check className="w-3.5 h-3.5" /> Mark all read
             </button>
@@ -56,27 +58,27 @@ export const NotificationsDrawer: React.FC = () => {
             {notifications.map((item) => (
               <div
                 key={item.id}
-                className={`p-3.5 rounded-2xl border space-y-1 transition-all ${
+                className={`p-3.5 rounded-2xl transition-all ${
                   item.read
-                    ? 'bg-slate-900/40 border-white/5 opacity-70'
-                    : 'bg-emerald-500/10 border-emerald-500/30'
+                    ? 'neu-pressed opacity-70'
+                    : 'neu-card-sm border-l-4 border-[#7C9EB2]'
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <h4 className="text-xs font-bold text-slate-100 flex items-center gap-1.5">
+                  <h4 className="text-xs font-bold text-[#3D3D3D] flex items-center gap-1.5">
                     {item.title}
                   </h4>
-                  <span className="text-[10px] text-slate-500 font-mono">{item.timestamp}</span>
+                  <span className="text-[10px] text-[#9A9A9A] font-mono">{item.timestamp}</span>
                 </div>
-                <p className="text-xs text-slate-300 leading-snug">{item.message}</p>
+                <p className="text-xs text-[#6B6B6B] leading-snug">{item.message}</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* Footer */}
-        <div className="pt-4 border-t border-white/10 text-center">
-          <p className="text-[11px] text-slate-500 font-mono">Notifications synced with daily streak engine.</p>
+        <div className="pt-4 border-t border-[#C5BDB5]/40 text-center">
+          <p className="text-[11px] text-[#9A9A9A] font-mono">Notifications synced with daily streak engine.</p>
         </div>
       </motion.div>
     </div>

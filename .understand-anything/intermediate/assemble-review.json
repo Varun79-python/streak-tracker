@@ -1,0 +1,233 @@
+{
+  "issues": [
+    {
+      "severity": "critical",
+      "category": "self-referencing-edges",
+      "description": "18 import edges reference themselves as target instead of actual imported modules",
+      "details": [
+        "edge:admin-users-imports-server: file:src/app/api/auth/admin/users/route.ts → file:src/app/api/auth/admin/users/route.ts (should be file:src/lib/supabase/server.ts)",
+        "edge:create-user-imports-server: file:src/app/api/auth/create-user/route.ts → file:src/app/api/auth/create-user/route.ts (should be file:src/lib/supabase/server.ts)",
+        "edge:login-imports-server-bcrypt: file:src/app/api/auth/login/route.ts → file:src/app/api/auth/login/route.ts (should be file:src/lib/supabase/server.ts)",
+        "edge:achievements-imports-server: file:src/app/api/user/achievements/route.ts → file:src/app/api/user/achievements/route.ts",
+        "edge:badges-imports-server: file:src/app/api/user/badges/route.ts → file:src/app/api/user/badges/route.ts",
+        "edge:checkin-imports-server: file:src/app/api/user/checkin/route.ts → file:src/app/api/user/checkin/route.ts",
+        "edge:habits-imports-server: file:src/app/api/user/habits/route.ts → file:src/app/api/user/habits/route.ts",
+        "edge:history-imports-server: file:src/app/api/user/history/route.ts → file:src/app/api/user/history/route.ts",
+        "edge:notifications-imports-server: file:src/app/api/user/notifications/route.ts → file:src/app/api/user/notifications/route.ts",
+        "edge:profile-imports-server: file:src/app/api/user/profile/route.ts → file:src/app/api/user/profile/route.ts",
+        "edge:admin-page-imports-components: file:src/app/admin/page.tsx → file:src/app/admin/page.tsx (should reference Sidebar, AdminView, etc.)",
+        "edge:layout-imports-context-boundary-sw: file:src/app/layout.tsx → file:src/app/layout.tsx (should reference StreakContext, ErrorBoundary, ServiceWorkerRegister)",
+        "edge:about-page-imports-icons: file:src/app/about/page.tsx → file:src/app/about/page.tsx",
+        "edge:download-page-imports-icons: file:src/app/download/page.tsx → file:src/app/download/page.tsx",
+        "edge:error-imports-icons: file:src/app/error.tsx → file:src/app/error.tsx",
+        "edge:loading-imports-icons: file:src/app/loading.tsx → file:src/app/loading.tsx",
+        "edge:not-found.tsx:imports:link: file:src/app/not-found.tsx → file:src/components/ui/button.tsx (label says 'imports Link from next/link' but targets button.tsx)",
+        "edge:admin-page-uses-admin-view: file:src/app/admin/page.tsx → file:src/app/admin/page.tsx"
+      ]
+    },
+    {
+      "severity": "high",
+      "category": "missing-nodes",
+      "description": "Files present in scan but missing graph nodes",
+      "details": [
+        "src/app/globals.css exists in scan (196 lines, type:css, category:markup) — graph has node but type is 'markup' not 'file'",
+        "twa/streakify.keystore exists in scan — node exists but is type 'file' with no edges (orphan)",
+        "src/lib/supabase/client.ts exists in scan (9 lines) — has node but NO edges connecting it to anything (completely isolated)"
+      ]
+    },
+    {
+      "severity": "medium",
+      "category": "incorrect-node-types",
+      "description": "17 nodes use type 'code' and 2 nodes use type 'markup' which are not in the schema. These should use 'file' type.",
+      "affectedNodes": [
+        "file:public/sw.js (type:code)",
+        "file:src/app/about/page.tsx (type:code)",
+        "file:src/app/admin/page.tsx (type:code)",
+        "file:src/app/api/auth/admin/users/route.ts (type:code)",
+        "file:src/app/api/auth/create-user/route.ts (type:code)",
+        "file:src/app/api/auth/login/route.ts (type:code)",
+        "file:src/app/api/user/achievements/route.ts (type:code)",
+        "file:src/app/api/user/badges/route.ts (type:code)",
+        "file:src/app/api/user/checkin/route.ts (type:code)",
+        "file:src/app/api/user/habits/route.ts (type:code)",
+        "file:src/app/api/user/history/route.ts (type:code)",
+        "file:src/app/api/user/notifications/route.ts (type:code)",
+        "file:src/app/api/user/profile/route.ts (type:code)",
+        "file:src/app/download/page.tsx (type:code)",
+        "file:src/app/error.tsx (type:code)",
+        "file:src/app/layout.tsx (type:code)",
+        "file:src/app/loading.tsx (type:code)",
+        "file:public/about.html (type:markup)",
+        "file:src/app/globals.css (type:markup)"
+      ]
+    },
+    {
+      "severity": "medium",
+      "category": "incorrect-edge-target",
+      "description": "not-found.tsx import edge targets button.tsx but label says 'imports Link from next/link'",
+      "edgeId": "edge:not-found.tsx:imports:link",
+      "currentTarget": "file:src/components/ui/button.tsx",
+      "correctTarget": "file:src/app/not-found.tsx (next/link is a framework module, no node exists)"
+    },
+    {
+      "severity": "low",
+      "category": "dangling-edges",
+      "description": "8 import edges to external packages were correctly dropped (missing target nodes) — expected behavior",
+      "details": [
+        "file:src/components/HeatmapGraph.tsx → file:node_modules/date-fns (import): dropped",
+        "file:src/components/modals/DailyCheckInModal.tsx → file:node_modules/date-fns (import): dropped",
+        "file:src/components/Sidebar.tsx → file:node_modules/next/navigation (import): dropped",
+        "file:src/components/ui/button.tsx → file:node_modules/@base-ui/react (import): dropped",
+        "file:src/components/ui/button.tsx → file:node_modules/class-variance-authority (import): dropped",
+        "file:src/components/views/ActivityHistoryView.tsx → file:node_modules/date-fns (import): dropped",
+        "file:src/components/views/CalendarView.tsx → file:node_modules/date-fns (import): dropped",
+        "file:src/components/views/DashboardView.tsx → file:node_modules/date-fns (import): dropped"
+      ]
+    }
+  ],
+  "warnings": [
+    {
+      "severity": "medium",
+      "category": "orphan-nodes",
+      "description": "Nodes with no edges at all",
+      "nodes": [
+        "file:src/lib/supabase/client.ts — has node and function but zero edges (should be connected to components using browser client)",
+        "file:twa/streakify.keystore — binary file, expected to be isolated",
+        "file:src/app/globals.css — only connected via 'defines' edge to layout, no import edge from components using CSS classes",
+        "file:docs/superpowers/specs/2026-07-29-database-connection-design.md — only referenced by API routes, no connection to actual DB tables",
+        "file:AGENTS.md — only referenced by CLAUDE.md",
+        "file:README.md — only connected via 'documents' edge to package.json"
+      ]
+    },
+    {
+      "severity": "low",
+      "category": "redundant-edges",
+      "description": "file→function 'uses' edges duplicate the file→function 'exports' edges already present",
+      "details": [
+        "15+ edges of type 'uses' from file nodes to their own exported functions (e.g., page.tsx→Home, BottomNav.tsx→BottomNav) duplicate existing 'exports' edges",
+        "These should be removed or converted to 'calls' edges from parent components"
+      ]
+    },
+    {
+      "severity": "low",
+      "category": "missing-relationships",
+      "description": "Important relationships not captured in the graph",
+      "details": [
+        "No edges from API route files to the Supabase service layer (service.ts) — API routes use createAdminClient directly instead of service objects",
+        "No edge from StreakContext to API routes — StreakContext calls API endpoints but graph shows no connection",
+        "No edge from LandingPage to Navbar — LandingPage renders the Navbar component",
+        "No edge from LoginSignupPage to any API route — LoginSignupPage handles auth flow",
+        "No edge from SettingsView to API route for settings updates",
+        "No edge from DashboardView to HeatmapView (DashboardView renders HeatmapView)",
+        "No cross-view navigation edges — views like CalendarView, AchievementsView etc. have no edges showing they can navigate to each other"
+      ]
+    },
+    {
+      "severity": "info",
+      "category": "edge-type-inconsistency",
+      "description": "Mixed edge ID formats and weight values across batches",
+      "details": [
+        "Some edges have explicit IDs (edge:admin-users-imports-server), others have auto-generated IDs",
+        "Some edges have weight field, others don't — inconsistent schema",
+        "Some edges use 'label', others use 'description' for the same purpose"
+      ]
+    },
+    {
+      "severity": "info",
+      "category": "schema-unknown-types",
+      "description": "27 nodes have types not in the standard schema (code, markup) — kept as-is per merge script",
+      "note": "These should be normalized to 'file' type with appropriate tags to distinguish"
+    }
+  ],
+  "suggestions": [
+    {
+      "priority": "high",
+      "action": "Fix self-referencing import edges",
+      "description": "Rewrite the 18 import edges that incorrectly point to themselves. The source file should import from the actual target (e.g., src/lib/supabase/server.ts, src/lib/StreakContext.tsx, etc.). Use the file content to determine correct import targets."
+    },
+    {
+      "priority": "high",
+      "action": "Add StreakContext → API route edges",
+      "description": "Add 'api-call' edges from StreakContext functions to the API routes they call (login, checkin, habits, achievements, badges, history, notifications, profile). This is the primary data flow in the app."
+    },
+    {
+      "priority": "medium",
+      "action": "Normalize node types",
+      "description": "Convert all 17 'code' type nodes and 2 'markup' type nodes to 'file' type. Add 'code' or 'markup' as a tag instead to distinguish them within the schema."
+    },
+    {
+      "priority": "medium",
+      "action": "Connect supabase/client.ts to consuming components",
+      "description": "Add edges from components that use the browser Supabase client (if any) to src/lib/supabase/client.ts."
+    },
+    {
+      "priority": "medium",
+      "action": "Add cross-view component edges",
+      "description": "Add 'renders' edges from parent components (page.tsx:Home) to all view components they render, and from view components to sub-components they use."
+    },
+    {
+      "priority": "low",
+      "action": "Remove redundant uses→function edges",
+      "description": "Remove the ~15 'uses' edges from file nodes to their own exported functions where 'exports' edges already exist. Convert to 'calls' edges from parent components instead."
+    },
+    {
+      "priority": "low",
+      "action": "Standardize edge schema",
+      "description": "Use consistent edge ID format, always include weight, and use 'label' consistently instead of mixing 'label' and 'description'."
+    },
+    {
+      "priority": "low",
+      "action": "Add edge from design spec to actual DB tables",
+      "description": "Add 'documents' edges from docs/superpowers/specs/2026-07-29-database-connection-design.md to the actual table nodes (users, profiles, streaks, etc.) since the spec defines these tables."
+    }
+  ],
+  "stats": {
+    "totalNodes": 189,
+    "totalEdges": 217,
+    "nodeTypes": {
+      "file": 48,
+      "function": 68,
+      "class": 20,
+      "table": 15,
+      "document": 4,
+      "config": 7,
+      "code": 17,
+      "markup": 2
+    },
+    "edgeTypes": {
+      "defines_schema": 15,
+      "depends_on": 14,
+      "related": 8,
+      "imports": 45,
+      "exports": 32,
+      "calls": 28,
+      "contains": 16,
+      "configures": 3,
+      "references": 7,
+      "provides_context": 1,
+      "defines": 1,
+      "caches": 1,
+      "uses": 5,
+      "processes": 1,
+      "alternate_version": 1,
+      "api-call": 2,
+      "links-to": 1,
+      "reads_from": 2
+    },
+    "filesInScan": 75,
+    "filesRepresentedInGraph": 72,
+    "missingFileNodes": 3,
+    "orphanNodes": 6,
+    "selfReferencingEdges": 18,
+    "droppedEdges": 8,
+    "unknownTypeNodes": 19,
+    "estimatedCompleteness": "92%",
+    "estimatedCorrectness": "78%",
+    "batchProcessing": {
+      "totalBatches": 5,
+      "multiPartBatches": 0,
+      "fixedCorrections": 24,
+      "unfixedIssues": 27
+    }
+  }
+}

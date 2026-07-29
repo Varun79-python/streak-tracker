@@ -1,0 +1,122 @@
+[
+  {
+    "id": "layer:presentation",
+    "name": "Presentation Layer",
+    "description": "React components, views, modals, and UI primitives that render the application interface using Tailwind CSS, Framer Motion, and Recharts.",
+    "nodeIds": [
+      "file:src/components/BottomNav.tsx",
+      "file:src/components/ErrorBoundary.tsx",
+      "file:src/components/HeatmapGraph.tsx",
+      "file:src/components/Navbar.tsx",
+      "file:src/components/ServiceWorkerRegister.tsx",
+      "file:src/components/Sidebar.tsx",
+      "file:src/components/TopNav.tsx",
+      "file:src/components/modals/DailyCheckInModal.tsx",
+      "file:src/components/modals/DayDetailsModal.tsx",
+      "file:src/components/modals/HabitFormModal.tsx",
+      "file:src/components/modals/WatchDemoModal.tsx",
+      "file:src/components/ui/button.tsx",
+      "file:src/components/views/AchievementsView.tsx",
+      "file:src/components/views/ActivityHistoryView.tsx",
+      "file:src/components/views/AdminView.tsx",
+      "file:src/components/views/BadgesView.tsx",
+      "file:src/components/views/CalendarView.tsx",
+      "file:src/components/views/DashboardView.tsx",
+      "file:src/components/views/HabitsManagementView.tsx",
+      "file:src/components/views/HeatmapView.tsx",
+      "file:src/components/views/LandingPage.tsx",
+      "file:src/components/views/LeaderboardView.tsx",
+      "file:src/components/views/LoginSignupPage.tsx",
+      "file:src/components/views/NotificationsDrawer.tsx",
+      "file:src/components/views/ProfileView.tsx",
+      "file:src/components/views/SettingsView.tsx",
+      "file:src/components/views/StatisticsView.tsx",
+      "file:src/app/about/page.tsx",
+      "file:src/app/admin/page.tsx",
+      "file:src/app/download/page.tsx",
+      "file:src/app/privacy/page.tsx",
+      "file:src/app/terms/page.tsx"
+    ]
+  },
+  {
+    "id": "layer:api",
+    "name": "API Layer",
+    "description": "Next.js App Router API route handlers that serve as HTTP endpoints for authentication, user data operations, and admin functions.",
+    "nodeIds": [
+      "file:src/app/api/auth/admin/users/route.ts",
+      "file:src/app/api/auth/create-user/route.ts",
+      "file:src/app/api/auth/login/route.ts",
+      "file:src/app/api/user/achievements/route.ts",
+      "file:src/app/api/user/badges/route.ts",
+      "file:src/app/api/user/checkin/route.ts",
+      "file:src/app/api/user/habits/route.ts",
+      "file:src/app/api/user/history/route.ts",
+      "file:src/app/api/user/notifications/route.ts",
+      "file:src/app/api/user/profile/route.ts"
+    ]
+  },
+  {
+    "id": "layer:business-logic",
+    "name": "Business Logic Layer",
+    "description": "Application state management, type definitions, utility functions, and mock data that implement core streak-tracking logic and gamification rules.",
+    "nodeIds": [
+      "file:src/lib/StreakContext.tsx",
+      "file:src/lib/types.ts",
+      "file:src/lib/utils.ts",
+      "file:src/lib/mockData.ts"
+    ]
+  },
+  {
+    "id": "layer:data-access",
+    "name": "Data Access Layer",
+    "description": "Supabase client/server configuration and service module that abstracts database operations for authentication, user profiles, streaks, and gamification data.",
+    "nodeIds": [
+      "file:src/lib/supabase/client.ts",
+      "file:src/lib/supabase/server.ts",
+      "file:src/lib/supabase/service.ts"
+    ]
+  },
+  {
+    "id": "layer:database",
+    "name": "Database Layer",
+    "description": "PostgreSQL schema definitions, migrations, and Row Level Security policies that define the 15-table data model for users, streaks, achievements, and gamification.",
+    "nodeIds": [
+      "file:supabase/migrations/00001_initial_schema.sql",
+      "table:supabase/migrations/00001_initial_schema.sql:users",
+      "table:supabase/migrations/00001_initial_schema.sql:profiles",
+      "table:supabase/migrations/00001_initial_schema.sql:questions",
+      "table:supabase/migrations/00001_initial_schema.sql:daily_answers",
+      "table:supabase/migrations/00001_initial_schema.sql:daily_completion",
+      "table:supabase/migrations/00001_initial_schema.sql:streaks",
+      "table:supabase/migrations/00001_initial_schema.sql:achievements",
+      "table:supabase/migrations/00001_initial_schema.sql:badges",
+      "table:supabase/migrations/00001_initial_schema.sql:xp_history",
+      "table:supabase/migrations/00001_initial_schema.sql:notifications",
+      "table:supabase/migrations/00001_initial_schema.sql:settings",
+      "table:supabase/migrations/00001_initial_schema.sql:journal",
+      "table:supabase/migrations/00001_initial_schema.sql:analytics",
+      "table:supabase/migrations/00001_initial_schema.sql:friends",
+      "table:supabase/migrations/00001_initial_schema.sql:leaderboards"
+    ]
+  },
+  {
+    "id": "layer:configuration",
+    "name": "Configuration Layer",
+    "description": "Build tooling, project configuration, documentation, and deployment artifacts for Next.js, TypeScript, ESLint, PostCSS, and TWA (Trusted Web Activity) packaging.",
+    "nodeIds": [
+      "file:.env.local",
+      "file:AGENTS.md",
+      "file:CLAUDE.md",
+      "file:components.json",
+      "file:eslint.config.mjs",
+      "file:next.config.ts",
+      "file:package.json",
+      "file:postcss.config.mjs",
+      "file:README.md",
+      "file:tsconfig.json",
+      "file:twa/build-apk.cjs",
+      "file:twa/streakify.keystore",
+      "file:twa/twa-manifest.json"
+    ]
+  }
+]

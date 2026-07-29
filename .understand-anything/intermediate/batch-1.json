@@ -1,0 +1,410 @@
+{
+  "nodes": [
+    {
+      "id": "file:supabase/migrations/00001_initial_schema.sql",
+      "type": "file",
+      "name": "00001_initial_schema.sql",
+      "filePath": "supabase/migrations/00001_initial_schema.sql",
+      "summary": "Initial database schema for streak tracker with 15 tables, indexes, and foreign key constraints",
+      "tags": ["database", "migration", "schema", "postgresql", "supabase", "rls"],
+      "complexity": "complex",
+      "language": "sql"
+    },
+    {
+      "id": "table:supabase/migrations/00001_initial_schema.sql:users",
+      "type": "table",
+      "name": "users",
+      "filePath": "supabase/migrations/00001_initial_schema.sql",
+      "summary": "Custom auth user table replacing dependency on auth.users with username, password hash, role, and status",
+      "tags": ["auth", "identity", "users"],
+      "complexity": "simple",
+      "columns": ["id", "username", "password_hash", "display_name", "role", "status", "created_at", "updated_at"]
+    },
+    {
+      "id": "table:supabase/migrations/00001_initial_schema.sql:profiles",
+      "type": "table",
+      "name": "profiles",
+      "filePath": "supabase/migrations/00001_initial_schema.sql",
+      "summary": "User profile with gamification fields (level, XP, streaks) and social metadata",
+      "tags": ["profile", "gamification", "user-data"],
+      "complexity": "moderate",
+      "columns": ["id", "username", "display_name", "avatar_url", "bio", "level", "xp", "current_streak", "longest_streak", "completion_percentage", "created_at", "updated_at"]
+    },
+    {
+      "id": "table:supabase/migrations/00001_initial_schema.sql:questions",
+      "type": "table",
+      "name": "questions",
+      "filePath": "supabase/migrations/00001_initial_schema.sql",
+      "summary": "Daily habit questions with sort order and active/required flags",
+      "tags": ["habits", "questions", "daily-tracking"],
+      "complexity": "simple",
+      "columns": ["id", "user_id", "title", "description", "icon", "is_required", "is_active", "sort_order", "created_at", "updated_at"]
+    },
+    {
+      "id": "table:supabase/migrations/00001_initial_schema.sql:daily_answers",
+      "type": "table",
+      "name": "daily_answers",
+      "filePath": "supabase/migrations/00001_initial_schema.sql",
+      "summary": "Boolean answers to daily questions with unique constraint per user/question/date",
+      "tags": ["answers", "daily-tracking", "habits"],
+      "complexity": "simple",
+      "columns": ["id", "user_id", "question_id", "answer", "answer_date", "created_at"]
+    },
+    {
+      "id": "table:supabase/migrations/00001_initial_schema.sql:daily_completion",
+      "type": "table",
+      "name": "daily_completion",
+      "filePath": "supabase/migrations/00001_initial_schema.sql",
+      "summary": "Daily completion records with percentage, XP earned, journal entry, and mood",
+      "tags": ["completion", "daily-tracking", "gamification"],
+      "complexity": "moderate",
+      "columns": ["id", "user_id", "completion_date", "is_completed", "completion_percentage", "total_questions", "completed_questions", "xp_earned", "journal_entry", "mood", "created_at", "updated_at"]
+    },
+    {
+      "id": "table:supabase/migrations/00001_initial_schema.sql:streaks",
+      "type": "table",
+      "name": "streaks",
+      "filePath": "supabase/migrations/00001_initial_schema.sql",
+      "summary": "Streak tracking with current/longest streak, freeze capability, and one row per user",
+      "tags": ["streaks", "gamification", "core-feature"],
+      "complexity": "moderate",
+      "columns": ["id", "user_id", "current_streak", "longest_streak", "last_checkin_date", "streak_start_date", "streak_frozen", "freeze_count", "updated_at"]
+    },
+    {
+      "id": "table:supabase/migrations/00001_initial_schema.sql:achievements",
+      "type": "table",
+      "name": "achievements",
+      "filePath": "supabase/migrations/00001_initial_schema.sql",
+      "summary": "Achievement records with title, category, and unique constraint per user/title",
+      "tags": ["achievements", "gamification"],
+      "complexity": "simple",
+      "columns": ["id", "user_id", "title", "description", "icon", "category", "achieved_at"]
+    },
+    {
+      "id": "table:supabase/migrations/00001_initial_schema.sql:badges",
+      "type": "table",
+      "name": "badges",
+      "filePath": "supabase/migrations/00001_initial_schema.sql",
+      "summary": "Badge awards with name, category, and unique constraint per user/name",
+      "tags": ["badges", "gamification"],
+      "complexity": "simple",
+      "columns": ["id", "user_id", "name", "description", "icon", "category", "earned_at"]
+    },
+    {
+      "id": "table:supabase/migrations/00001_initial_schema.sql:xp_history",
+      "type": "table",
+      "name": "xp_history",
+      "filePath": "supabase/migrations/00001_initial_schema.sql",
+      "summary": "XP transaction log tracking amount, source, and description",
+      "tags": ["xp", "gamification", "history"],
+      "complexity": "simple",
+      "columns": ["id", "user_id", "xp_amount", "source", "description", "created_at"]
+    },
+    {
+      "id": "table:supabase/migrations/00001_initial_schema.sql:notifications",
+      "type": "table",
+      "name": "notifications",
+      "filePath": "supabase/migrations/00001_initial_schema.sql",
+      "summary": "User notifications with type, read status, and JSONB data payload",
+      "tags": ["notifications", "messaging"],
+      "complexity": "moderate",
+      "columns": ["id", "user_id", "title", "body", "type", "is_read", "data", "created_at"]
+    },
+    {
+      "id": "table:supabase/migrations/00001_initial_schema.sql:settings",
+      "type": "table",
+      "name": "settings",
+      "filePath": "supabase/migrations/00001_initial_schema.sql",
+      "summary": "User settings for theme, reminders, privacy, and notification preferences",
+      "tags": ["settings", "preferences", "user-config"],
+      "complexity": "moderate",
+      "columns": ["id", "user_id", "theme", "reminder_time", "reminder_enabled", "privacy_public_profile", "privacy_show_streak", "privacy_show_xp", "notification_daily_reminder", "notification_achievements", "notification_streak_at_risk", "notification_weekly_summary", "created_at", "updated_at"]
+    },
+    {
+      "id": "table:supabase/migrations/00001_initial_schema.sql:journal",
+      "type": "table",
+      "name": "journal",
+      "filePath": "supabase/migrations/00001_initial_schema.sql",
+      "summary": "Daily journal entries with mood, lessons, wins, and failures",
+      "tags": ["journal", "reflection", "daily-tracking"],
+      "complexity": "moderate",
+      "columns": ["id", "user_id", "entry_date", "content", "mood", "lessons_learned", "wins", "failures", "created_at", "updated_at"]
+    },
+    {
+      "id": "table:supabase/migrations/00001_initial_schema.sql:analytics",
+      "type": "table",
+      "name": "analytics",
+      "filePath": "supabase/migrations/00001_initial_schema.sql",
+      "summary": "Periodic analytics aggregates for completed/failed days, averages, and most successful habits",
+      "tags": ["analytics", "statistics", "reporting"],
+      "complexity": "moderate",
+      "columns": ["id", "user_id", "week_start", "month_start", "year_start", "total_completed_days", "total_failed_days", "average_completion", "most_missed_habit", "most_successful_habit", "total_xp_earned", "created_at", "updated_at"]
+    },
+    {
+      "id": "table:supabase/migrations/00001_initial_schema.sql:friends",
+      "type": "table",
+      "name": "friends",
+      "filePath": "supabase/migrations/00001_initial_schema.sql",
+      "summary": "Friend relationships with status (pending/accepted) and bidirectional references",
+      "tags": ["friends", "social", "relationships"],
+      "complexity": "moderate",
+      "columns": ["id", "user_id", "friend_id", "status", "created_at", "updated_at"]
+    },
+    {
+      "id": "table:supabase/migrations/00001_initial_schema.sql:leaderboards",
+      "type": "table",
+      "name": "leaderboards",
+      "filePath": "supabase/migrations/00001_initial_schema.sql",
+      "summary": "Leaderboard rankings with period, score, and rank per user",
+      "tags": ["leaderboard", "social", "gamification"],
+      "complexity": "simple",
+      "columns": ["id", "user_id", "period", "score", "rank", "updated_at"]
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:supabase/migrations/00001_initial_schema.sql",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:users",
+      "type": "defines_schema",
+      "weight": 0.8
+    },
+    {
+      "source": "file:supabase/migrations/00001_initial_schema.sql",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:profiles",
+      "type": "defines_schema",
+      "weight": 0.8
+    },
+    {
+      "source": "file:supabase/migrations/00001_initial_schema.sql",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:questions",
+      "type": "defines_schema",
+      "weight": 0.8
+    },
+    {
+      "source": "file:supabase/migrations/00001_initial_schema.sql",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:daily_answers",
+      "type": "defines_schema",
+      "weight": 0.8
+    },
+    {
+      "source": "file:supabase/migrations/00001_initial_schema.sql",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:daily_completion",
+      "type": "defines_schema",
+      "weight": 0.8
+    },
+    {
+      "source": "file:supabase/migrations/00001_initial_schema.sql",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:streaks",
+      "type": "defines_schema",
+      "weight": 0.8
+    },
+    {
+      "source": "file:supabase/migrations/00001_initial_schema.sql",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:achievements",
+      "type": "defines_schema",
+      "weight": 0.8
+    },
+    {
+      "source": "file:supabase/migrations/00001_initial_schema.sql",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:badges",
+      "type": "defines_schema",
+      "weight": 0.8
+    },
+    {
+      "source": "file:supabase/migrations/00001_initial_schema.sql",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:xp_history",
+      "type": "defines_schema",
+      "weight": 0.8
+    },
+    {
+      "source": "file:supabase/migrations/00001_initial_schema.sql",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:notifications",
+      "type": "defines_schema",
+      "weight": 0.8
+    },
+    {
+      "source": "file:supabase/migrations/00001_initial_schema.sql",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:settings",
+      "type": "defines_schema",
+      "weight": 0.8
+    },
+    {
+      "source": "file:supabase/migrations/00001_initial_schema.sql",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:journal",
+      "type": "defines_schema",
+      "weight": 0.8
+    },
+    {
+      "source": "file:supabase/migrations/00001_initial_schema.sql",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:analytics",
+      "type": "defines_schema",
+      "weight": 0.8
+    },
+    {
+      "source": "file:supabase/migrations/00001_initial_schema.sql",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:friends",
+      "type": "defines_schema",
+      "weight": 0.8
+    },
+    {
+      "source": "file:supabase/migrations/00001_initial_schema.sql",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:leaderboards",
+      "type": "defines_schema",
+      "weight": 0.8
+    },
+    {
+      "source": "table:supabase/migrations/00001_initial_schema.sql:profiles",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:users",
+      "type": "depends_on",
+      "weight": 0.9,
+      "label": "FOREIGN KEY (id) REFERENCES users(id)"
+    },
+    {
+      "source": "table:supabase/migrations/00001_initial_schema.sql:questions",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:profiles",
+      "type": "depends_on",
+      "weight": 0.9,
+      "label": "FOREIGN KEY (user_id) REFERENCES profiles(id)"
+    },
+    {
+      "source": "table:supabase/migrations/00001_initial_schema.sql:daily_answers",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:profiles",
+      "type": "depends_on",
+      "weight": 0.9,
+      "label": "FOREIGN KEY (user_id) REFERENCES profiles(id)"
+    },
+    {
+      "source": "table:supabase/migrations/00001_initial_schema.sql:daily_answers",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:questions",
+      "type": "depends_on",
+      "weight": 0.9,
+      "label": "FOREIGN KEY (question_id) REFERENCES questions(id)"
+    },
+    {
+      "source": "table:supabase/migrations/00001_initial_schema.sql:daily_completion",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:profiles",
+      "type": "depends_on",
+      "weight": 0.9,
+      "label": "FOREIGN KEY (user_id) REFERENCES profiles(id)"
+    },
+    {
+      "source": "table:supabase/migrations/00001_initial_schema.sql:streaks",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:profiles",
+      "type": "depends_on",
+      "weight": 0.9,
+      "label": "FOREIGN KEY (user_id) REFERENCES profiles(id)"
+    },
+    {
+      "source": "table:supabase/migrations/00001_initial_schema.sql:achievements",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:profiles",
+      "type": "depends_on",
+      "weight": 0.9,
+      "label": "FOREIGN KEY (user_id) REFERENCES profiles(id)"
+    },
+    {
+      "source": "table:supabase/migrations/00001_initial_schema.sql:badges",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:profiles",
+      "type": "depends_on",
+      "weight": 0.9,
+      "label": "FOREIGN KEY (user_id) REFERENCES profiles(id)"
+    },
+    {
+      "source": "table:supabase/migrations/00001_initial_schema.sql:xp_history",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:profiles",
+      "type": "depends_on",
+      "weight": 0.9,
+      "label": "FOREIGN KEY (user_id) REFERENCES profiles(id)"
+    },
+    {
+      "source": "table:supabase/migrations/00001_initial_schema.sql:notifications",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:profiles",
+      "type": "depends_on",
+      "weight": 0.9,
+      "label": "FOREIGN KEY (user_id) REFERENCES profiles(id)"
+    },
+    {
+      "source": "table:supabase/migrations/00001_initial_schema.sql:settings",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:profiles",
+      "type": "depends_on",
+      "weight": 0.9,
+      "label": "FOREIGN KEY (user_id) REFERENCES profiles(id)"
+    },
+    {
+      "source": "table:supabase/migrations/00001_initial_schema.sql:journal",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:profiles",
+      "type": "depends_on",
+      "weight": 0.9,
+      "label": "FOREIGN KEY (user_id) REFERENCES profiles(id)"
+    },
+    {
+      "source": "table:supabase/migrations/00001_initial_schema.sql:analytics",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:profiles",
+      "type": "depends_on",
+      "weight": 0.9,
+      "label": "FOREIGN KEY (user_id) REFERENCES profiles(id)"
+    },
+    {
+      "source": "table:supabase/migrations/00001_initial_schema.sql:friends",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:profiles",
+      "type": "depends_on",
+      "weight": 0.9,
+      "label": "FOREIGN KEY (user_id) REFERENCES profiles(id)"
+    },
+    {
+      "source": "table:supabase/migrations/00001_initial_schema.sql:leaderboards",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:profiles",
+      "type": "depends_on",
+      "weight": 0.9,
+      "label": "FOREIGN KEY (user_id) REFERENCES profiles(id)"
+    },
+    {
+      "source": "table:supabase/migrations/00001_initial_schema.sql:daily_answers",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:daily_completion",
+      "type": "related",
+      "weight": 0.5,
+      "label": "daily_answers feed into daily_completion tracking"
+    },
+    {
+      "source": "table:supabase/migrations/00001_initial_schema.sql:streaks",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:daily_completion",
+      "type": "related",
+      "weight": 0.5,
+      "label": "streaks are maintained by daily completion"
+    },
+    {
+      "source": "table:supabase/migrations/00001_initial_schema.sql:xp_history",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:daily_completion",
+      "type": "related",
+      "weight": 0.5,
+      "label": "xp_earned in daily_completion generates xp_history records"
+    },
+    {
+      "source": "table:supabase/migrations/00001_initial_schema.sql:achievements",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:streaks",
+      "type": "related",
+      "weight": 0.5,
+      "label": "achievements can be earned from streak milestones"
+    },
+    {
+      "source": "table:supabase/migrations/00001_initial_schema.sql:leaderboards",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:xp_history",
+      "type": "related",
+      "weight": 0.5,
+      "label": "leaderboard scores are based on XP totals"
+    },
+    {
+      "source": "table:supabase/migrations/00001_initial_schema.sql:friends",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:leaderboards",
+      "type": "related",
+      "weight": 0.5,
+      "label": "friends can compare leaderboard rankings"
+    },
+    {
+      "source": "table:supabase/migrations/00001_initial_schema.sql:notifications",
+      "target": "table:supabase/migrations/00001_initial_schema.sql:settings",
+      "type": "depends_on",
+      "weight": 0.6,
+      "label": "notification types controlled by settings preferences"
+    }
+  ]
+}

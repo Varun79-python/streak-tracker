@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 
 export const Sidebar: React.FC = () => {
-  const { activeView, setActiveView, setIsLoggedIn, user, setShowCheckInModal } = useStreak();
+  const { activeView, setActiveView, logout, user, setShowCheckInModal } = useStreak();
   const router = useRouter();
 
   const navItems = [
@@ -44,10 +44,10 @@ export const Sidebar: React.FC = () => {
   ];
 
   return (
-    <aside className="hidden lg:flex flex-col w-64 border-r border-white/10 bg-[#0f172a]/80 backdrop-blur-xl h-screen sticky top-0 z-40 select-none">
+    <aside className="hidden lg:flex flex-col w-64 border-r border-[#D5CCC4] bg-[#E0D8D0]/80 backdrop-blur-xl h-screen sticky top-0 z-40 select-none">
       {/* Brand Logo */}
-      <div className="p-6 border-b border-white/10 flex items-center gap-3">
-        <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 glow-green overflow-hidden">
+      <div className="p-6 border-b border-[#D5CCC4] flex items-center gap-3">
+        <div className="w-10 h-10 rounded-2xl gradient-coral flex items-center justify-center clay-icon overflow-hidden">
           <img 
             src="/logo.png" 
             alt="Streakify Logo" 
@@ -56,16 +56,16 @@ export const Sidebar: React.FC = () => {
               e.currentTarget.style.display = 'none';
             }} 
           />
-          <Flame className="w-5 h-5 fire-animated text-emerald-400" />
+          <Flame className="w-5 h-5 fire-animated text-white" />
         </div>
         <div>
-          <h1 className="font-bold text-slate-100 tracking-tight text-lg">Streakify</h1>
-          <p className="text-[11px] text-slate-400 font-mono">Build Discipline Daily</p>
+          <h1 className="font-bold text-[#3D3D3D] tracking-tight text-lg">Streakify</h1>
+          <p className="text-[11px] text-[#6B6B6B] font-mono">Build Discipline Daily</p>
         </div>
       </div>
 
       {/* Nav Menu */}
-      <nav className="flex-1 overflow-y-auto p-4 space-y-1">
+      <nav className="flex-1 overflow-y-auto p-4 space-y-1.5">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeView === item.id;
@@ -75,7 +75,7 @@ export const Sidebar: React.FC = () => {
               <button
                 key={item.id}
                 onClick={() => setShowCheckInModal(true)}
-                className="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm my-3 transition-all glow-green cursor-pointer"
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl gradient-coral text-white font-bold text-sm my-3 transition-all clay-badge cursor-pointer hover:scale-[1.02]"
               >
                 <Icon className="w-4 h-4" />
                 <span>{item.label}</span>
@@ -94,13 +94,13 @@ export const Sidebar: React.FC = () => {
                   router.push('/');
                 }
               }}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all cursor-pointer ${
+              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all cursor-pointer ${
                 isActive
-                  ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold glow-green'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                  ? 'neu-pressed text-[#7C9EB2] font-semibold'
+                  : 'neu-btn text-[#6B6B6B] hover:text-[#3D3D3D]'
               }`}
             >
-              <Icon className={`w-4 h-4 ${isActive ? 'text-emerald-400' : 'text-slate-400'}`} />
+              <Icon className={`w-4 h-4 ${isActive ? 'text-[#7C9EB2]' : 'text-[#6B6B6B]'}`} />
               <span>{item.label}</span>
             </button>
           );
@@ -108,30 +108,29 @@ export const Sidebar: React.FC = () => {
       </nav>
 
       {/* Motivational Quote Card */}
-      <div className="p-4 border-t border-white/10">
-        <div className="p-3 rounded-xl bg-slate-900/80 border border-white/5 text-xs space-y-1">
-          <p className="text-amber-400 font-mono font-medium text-[11px]">"Discipline today, freedom tomorrow."</p>
-          <p className="text-slate-400 text-[10px]">Level {user.level} • {user.xp} XP</p>
+      <div className="p-4 border-t border-[#D5CCC4]">
+        <div className="p-4 neu-card-sm text-xs space-y-1.5">
+          <p className="text-[#D4A574] font-mono font-medium text-[11px]">"Discipline today, freedom tomorrow."</p>
+          <p className="text-[#6B6B6B] text-[10px]">Level {user.level} • {user.xp} XP</p>
         </div>
       </div>
 
       {/* User Quick Profile & Logout */}
-      <div className="p-4 border-t border-white/10 flex items-center justify-between">
-        <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveView('profile')}>
-          <img src={user.avatar} alt={user.name} className="w-9 h-9 rounded-full object-cover border border-emerald-500/40" />
+      <div className="p-4 border-t border-[#D5CCC4] flex items-center justify-between">
+        <div className="flex items-center gap-3 cursor-pointer group" onClick={() => setActiveView('profile')}>
+          <img src={user.avatar} alt={user.name} className="w-10 h-10 rounded-full object-cover clay-avatar group-hover:scale-105 transition-transform" />
           <div className="truncate">
-            <p className="text-sm font-semibold text-slate-200 truncate">{user.name}</p>
-            <p className="text-[11px] text-emerald-400 font-mono">Level {user.level}</p>
+            <p className="text-sm font-semibold text-[#3D3D3D] truncate">{user.name}</p>
+            <p className="text-[11px] text-[#7C9EB2] font-mono">Level {user.level}</p>
           </div>
         </div>
         <button
-          onClick={() => {
-            setIsLoggedIn(false);
-            setActiveView('landing');
+          onClick={async () => {
+            await logout();
             router.push('/');
           }}
           title="Logout"
-          className="p-2 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors cursor-pointer"
+          className="p-2.5 neu-btn text-[#6B6B6B] hover:text-[#C47C7C] transition-colors cursor-pointer"
         >
           <LogOut className="w-4 h-4" />
         </button>

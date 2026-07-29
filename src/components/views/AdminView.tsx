@@ -2,49 +2,48 @@
 
 import React, { useState } from 'react';
 import { useStreak, ADMIN_SECRET_KEY } from '@/lib/StreakContext';
-import { UserCredential } from '@/lib/types';
 import { 
   ShieldCheck, 
   UserPlus, 
   Key, 
   Lock, 
-  Eye, 
-  EyeOff, 
-  Edit3, 
-  Trash2, 
-  CheckCircle2, 
-  AlertTriangle,
-  Sparkles,
-  Users
+  CheckCircle2,
+  Users,
+  Pencil,
+  X,
+  Save,
+  Trash2,
+  Terminal,
+  Server,
+  Activity,
+  UserCog
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+
+const ADMIN_ACCENT = '#06b6d4';
 
 export const AdminView: React.FC = () => {
   const { 
     credentials, 
     isAdminUnlocked, 
     verifyAndUnlockAdmin,
-    setCredentials
+    setCredentials,
+    user
   } = useStreak();
 
   const [inputKey, setInputKey] = useState('');
   const [keyError, setKeyError] = useState('');
 
-  // Create User Form State
   const [newName, setNewName] = useState('');
   const [newEmail, setNewEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [creationSuccess, setCreationSuccess] = useState('');
   const [creating, setCreating] = useState(false);
 
-  // Editing User Credential State
   const [editingUserId, setEditingUserId] = useState<string | null>(null);
-  const [editEmail, setEditEmail] = useState('');
   const [editPassword, setEditPassword] = useState('');
-  const [editName, setEditName] = useState('');
-  const [showPasswordMap, setShowPasswordMap] = useState<Record<string, boolean>>({});
-  const [saving, setSaving] = useState<string | null>(null);
-  const [deleting, setDeleting] = useState<string | null>(null);
+  const [passwordMessage, setPasswordMessage] = useState('');
+  const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
+  const [deleteConfirmName, setDeleteConfirmName] = useState('');
 
   const handleAdminUnlockSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -79,19 +78,69 @@ export const AdminView: React.FC = () => {
         throw new Error(data.error || 'Failed to create user');
       }
 
-      // Refresh credentials list
       await refreshCredentials();
       
       setNewName('');
       setNewEmail('');
       setNewPassword('');
-      setCreationSuccess('User account provisioned successfully! Credentials are ready for login.');
+      setCreationSuccess('User account created successfully!');
       setTimeout(() => setCreationSuccess(''), 4000);
     } catch (err) {
       setCreationSuccess(`Error: ${err instanceof Error ? err.message : 'Failed to create user'}`);
       setTimeout(() => setCreationSuccess(''), 4000);
     } finally {
       setCreating(false);
+    }
+  };
+
+  const handlePasswordEdit = async (userId: string) => {
+    if (!editPassword.trim()) return;
+    try {
+      const res = await fetch('/api/auth/admin/users', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${ADMIN_SECRET_KEY}`,
+        },
+        body: JSON.stringify({ id: userId, updates: { password: editPassword.trim() } }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to update password');
+      }
+
+      setPasswordMessage('Password updated successfully!');
+      setEditingUserId(null);
+      setEditPassword('');
+      await refreshCredentials();
+    } catch (err) {
+      setPasswordMessage(`Error: ${err instanceof Error ? err.message : 'Failed to update password'}`);
+    }
+    setTimeout(() => setPasswordMessage(''), 4000);
+  };
+
+  const handleDeleteUser = async (userId: string) => {
+    try {
+      const res = await fetch('/api/auth/admin/users', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${ADMIN_SECRET_KEY}`,
+        },
+        body: JSON.stringify({ id: userId }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to delete user');
+      }
+
+      setDeletingUserId(null);
+      setDeleteConfirmName('');
+      await refreshCredentials();
+    } catch (err) {
+      alert(`Delete failed: ${err instanceof Error ? err.message : 'Unknown error'}`);
     }
   };
 
@@ -109,350 +158,295 @@ export const AdminView: React.FC = () => {
     }
   };
 
-  const startEdit = (user: UserCredential) => {
-    setEditingUserId(user.id);
-    setEditName(user.name);
-    setEditEmail(user.email);
-    setEditPassword(user.password);
-  };
-
-  const saveEdit = async (id: string) => {
-    setSaving(id);
-    try {
-      const res = await fetch('/api/auth/admin/users', {
-        method: 'PATCH',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${ADMIN_SECRET_KEY}`,
-        },
-        body: JSON.stringify({
-          id,
-          name: editName,
-          email: editEmail,
-          password: editPassword,
-        }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || 'Failed to update user');
-      }
-
-      await refreshCredentials();
-      setEditingUserId(null);
-    } catch (err) {
-      alert(`Error: ${err instanceof Error ? err.message : 'Failed to update user'}`);
-    } finally {
-      setSaving(null);
-    }
-  };
-
-  const togglePasswordVisibility = (id: string) => {
-    setShowPasswordMap(prev => ({ ...prev, [id]: !prev[id] }));
-  };
-
-  const handleDeleteUser = async (id: string) => {
-    if (!confirm('Are you sure you want to revoke access for this user?')) return;
-    
-    setDeleting(id);
-    try {
-      const res = await fetch('/api/auth/admin/users', {
-        method: 'DELETE',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${ADMIN_SECRET_KEY}`,
-        },
-        body: JSON.stringify({ id }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || 'Failed to delete user');
-      }
-
-      await refreshCredentials();
-    } catch (err) {
-      alert(`Error: ${err instanceof Error ? err.message : 'Failed to delete user'}`);
-    } finally {
-      setDeleting(null);
-    }
-  };
-
-  // If Admin Key is not unlocked yet, display Secret Key Entry Gate
   if (!isAdminUnlocked) {
     return (
-      <div className="max-w-md mx-auto my-12 glass-panel p-8 rounded-3xl border border-white/15 shadow-2xl space-y-6 select-none">
-        <div className="text-center space-y-2">
-          <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 mx-auto glow-green">
-            <Lock className="w-8 h-8" />
-          </div>
-          <h2 className="text-xl font-extrabold text-white">Protected Admin Access</h2>
-          <p className="text-xs text-slate-400 font-mono">
-            Enter your secret master key to unlock user account provisioning and access control.
-          </p>
-        </div>
-
-        <form onSubmit={handleAdminUnlockSubmit} className="space-y-4">
-          <div className="space-y-1">
-            <label className="text-xs font-semibold text-slate-300 font-mono">Master Key</label>
-            <div className="relative">
-              <Key className="w-4 h-4 absolute left-3.5 top-3 text-slate-500" />
-              <input
-                type="password"
-                value={inputKey}
-                onChange={(e) => setInputKey(e.target.value)}
-                placeholder="Enter secret key..."
-                required
-                className="w-full bg-slate-950/80 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-100 focus:border-emerald-500 font-mono"
-              />
+      <div className="max-w-lg mx-auto my-16 select-none">
+        <div className="neu-card rounded-2xl overflow-hidden">
+          <div className="gradient-teal px-6 py-4 flex items-center gap-3">
+            <Terminal className="w-5 h-5 text-[#3D3D3D]" />
+            <span className="text-[#3D3D3D] font-mono text-xs font-bold tracking-widest uppercase">Secure Admin Terminal</span>
+            <div className="ml-auto flex gap-1.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-[#C47C7C]" />
+              <div className="w-2.5 h-2.5 rounded-full bg-[#D4A574]" />
+              <div className="w-2.5 h-2.5 rounded-full bg-[#A8C4B8]" />
             </div>
           </div>
 
-          {keyError && (
-            <p className="text-xs text-rose-400 font-mono bg-rose-500/10 p-2.5 rounded-xl border border-rose-500/20">
-              {keyError}
-            </p>
-          )}
+          <div className="p-8 space-y-6">
+            <div className="text-center space-y-2">
+              <div className="clay-icon w-16 h-16 rounded-2xl flex items-center justify-center text-[#7C9EB2] mx-auto">
+                <ShieldCheck className="w-8 h-8" />
+              </div>
+              <h2 className="text-lg font-bold text-[#3D3D3D] font-mono tracking-wide">Admin Authentication</h2>
+              <p className="text-xs text-[#9A9A9A] font-mono">
+                Enter the master key to access the administration panel.
+              </p>
+            </div>
 
-          <button
-            type="submit"
-            className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-all glow-green cursor-pointer"
-          >
-            Unlock Admin Panel
-          </button>
-        </form>
+            <form onSubmit={handleAdminUnlockSubmit} className="space-y-4">
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-[#9A9A9A] font-mono tracking-wider uppercase">Master Key</label>
+                <div className="relative">
+                  <Lock className="w-4 h-4 absolute left-3.5 top-3 text-[#C5BDB5]" />
+                  <input
+                    type="password"
+                    value={inputKey}
+                    onChange={(e) => setInputKey(e.target.value)}
+                    placeholder="Enter secret key..."
+                    required
+                    className="neu-input w-full rounded-xl pl-10 pr-4 py-2.5 text-xs font-mono tracking-wider"
+                  />
+                </div>
+              </div>
+
+              {keyError && (
+                <p className="text-xs text-[#C47C7C] font-mono gradient-coral/20 p-3 rounded-xl flex items-center gap-2">
+                  <X className="w-3.5 h-3.5 text-[#C47C7C]" />
+                  {keyError}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                className="w-full py-3 rounded-xl gradient-coral text-[#3D3D3D] font-bold text-xs transition-all cursor-pointer font-mono tracking-wider uppercase"
+              >
+                Unlock Panel
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8 select-none max-w-6xl mx-auto">
-      {/* Header */}
-      <div className="flex items-center justify-between flex-wrap gap-4">
-        <div>
-          <h2 className="text-2xl font-bold text-white flex items-center gap-2.5">
-            <ShieldCheck className="w-7 h-7 text-emerald-400" />
-            <span>Admin User Provisioning & Credentials Control</span>
-          </h2>
-          <p className="text-xs text-slate-400 font-mono">
-            Only admin-created IDs & passwords can log into the application. Immediate updates are synced directly to database.
-          </p>
-        </div>
-
-        <div className="px-4 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold flex items-center gap-2">
-          <Users className="w-4 h-4" />
-          <span>{credentials.length} Provisioned Accounts</span>
-        </div>
-      </div>
-
-      {/* Admin Key Reminder Alert */}
-      <div className="glass-panel p-4 rounded-2xl border border-emerald-500/30 bg-emerald-950/20 flex items-center justify-between flex-wrap gap-4 text-xs font-mono">
-        <div className="flex items-center gap-2">
-          <Key className="w-4 h-4 text-emerald-400" />
-          <span className="text-slate-300">Active Secret Key:</span>
-          <code className="text-emerald-300 font-bold bg-slate-950 px-2 py-1 rounded border border-white/10 select-all">
-            {ADMIN_SECRET_KEY}
-          </code>
-        </div>
-        <span className="text-slate-400 text-[11px]">🔐 Admin Authorization Verified</span>
-      </div>
-
-      {/* Grid: Create User Form + Summary */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Create User Form */}
-        <div className="lg:col-span-5 glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
-          <div className="flex items-center gap-2">
-            <UserPlus className="w-5 h-5 text-emerald-400" />
-            <h3 className="text-base font-bold text-white">Create New User Access</h3>
+    <div className="select-none max-w-5xl mx-auto">
+      <div className="neu-card rounded-2xl overflow-hidden">
+        <div className="gradient-teal px-6 py-3 flex items-center gap-3">
+          <Server className="w-5 h-5 text-[#3D3D3D]" />
+          <span className="text-[#3D3D3D] font-mono text-xs font-bold tracking-widest uppercase">Admin Panel</span>
+          <div className="ml-3 px-2 py-0.5 rounded bg-[#3D3D3D]/10 text-[#3D3D3D] text-[10px] font-mono">
+            v1.0.0
           </div>
+          <div className="ml-auto flex items-center gap-3 text-[10px] font-mono text-[#C5BDB5]">
+            <span className="flex items-center gap-1.5">
+              <Activity className="w-3 h-3 text-[#A8C4B8]" />
+              <span className="text-[#A8C4B8]">Online</span>
+            </span>
+            <span className="text-[#C5BDB5]">|</span>
+            <span>{user.name || 'Admin'}</span>
+          </div>
+        </div>
 
-          <form onSubmit={handleCreateUser} className="space-y-4">
-            <div className="space-y-1">
-              <label className="text-xs font-semibold text-slate-300">User Full Name</label>
-              <input
-                type="text"
-                value={newName}
-                onChange={(e) => setNewName(e.target.value)}
-                placeholder="e.g. Alex Johnson"
-                required
-                className="w-full bg-slate-950/80 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-slate-100 focus:border-emerald-500"
-              />
-            </div>
-
-            <div className="space-y-1">
-              <label className="text-xs font-semibold text-slate-300">User Email / Login ID</label>
-              <input
-                type="email"
-                value={newEmail}
-                onChange={(e) => setNewEmail(e.target.value)}
-                placeholder="e.g. alex@company.com"
-                required
-                className="w-full bg-slate-950/80 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-slate-100 focus:border-emerald-500 font-mono"
-              />
-            </div>
-
-            <div className="space-y-1">
-              <label className="text-xs font-semibold text-slate-300">Password</label>
-              <input
-                type="text"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="Assign secure password..."
-                required
-                className="w-full bg-slate-950/80 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-slate-100 focus:border-emerald-500 font-mono"
-              />
-            </div>
-
-            {creationSuccess && (
-              <p className="text-xs text-emerald-300 bg-emerald-500/20 p-3 rounded-xl border border-emerald-500/40 font-mono flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span>{creationSuccess}</span>
+        <div className="p-6 space-y-6">
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div>
+              <h2 className="text-xl font-bold text-[#3D3D3D] flex items-center gap-2.5 font-mono tracking-tight">
+                <UserCog className="w-6 h-6 text-[#7C9EB2]" />
+                <span>User Management</span>
+              </h2>
+              <p className="text-[11px] text-[#9A9A9A] font-mono">
+                Create and manage user accounts. Passwords are bcrypt-hashed at rest.
               </p>
-            )}
+            </div>
 
-            <button
-              type="submit"
-              disabled={creating}
-              className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-all glow-green flex items-center justify-center gap-2 shadow-lg cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <UserPlus className="w-4 h-4" />
-              <span>{creating ? 'Creating...' : 'Generate & Grant User Credentials'}</span>
-            </button>
-          </form>
-        </div>
-
-        {/* Existing Users Table */}
-        <div className="lg:col-span-7 glass-panel p-6 rounded-3xl border border-white/10 space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <ShieldCheck className="w-5 h-5 text-blue-400" />
-              <span>Manage User Credentials & Passwords</span>
-            </h3>
-            <span className="text-xs text-slate-400 font-mono">Changes sync immediately</span>
+            <div className="px-4 py-2 rounded-xl gradient-teal text-[#3D3D3D] text-xs font-mono flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              <span className="font-bold">{credentials.length}</span>
+              <span className="text-[#3D3D3D]/70">Registered</span>
+            </div>
           </div>
 
-          <div className="space-y-3 font-mono text-xs">
-            {credentials.map((userCredential) => {
-              const isEditing = editingUserId === userCredential.id;
-              const showPass = showPasswordMap[userCredential.id];
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div className="lg:col-span-5 neu-pressed rounded-xl p-5 space-y-4">
+              <div className="flex items-center gap-2 pb-1 border-b border-[#C5BDB5]/30">
+                <UserPlus className="w-4 h-4 text-[#7C9EB2]" />
+                <h3 className="text-sm font-bold text-[#3D3D3D] font-mono">Create Account</h3>
+              </div>
 
-              return (
-                <div
-                  key={userCredential.id}
-                  className={`p-4 rounded-2xl border transition-all ${
-                    isEditing
-                      ? 'bg-emerald-950/30 border-emerald-500/40 ring-1 ring-emerald-500/50'
-                      : 'bg-slate-900/60 border-white/10 hover:border-white/20'
-                  }`}
-                >
-                  {isEditing ? (
-                    /* Inline Editing Mode */
-                    <div className="space-y-3">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div className="space-y-1">
-                          <label className="text-[10px] text-slate-400">Name</label>
-                          <input
-                            type="text"
-                            value={editName}
-                            onChange={(e) => setEditName(e.target.value)}
-                            className="w-full bg-slate-950 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white"
-                          />
-                        </div>
-                        <div className="space-y-1">
-                          <label className="text-[10px] text-slate-400">Email / ID</label>
-                          <input
-                            type="email"
-                            value={editEmail}
-                            onChange={(e) => setEditEmail(e.target.value)}
-                            className="w-full bg-slate-950 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="space-y-1">
-                        <label className="text-[10px] text-slate-400">New Password</label>
-                        <input
-                          type="text"
-                          value={editPassword}
-                          onChange={(e) => setEditPassword(e.target.value)}
-                          className="w-full bg-slate-950 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-emerald-400 font-bold"
-                        />
-                      </div>
-
-                      <div className="flex justify-end gap-2 pt-2">
-                        <button
-                          onClick={() => setEditingUserId(null)}
-                          className="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs hover:bg-slate-700 cursor-pointer"
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          onClick={() => saveEdit(userCredential.id)}
-                          disabled={saving === userCredential.id}
-                          className="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400 cursor-pointer flex items-center gap-1 disabled:opacity-50"
-                        >
-                          <CheckCircle2 className="w-3.5 h-3.5" /> {saving === userCredential.id ? 'Saving...' : 'Save Changes Immediately'}
-                        </button>
-                      </div>
-                    </div>
-                  ) : (
-                    /* Display Mode */
-                    <div className="flex items-center justify-between flex-wrap gap-3">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <span className="font-bold text-white text-sm font-sans">{userCredential.name}</span>
-                          <span className={`text-[10px] px-2 py-0.5 rounded font-mono ${
-                            userCredential.role === 'admin'
-                              ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30 font-bold'
-                              : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                          }`}>
-                            {userCredential.role.toUpperCase()}
-                          </span>
-                        </div>
-
-                        <p className="text-slate-400 text-xs">Email/ID: <strong className="text-slate-200">{userCredential.email}</strong></p>
-
-                        <div className="flex items-center gap-2 pt-1 text-slate-400 text-xs">
-                          <span>Password:</span>
-                          <span className="text-emerald-400 font-bold">
-                            {showPass ? userCredential.password : '••••••••••••'}
-                          </span>
-                          <button
-                            onClick={() => togglePasswordVisibility(userCredential.id)}
-                            className="p-1 text-slate-400 hover:text-white cursor-pointer"
-                          >
-                            {showPass ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                          </button>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        {/* Edit Credentials */}
-                        <button
-                          onClick={() => startEdit(userCredential)}
-                          className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white transition-colors cursor-pointer flex items-center gap-1 text-xs"
-                          title="Edit Credentials"
-                        >
-                          <Edit3 className="w-3.5 h-3.5 text-emerald-400" /> Edit
-                        </button>
-
-                        {/* Delete User */}
-                        {userCredential.role !== 'admin' && (
-                          <button
-                            onClick={() => handleDeleteUser(userCredential.id)}
-                            disabled={deleting === userCredential.id}
-                            className="p-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 transition-colors cursor-pointer disabled:opacity-50"
-                            title="Revoke Access"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  )}
+              <form onSubmit={handleCreateUser} className="space-y-3.5">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-semibold text-[#9A9A9A] font-mono uppercase tracking-wider">Full Name</label>
+                  <input
+                    type="text"
+                    value={newName}
+                    onChange={(e) => setNewName(e.target.value)}
+                    placeholder="e.g. Alex Johnson"
+                    required
+                    className="neu-input w-full rounded-lg px-3 py-2 text-xs"
+                  />
                 </div>
-              );
-            })}
+
+                <div className="space-y-1">
+                  <label className="text-[10px] font-semibold text-[#9A9A9A] font-mono uppercase tracking-wider">Email / Login</label>
+                  <input
+                    type="email"
+                    value={newEmail}
+                    onChange={(e) => setNewEmail(e.target.value)}
+                    placeholder="e.g. alex@company.com"
+                    required
+                    className="neu-input w-full rounded-lg px-3 py-2 text-xs font-mono"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] font-semibold text-[#9A9A9A] font-mono uppercase tracking-wider">Password</label>
+                  <input
+                    type="text"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="Assign a password..."
+                    required
+                    className="neu-input w-full rounded-lg px-3 py-2 text-xs font-mono"
+                  />
+                </div>
+
+                {creationSuccess && (
+                  <p className="text-[11px] text-[#7C9EB2] gradient-teal/20 p-2.5 rounded-lg font-mono flex items-center gap-2">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#7C9EB2]" />
+                    <span>{creationSuccess}</span>
+                  </p>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={creating}
+                  className="w-full py-2.5 rounded-lg gradient-coral text-[#3D3D3D] font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed font-mono"
+                >
+                  <UserPlus className="w-3.5 h-3.5" />
+                  <span>{creating ? 'Creating...' : 'Create Account'}</span>
+                </button>
+              </form>
+            </div>
+
+            <div className="lg:col-span-7 neu-pressed rounded-xl p-5 space-y-3">
+              <div className="flex items-center gap-2 pb-1 border-b border-[#C5BDB5]/30">
+                <Users className="w-4 h-4 text-[#7C9EB2]" />
+                <h3 className="text-sm font-bold text-[#3D3D3D] font-mono">Registered Accounts</h3>
+              </div>
+
+              <div className="space-y-1.5">
+                {passwordMessage && (
+                  <p className="text-[11px] text-[#7C9EB2] gradient-teal/20 p-2.5 rounded-lg font-mono">
+                    {passwordMessage}
+                  </p>
+                )}
+                {credentials.length === 0 ? (
+                  <p className="text-[#9A9A9A] text-center py-8 text-xs font-mono">No accounts registered.</p>
+                ) : (
+                  credentials.map((user) => (
+                    <div key={user.id}>
+                      {editingUserId === user.id ? (
+                        <div className="p-3 rounded-lg neu-card space-y-2.5">
+                          <div className="flex items-center justify-between">
+                            <span className="font-bold text-[#3D3D3D] text-sm">{user.name}</span>
+                            <span className={`text-[10px] px-2 py-0.5 rounded font-mono ${
+                              user.role === 'admin'
+                                ? 'gradient-coral text-[#3D3D3D]'
+                                : 'gradient-teal text-[#3D3D3D]'
+                            }`}>
+                              {user.role.toUpperCase()}
+                            </span>
+                          </div>
+                          <p className="text-[#9A9A9A] text-xs font-mono">{user.email}</p>
+                          <div className="flex items-center gap-2 pt-1">
+                            <input
+                              type="text"
+                              value={editPassword}
+                              onChange={(e) => setEditPassword(e.target.value)}
+                              placeholder="New password..."
+                              className="neu-input flex-1 rounded-lg px-3 py-1.5 text-xs font-mono"
+                            />
+                            <button
+                              onClick={() => handlePasswordEdit(user.id)}
+                              disabled={!editPassword.trim()}
+                              className="px-3 py-1.5 rounded-lg gradient-coral text-[#3D3D3D] font-bold text-xs transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              <Save className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              onClick={() => { setEditingUserId(null); setEditPassword(''); }}
+                              className="px-3 py-1.5 rounded-lg neu-btn text-[#9A9A9A] text-xs transition-all cursor-pointer"
+                            >
+                              <X className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      ) : deletingUserId === user.id ? (
+                        <div className="p-3 rounded-lg neu-card border border-[#C47C7C]/30 space-y-2.5">
+                          <div className="flex items-center justify-between">
+                            <span className="font-bold text-[#3D3D3D] text-sm">{user.name}</span>
+                            <span className="text-[10px] px-2 py-0.5 rounded font-mono gradient-coral text-[#3D3D3D]">
+                              DELETE CONFIRM
+                            </span>
+                          </div>
+                          <p className="text-[#9A9A9A] text-xs font-mono">{user.email}</p>
+                          <p className="text-[11px] text-[#C47C7C] font-mono">
+                            Type <strong>{user.name}</strong> below to confirm deletion:
+                          </p>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="text"
+                              value={deleteConfirmName}
+                              onChange={(e) => setDeleteConfirmName(e.target.value)}
+                              placeholder={`Type "${user.name}" to confirm...`}
+                              className="neu-input flex-1 rounded-lg px-3 py-1.5 text-xs font-mono"
+                            />
+                            <button
+                              onClick={() => handleDeleteUser(user.id)}
+                              disabled={deleteConfirmName !== user.name}
+                              className="px-3 py-1.5 rounded-lg bg-[#C47C7C] hover:bg-[#C47C7C]/80 text-white font-bold text-xs transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              onClick={() => { setDeletingUserId(null); setDeleteConfirmName(''); }}
+                              className="px-3 py-1.5 rounded-lg neu-btn text-[#9A9A9A] text-xs transition-all cursor-pointer"
+                            >
+                              <X className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="p-3 rounded-lg neu-card-sm flex items-center justify-between group transition-colors">
+                          <div className="space-y-0.5">
+                            <span className="font-bold text-[#3D3D3D] text-sm">{user.name}</span>
+                            <p className="text-[#9A9A9A] text-xs font-mono">{user.email}</p>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <span className={`text-[10px] px-2 py-0.5 rounded font-mono ${
+                              user.role === 'admin'
+                                ? 'gradient-coral text-[#3D3D3D]'
+                                : 'gradient-teal text-[#3D3D3D]'
+                            }`}>
+                              {user.role.toUpperCase()}
+                            </span>
+                            {user.role !== 'admin' && (
+                              <>
+                                <button
+                                  onClick={() => { setEditingUserId(user.id); setEditPassword(''); setPasswordMessage(''); }}
+                                  className="p-1.5 rounded-lg neu-btn text-[#9A9A9A] hover:text-[#7C9EB2] transition-all cursor-pointer opacity-0 group-hover:opacity-100"
+                                  title="Change password"
+                                >
+                                  <Pencil className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                  onClick={() => { setDeletingUserId(user.id); setDeleteConfirmName(''); setEditingUserId(null); }}
+                                  className="p-1.5 rounded-lg neu-btn text-[#9A9A9A] hover:text-[#C47C7C] transition-all cursor-pointer opacity-0 group-hover:opacity-100"
+                                  title="Delete user"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>

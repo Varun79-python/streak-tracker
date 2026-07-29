@@ -24,11 +24,13 @@ export const ActivityHistoryView: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-white flex items-center gap-2.5">
-            <Clock className="w-6 h-6 text-emerald-400" />
+          <h2 className="text-2xl font-bold text-[#3D3D3D] flex items-center gap-2.5">
+            <div className="clay-icon p-2 rounded-xl">
+              <Clock className="w-5 h-5 text-[#7C9EB2]" />
+            </div>
             <span>Activity History</span>
           </h2>
-          <p className="text-xs text-slate-400 font-mono">Complete chronological record of all daily check-ins, journal notes, and streaks.</p>
+          <p className="text-xs text-[#9A9A9A] font-mono">Complete chronological record of all daily check-ins, journal notes, and streaks.</p>
         </div>
 
         {/* Filters */}
@@ -37,10 +39,10 @@ export const ActivityHistoryView: React.FC = () => {
             <button
               key={tab}
               onClick={() => setFilter(tab)}
-              className={`px-3 py-1.5 rounded-xl border transition-colors cursor-pointer ${
+              className={`px-3 py-1.5 rounded-xl transition-colors cursor-pointer ${
                 filter === tab
-                  ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 font-bold'
-                  : 'bg-slate-900/60 text-slate-400 border-white/5 hover:text-slate-200'
+                  ? 'gradient-teal text-[#3D3D3D] font-bold'
+                  : 'neu-btn text-[#9A9A9A] hover:text-[#6B6B6B]'
               }`}
             >
               {tab}
@@ -54,41 +56,47 @@ export const ActivityHistoryView: React.FC = () => {
         {filteredHistory.slice(0, 30).map((item) => (
           <div
             key={item.date}
-            className={`p-4 rounded-2xl border flex items-center justify-between flex-wrap gap-3 transition-colors ${
+            className={`p-4 rounded-2xl flex items-center justify-between flex-wrap gap-3 transition-colors ${
               item.completed
-                ? 'bg-slate-900/60 border-emerald-500/30'
+                ? 'neu-card'
                 : item.completionPercentage > 0
-                ? 'bg-slate-900/60 border-amber-500/30'
-                : 'bg-slate-900/30 border-white/5 opacity-60'
+                ? 'neu-card-sm border border-[#D4A574]/30'
+                : 'neu-pressed opacity-60'
             }`}
           >
             <div className="flex items-center gap-3">
               {item.completed ? (
-                <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                <div className="clay-icon w-8 h-8 rounded-lg flex items-center justify-center gradient-teal">
+                  <CheckCircle2 className="w-4 h-4 text-[#3D3D3D]" />
+                </div>
               ) : item.completionPercentage > 0 ? (
-                <Clock className="w-5 h-5 text-amber-400" />
+                <div className="clay-icon w-8 h-8 rounded-lg flex items-center justify-center gradient-lavender">
+                  <Clock className="w-4 h-4 text-[#3D3D3D]" />
+                </div>
               ) : (
-                <XCircle className="w-5 h-5 text-rose-400" />
+                <div className="clay-icon w-8 h-8 rounded-lg flex items-center justify-center gradient-coral">
+                  <XCircle className="w-4 h-4 text-[#3D3D3D]" />
+                </div>
               )}
 
               <div>
-                <h4 className="font-bold text-white text-sm">
+                <h4 className="font-bold text-[#3D3D3D] text-sm">
                   {item.completed ? 'Completed all required habits' : item.completionPercentage > 0 ? 'Partial check-in logged' : 'Missed day'}
                 </h4>
-                <p className="text-slate-400 text-[11px]">{item.date}</p>
+                <p className="text-[#9A9A9A] text-[11px]">{item.date}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
               {item.journal && (
-                <span className="text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20 text-[11px]">
+                <span className="text-[#D4A574] gradient-lavender/20 px-2 py-0.5 rounded text-[11px]">
                   📖 Journal
                 </span>
               )}
-              <span className="text-emerald-400 font-bold text-xs">
+              <span className="text-[#7C9EB2] font-bold text-xs">
                 +{item.xpEarned} XP
               </span>
-              <span className="text-slate-300 font-bold text-xs">
+              <span className="text-[#6B6B6B] font-bold text-xs">
                 {item.completionPercentage}%
               </span>
             </div>
