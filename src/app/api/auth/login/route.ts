@@ -1,44 +1,29 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/server';
+import bcrypt from 'bcryptjs';
 
 export async function POST(request: Request) {
   try {
-    // Check content type
-    const contentType = request.headers.get('content-type');
-    console.log('Content-Type:', contentType);
-    
-    // Get raw body first
     const rawBody = await request.text();
-    console.log('Raw body:', rawBody);
     
     if (!rawBody) {
-      return NextResponse.json(
-        { error: 'Empty request body' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Empty request body' }, { status: 400 });
     }
     
     let body;
     try {
       body = JSON.parse(rawBody);
-    } catch (e) {
-      console.error('JSON parse error:', e);
-      return NextResponse.json(
-        { error: 'Invalid JSON in request body' },
-        { status: 400 }
-      );
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON in request body' }, { status: 400 });
     }
     
     const { email, password } = body || {};
 
     if (!email || !password) {
-      return NextResponse.json(
-        { error: 'Email and password are required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
     }
 
-    const supabase = await createAdminClient();
+    const supabase = createAdminClient();
 
     // Find user by email (username in our schema)
     const { data: user, error: userError } = await supabase
@@ -48,6 +33,7 @@ export async function POST(request: Request) {
       .single();
 
     if (userError || !user) {
+      console.error('User lookup error:', userError?.message || 'User not found');
       return NextResponse.json(
         { error: 'Invalid credentials. Access restricted to provisioned accounts.' },
         { status: 401 }
@@ -55,17 +41,14 @@ export async function POST(request: Request) {
     }
 
     if (user.status === 'suspended') {
-      return NextResponse.json(
-        { error: 'Account is suspended by Admin.' },
-        { status: 403 }
-      );
+      return NextResponse.json({ error: 'Account is suspended by Admin.' }, { status: 403 });
     }
 
     // Verify password using bcrypt
-    const bcrypt = require('bcryptjs');
-    const valid = await bcrypt.compare(password.trim(), user.password_hash);
+    const valid = bcrypt.compareSync(password.trim(), user.password_hash);
 
     if (!valid) {
+      console.error('Password mismatch for user:', user.username);
       return NextResponse.json(
         { error: 'Invalid credentials. Access restricted to provisioned accounts.' },
         { status: 401 }
