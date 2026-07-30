@@ -2,87 +2,86 @@
 
 import React from 'react';
 import { useStreak } from '@/lib/StreakContext';
-import { Flame, Bell, Moon, Sun, Monitor, Menu } from 'lucide-react';
+import { Flame, Bell, LogOut } from 'lucide-react';
 
 export const TopNav: React.FC = () => {
   const { 
     user, 
-    theme, 
-    setTheme, 
     notifications, 
     setShowNotificationDrawer, 
     setActiveView,
-    setShowCheckInModal 
+    logout
   } = useStreak();
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
-  const cycleTheme = () => {
-    if (theme === 'dark') setTheme('amoled');
-    else if (theme === 'amoled') setTheme('light');
-    else setTheme('dark');
-  };
-
   return (
-    <header className="sticky top-0 z-30 bg-[#E8E0D8]/90 backdrop-blur-xl border-b border-[#D5CCC4] px-4 py-3 flex items-center justify-between min-h-[56px]">
-      {/* Greeting Header */}
-      <div className="truncate min-w-0">
-        <h2 className="text-sm font-bold text-[#3D3D3D] truncate flex items-center gap-2">
-          <div className="w-7 h-7 rounded-xl gradient-coral flex items-center justify-center clay-icon">
-            <Flame className="w-4 h-4 text-white fire-animated flex-shrink-0" />
-          </div>
-          <span className="truncate">{user.name || 'Streakify'}</span>
-        </h2>
-        <p className="text-[10px] text-[#6B6B6B] font-mono truncate pl-9">
-          {user.currentStreak > 0 ? `${user.currentStreak} day streak 🔥` : 'Start your streak today'}
-        </p>
+    <header className="sticky top-0 z-30 px-4 py-3 flex items-center justify-between min-h-[52px]" style={{ background: 'rgba(250, 249, 245, 0.92)', backdropFilter: 'blur(16px)' }}>
+      {/* Left — Brand */}
+      <div className="flex items-center gap-2.5">
+        <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#cc785c' }}>
+          <Flame className="w-4 h-4 text-white fire-animated" />
+        </div>
+        <div className="flex flex-col">
+          <span className="text-sm font-bold leading-tight" style={{ color: '#141413', fontFamily: 'var(--font-heading)' }}>
+            {user.name || 'Streakify'}
+          </span>
+          <span className="text-[10px] font-mono leading-tight" style={{ color: '#6c6a64' }}>
+            {user.currentStreak > 0 ? `${user.currentStreak}d streak` : 'Start today'}
+          </span>
+        </div>
       </div>
 
-      {/* Right Header Actions */}
-      <div className="flex items-center gap-2.5 flex-shrink-0">
-        {/* Streak Counter Badge */}
-        <div 
-          onClick={() => setShowCheckInModal(true)}
-          className="flex items-center gap-1.5 px-3 py-1.5 clay-badge gradient-coral cursor-pointer hover:scale-105 transition-transform"
+      {/* Right — Actions */}
+      <div className="flex items-center gap-1.5">
+        {/* Streak pill */}
+        <button 
+          onClick={() => setShowNotificationDrawer(true)}
+          className="flex items-center gap-1 px-2.5 py-1 rounded-full cursor-pointer transition-opacity hover:opacity-80"
+          style={{ background: 'rgba(204, 120, 92, 0.1)' }}
         >
-          <Flame className="w-3.5 h-3.5 fire-animated text-white" />
-          <span className="text-sm font-extrabold text-white font-mono">{user.currentStreak}</span>
-        </div>
+          <Flame className="w-3.5 h-3.5 fire-animated" style={{ color: '#cc785c' }} />
+          <span className="text-xs font-bold font-mono" style={{ color: '#cc785c' }}>{user.currentStreak}</span>
+        </button>
 
-        {/* Notifications Icon */}
+        {/* Notifications */}
         <button
           onClick={() => setShowNotificationDrawer(true)}
-          className="relative p-2.5 neu-btn text-[#6B6B6B] hover:text-[#3D3D3D] transition-colors cursor-pointer"
+          className="relative w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-colors"
+          style={{ background: 'transparent' }}
         >
-          <Bell className="w-4 h-4" />
+          <Bell className="w-[18px] h-[18px]" style={{ color: '#6c6a64' }} />
           {unreadCount > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full gradient-lavender text-white font-mono text-[8px] flex items-center justify-center font-bold clay-badge">
-              {unreadCount > 9 ? '9+' : unreadCount}
-            </span>
+            <span className="absolute top-1 right-1 w-2 h-2 rounded-full" style={{ background: '#cc785c' }} />
           )}
         </button>
 
-        {/* Theme Switcher Toggle */}
+        {/* Logout */}
         <button
-          onClick={cycleTheme}
-          title={`Theme: ${theme}`}
-          className="p-2.5 neu-btn text-[#6B6B6B] hover:text-[#3D3D3D] transition-colors cursor-pointer"
+          onClick={async () => { await logout(); }}
+          title="Logout"
+          className="w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-colors"
         >
-          {theme === 'dark' && <Moon className="w-4 h-4 text-[#7C9EB2]" />}
-          {theme === 'amoled' && <Monitor className="w-4 h-4 text-[#C4A8D4]" />}
-          {theme === 'light' && <Sun className="w-4 h-4 text-[#D4A574]" />}
+          <LogOut className="w-[18px] h-[18px]" style={{ color: '#6c6a64' }} />
         </button>
 
-        {/* Profile Avatar */}
+        {/* Avatar */}
         <div 
           onClick={() => setActiveView('profile')}
-          className="cursor-pointer group"
+          className="cursor-pointer"
         >
-          <img
-            src={user.avatar}
-            alt={user.name}
-            className="w-8 h-8 rounded-full object-cover clay-avatar group-hover:scale-105 transition-transform"
-          />
+          {user.avatar ? (
+            <img
+              src={user.avatar}
+              alt={user.name}
+              className="w-8 h-8 rounded-full object-cover"
+              style={{ border: '2px solid #e6dfd8' }}
+            />
+          ) : (
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style={{ background: '#cc785c', color: '#ffffff', border: '2px solid #e6dfd8' }}>
+              {(user.name || 'U').charAt(0).toUpperCase()}
+            </div>
+          )}
         </div>
       </div>
     </header>

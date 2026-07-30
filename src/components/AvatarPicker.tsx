@@ -70,7 +70,7 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({ onSelect, compact = 
     const randomSeed = Math.random().toString(36).substring(7);
     const bgColors = ['b6e3f4', 'c0aede', 'd1d4f9', 'ffd5dc', 'ffdfbf', 'c1f0c8'];
     const randomBg = bgColors[Math.floor(Math.random() * bgColors.length)];
-    
+
     const randomUrl = `https://api.dicebear.com/7.x/${randomStyle}/svg?seed=${randomSeed}&backgroundColor=${randomBg}`;
     selectAvatar(randomUrl);
   };
@@ -87,8 +87,8 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({ onSelect, compact = 
     }
   };
 
-  const filteredAvatars = activeCategory === 'All' 
-    ? AVATAR_PRESETS 
+  const filteredAvatars = activeCategory === 'All'
+    ? AVATAR_PRESETS
     : AVATAR_PRESETS.filter(a => a.category === activeCategory);
 
   return (
@@ -96,21 +96,22 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({ onSelect, compact = 
       {/* Header & Quick Action */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-2">
-          <div className="clay-icon p-1.5 gradient-teal rounded-xl">
+          <div className="p-1.5 rounded-xl" style={{ background: '#5db8a6' }}>
             <UserCheck className="w-4 h-4 text-white" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-[#3D3D3D]">Choose Profile Picture</h3>
-            <p className="text-[11px] text-[#6B6B6B]">Select from random presets or generate a unique avatar</p>
+            <h3 className="text-sm font-bold text-[#141413]">Choose Profile Picture</h3>
+            <p className="text-[11px] text-[#6c6a64]">Select from random presets or generate a unique avatar</p>
           </div>
         </div>
 
         <button
           type="button"
           onClick={handleRandomize}
-          className="neu-btn px-3 py-1.5 rounded-xl text-xs font-bold text-[#3D3D3D] flex items-center gap-1.5 gradient-lavender/20 hover:gradient-lavender/40 transition-all cursor-pointer"
+          className="claude-btn-secondary px-3 py-1.5 rounded-xl text-xs font-bold text-[#252523] flex items-center gap-1.5 transition-all cursor-pointer"
+          style={{ background: 'rgba(232, 165, 90, 0.12)' }}
         >
-          <Shuffle className="w-3.5 h-3.5 text-[#7C9EB2] animate-spin-slow" />
+          <Shuffle className="w-3.5 h-3.5 animate-spin-slow" style={{ color: '#cc785c' }} />
           <span>🎲 Randomize Avatar</span>
         </button>
       </div>
@@ -125,9 +126,10 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({ onSelect, compact = 
               onClick={() => setActiveCategory(cat)}
               className={`px-3 py-1 text-xs font-semibold rounded-xl whitespace-nowrap transition-all cursor-pointer ${
                 activeCategory === cat
-                  ? 'gradient-teal text-[#3D3D3D] shadow-sm font-bold'
-                  : 'neu-btn text-[#6B6B6B] hover:text-[#3D3D3D]'
+                  ? 'shadow-sm font-bold text-[#141413]'
+                  : 'claude-btn-secondary text-[#6c6a64] hover:text-[#252523]'
               }`}
+              style={activeCategory === cat ? { background: '#5db8a6' } : undefined}
             >
               {cat}
             </button>
@@ -146,9 +148,13 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({ onSelect, compact = 
               onClick={() => selectAvatar(item.url)}
               className={`relative group p-1.5 rounded-2xl transition-all cursor-pointer flex items-center justify-center ${
                 isSelected
-                  ? 'neu-pressed ring-2 ring-[#7C9EB2] scale-105'
-                  : 'neu-card hover:scale-105 hover:neu-pressed'
+                  ? 'scale-105'
+                  : 'claude-card hover:scale-105'
               }`}
+              style={isSelected
+                ? { background: 'rgba(204, 120, 92, 0.08)', color: '#cc785c', boxShadow: '0 0 0 2px #5db8a6' }
+                : undefined
+              }
             >
               <img
                 src={item.url}
@@ -157,8 +163,8 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({ onSelect, compact = 
                 loading="lazy"
               />
               {isSelected && (
-                <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full gradient-teal flex items-center justify-center shadow-md">
-                  <Check className="w-3 h-3 text-[#3D3D3D] stroke-[3]" />
+                <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center shadow-md" style={{ background: '#5db8a6' }}>
+                  <Check className="w-3 h-3 text-[#141413] stroke-[3]" />
                 </div>
               )}
             </button>
@@ -167,9 +173,9 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({ onSelect, compact = 
       </div>
 
       {/* Custom URL Option */}
-      <form onSubmit={handleCustomSubmit} className="pt-2 border-t border-[#D5CCC4]/40 flex items-center gap-2">
+      <form onSubmit={handleCustomSubmit} className="pt-2 border-t flex items-center gap-2" style={{ borderColor: 'rgba(230, 223, 216, 0.4)' }}>
         <div className="relative flex-1">
-          <Image className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-[#9A9A9A]" />
+          <Image className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#8e8b82' }} />
           <input
             type="url"
             value={customUrl}
@@ -178,14 +184,15 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({ onSelect, compact = 
               setCustomError(false);
             }}
             placeholder="Paste custom image URL..."
-            className={`w-full neu-input rounded-xl pl-9 pr-3 py-1.5 text-xs text-[#3D3D3D] ${
+            className={`w-full claude-input rounded-xl pl-9 pr-3 py-1.5 text-xs text-[#252523] ${
               customError ? 'border-red-400' : ''
             }`}
           />
         </div>
         <button
           type="submit"
-          className="neu-btn px-3 py-1.5 rounded-xl text-xs font-bold text-[#3D3D3D] hover:text-[#7C9EB2] transition-colors cursor-pointer"
+          className="claude-btn-secondary px-3 py-1.5 rounded-xl text-xs font-bold text-[#252523] transition-colors cursor-pointer"
+          style={{ color: '#cc785c' }}
         >
           Apply
         </button>

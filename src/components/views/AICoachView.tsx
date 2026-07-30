@@ -80,17 +80,17 @@ export const AICoachView: React.FC = () => {
   return (
     <div className="flex flex-col h-[calc(100vh-12rem)]">
       <div className="flex items-center gap-3 mb-4">
-        <button onClick={() => setActiveView('dashboard')} className="p-2 rounded-xl neu-btn transition-colors">
-          <ArrowLeft className="w-5 h-5 text-[#9A9A9A]" />
+        <button onClick={() => setActiveView('dashboard')} className="p-2 rounded-xl claude-btn-secondary transition-colors">
+          <ArrowLeft className="w-5 h-5" style={{ color: '#8e8b82' }} />
         </button>
         <div>
-          <h2 className="text-lg font-bold text-[#3D3D3D] flex items-center gap-2">
-            <div className="clay-icon p-2 rounded-xl">
-              <Sparkles className="w-4 h-4 text-[#D4A574]" />
+          <h2 className="text-lg font-bold flex items-center gap-2" style={{ color: '#141413' }}>
+            <div className="p-2 rounded-xl" style={{ borderRadius: '12px' }}>
+              <Sparkles className="w-4 h-4" style={{ color: '#e8a55a' }} />
             </div>
             AI Coach
           </h2>
-          <p className="text-xs text-[#9A9A9A]">Your personal habit motivation assistant</p>
+          <p className="text-xs" style={{ color: '#8e8b82' }}>Your personal habit motivation assistant</p>
         </div>
       </div>
 
@@ -98,50 +98,52 @@ export const AICoachView: React.FC = () => {
         {messages.map(msg => (
           <div key={msg.id} className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : ''}`}>
             {msg.role === 'assistant' && (
-              <div className="clay-icon w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 gradient-teal">
-                <Bot className="w-4 h-4 text-[#3D3D3D]" />
+              <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: '#5db8a6', borderRadius: '50%' }}>
+                <Bot className="w-4 h-4" style={{ color: '#141413' }} />
               </div>
             )}
             <div className={`max-w-[80%] rounded-2xl px-4 py-3 ${
-              msg.role === 'user'
-                ? 'gradient-coral text-[#3D3D3D]'
-                : 'neu-card-sm text-[#3D3D3D]'
-            }`}>
+              msg.role === 'user' ? '' : 'claude-card-soft'
+            }`}
+              style={msg.role === 'user' ? { background: '#cc785c', color: '#141413' } : { color: '#252523' }}
+            >
               <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
             </div>
             {msg.role === 'user' && (
-              <div className="clay-icon w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 gradient-lavender">
-                <User className="w-4 h-4 text-[#3D3D3D]" />
+              <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: '#e8a55a', borderRadius: '50%' }}>
+                <User className="w-4 h-4" style={{ color: '#141413' }} />
               </div>
             )}
           </div>
         ))}
         {loading && (
           <div className="flex gap-3">
-            <div className="clay-icon w-8 h-8 rounded-full flex items-center justify-center gradient-teal">
-              <Bot className="w-4 h-4 text-[#3D3D3D]" />
+            <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: '#5db8a6', borderRadius: '50%' }}>
+              <Bot className="w-4 h-4" style={{ color: '#141413' }} />
             </div>
-            <div className="neu-card-sm rounded-2xl px-4 py-3">
-              <p className="text-sm text-[#9A9A9A] animate-pulse">Thinking...</p>
+            <div className="claude-card-soft rounded-2xl px-4 py-3">
+              <p className="text-sm animate-pulse" style={{ color: '#8e8b82' }}>Thinking...</p>
             </div>
           </div>
         )}
         <div ref={bottomRef} />
       </div>
 
-      <div className="flex gap-2 items-end neu-pressed rounded-2xl p-2">
+      <div className="flex gap-2 items-end rounded-2xl p-2" style={{ background: 'rgba(204, 120, 92, 0.08)' }}>
         <textarea
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Ask your coach anything..."
           rows={1}
-          className="flex-1 bg-transparent text-sm text-[#3D3D3D] placeholder-[#9A9A9A] outline-none resize-none px-3 py-2 max-h-24"
+          className="flex-1 bg-transparent text-sm placeholder-[#8e8b82] outline-none resize-none px-3 py-2 max-h-24"
+          style={{ color: '#252523' }}
         />
         <button
           onClick={sendMessage}
           disabled={!input.trim() || loading}
-          className="p-2.5 rounded-xl gradient-coral text-[#3D3D3D] transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          className="p-2.5 rounded-xl transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          style={{ background: '#cc785c', color: '#141413' }}
         >
           <Send className="w-4 h-4" />
         </button>

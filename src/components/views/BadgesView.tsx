@@ -20,13 +20,13 @@ export const BadgesView: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-[#3D3D3D] flex items-center gap-2.5">
-            <div className="clay-icon gradient-lavender p-2">
+          <h2 className="text-2xl font-bold text-[#141413] flex items-center gap-2.5" style={{ fontFamily: 'var(--font-heading)' }}>
+            <div className="p-2" style={{ background: '#e8a55a', borderRadius: '12px' }}>
               <Award className="w-5 h-5 text-white" />
             </div>
             <span>Badges & Trophies Showcase</span>
           </h2>
-          <p className="text-xs text-[#9A9A9A] font-mono">
+          <p className="text-xs text-[#8e8b82] font-mono">
             Earn prestigious badges for extreme dedication, consistency, and early rising.
           </p>
         </div>
@@ -37,11 +37,12 @@ export const BadgesView: React.FC = () => {
             <button
               key={tab}
               onClick={() => setFilter(tab)}
-              className={`px-3 py-1.5 rounded-xl capitalize transition-colors cursor-pointer ${
+              className={`px-3 py-1.5 rounded-xl capitalize transition-colors cursor-pointer claude-btn-secondary ${
                 filter === tab
-                  ? 'neu-btn font-bold text-[#C4A8D4]'
-                  : 'neu-btn text-[#9A9A9A] hover:text-[#3D3D3D]'
+                  ? 'font-bold'
+                  : 'text-[#8e8b82] hover:text-[#3d3d3a]'
               }`}
+              style={filter === tab ? { background: 'rgba(204, 120, 92, 0.08)', color: '#e8a55a', borderColor: '#e8a55a' } : {}}
             >
               {tab}
             </button>
@@ -57,33 +58,34 @@ export const BadgesView: React.FC = () => {
             whileHover={{ scale: 1.05, y: -4 }}
             className={`p-6 rounded-3xl text-center space-y-3 transition-all relative overflow-hidden group ${
               badge.unlocked
-                ? 'neu-card border border-[#C4A8D4]'
-                : 'neu-pressed opacity-50 grayscale'
+                ? 'claude-card'
+                : 'opacity-50 grayscale'
             }`}
+            style={!badge.unlocked ? { background: 'rgba(204, 120, 92, 0.08)' } : {}}
           >
             {/* Rarity Tag */}
-            <span className="clay-badge text-[10px] px-2 py-0.5 text-[#9A9A9A] font-mono inline-block">
+            <span className="text-[10px] px-2 py-0.5 text-[#8e8b82] font-mono inline-block" style={{ borderRadius: '9999px', background: '#f5f0e8', border: '1px solid #e6dfd8' }}>
               {badge.rarity}
             </span>
 
             {/* Icon hexagon card */}
             {badge.unlocked ? (
-              <div className="clay-icon gradient-lavender w-16 h-16 mx-auto flex items-center justify-center text-3xl transition-transform group-hover:rotate-6">
+              <div className="w-16 h-16 mx-auto flex items-center justify-center text-3xl transition-transform group-hover:rotate-6" style={{ background: '#e8a55a', borderRadius: '12px' }}>
                 <span>{badge.icon}</span>
               </div>
             ) : (
-              <div className="neu-pressed w-16 h-16 mx-auto flex items-center justify-center text-3xl transition-transform group-hover:rotate-6">
+              <div className="w-16 h-16 mx-auto flex items-center justify-center text-3xl transition-transform group-hover:rotate-6" style={{ background: 'rgba(204, 120, 92, 0.08)', borderRadius: '12px' }}>
                 <span>{badge.icon}</span>
               </div>
             )}
 
             <div className="space-y-1">
-              <h3 className="text-sm font-bold text-[#3D3D3D] tracking-tight">{badge.title}</h3>
-              <p className="text-[11px] text-[#9A9A9A] leading-snug">{badge.description}</p>
+              <h3 className="text-sm font-bold text-[#252523] tracking-tight">{badge.title}</h3>
+              <p className="text-[11px] text-[#8e8b82] leading-snug">{badge.description}</p>
             </div>
 
             {badge.unlockedDate && (
-              <p className="text-[10px] text-[#C4A8D4] font-mono pt-1">
+              <p className="text-[10px] text-[#e8a55a] font-mono pt-1">
                 Earned: {badge.unlockedDate}
               </p>
             )}

@@ -16,38 +16,39 @@ export const NotificationsDrawer: React.FC = () => {
   if (!showNotificationDrawer) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-[#3D3D3D]/30 backdrop-blur-sm select-none">
+    <div className="fixed inset-0 z-50 flex justify-end select-none" style={{ background: 'rgba(20, 20, 19, 0.3)', backdropFilter: 'blur(4px)' }}>
       <motion.div
         initial={{ x: '100%' }}
         animate={{ x: 0 }}
         exit={{ x: '100%' }}
         transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-        className="w-full max-w-sm h-full neu-card border-l border-[#C5BDB5] p-6 space-y-6 flex flex-col justify-between"
+        className="claude-glass-modal w-full max-w-sm h-full p-6 space-y-6 flex flex-col justify-between"
+        style={{ borderLeft: '1px solid #e6dfd8' }}
       >
         {/* Header */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="clay-icon gradient-teal p-2">
+              <div className="p-2" style={{ background: '#5db8a6', borderRadius: '12px' }}>
                 <Bell className="w-5 h-5 text-white" />
               </div>
-              <h3 className="font-bold text-[#3D3D3D] text-lg">Notifications</h3>
+              <h3 className="font-bold text-[#252523] text-lg">Notifications</h3>
             </div>
             <button
               onClick={() => setShowNotificationDrawer(false)}
-              className="neu-btn p-2 rounded-lg text-[#9A9A9A] hover:text-[#3D3D3D] transition-colors cursor-pointer"
+              className="claude-btn-icon cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          <div className="flex items-center justify-between border-b border-[#C5BDB5]/40 pb-3">
-            <span className="text-xs text-[#9A9A9A] font-mono">
+          <div className="flex items-center justify-between pb-3" style={{ borderBottom: '1px solid rgba(230, 223, 216, 0.4)' }}>
+            <span className="text-xs text-[#8e8b82] font-mono">
               {notifications.filter(n => !n.read).length} Unread Notifications
             </span>
             <button
               onClick={markAllNotificationsRead}
-              className="text-xs text-[#7C9EB2] hover:underline font-semibold cursor-pointer flex items-center gap-1"
+              className="text-xs hover:underline font-semibold cursor-pointer flex items-center gap-1" style={{ color: '#cc785c' }}
             >
               <Check className="w-3.5 h-3.5" /> Mark all read
             </button>
@@ -60,25 +61,26 @@ export const NotificationsDrawer: React.FC = () => {
                 key={item.id}
                 className={`p-3.5 rounded-2xl transition-all ${
                   item.read
-                    ? 'neu-pressed opacity-70'
-                    : 'neu-card-sm border-l-4 border-[#7C9EB2]'
+                    ? 'opacity-70'
+                    : 'claude-card-soft'
                 }`}
+                style={!item.read ? { borderLeft: '4px solid #cc785c' } : { background: 'rgba(204, 120, 92, 0.08)' }}
               >
                 <div className="flex items-center justify-between">
-                  <h4 className="text-xs font-bold text-[#3D3D3D] flex items-center gap-1.5">
+                  <h4 className="text-xs font-bold text-[#252523] flex items-center gap-1.5">
                     {item.title}
                   </h4>
-                  <span className="text-[10px] text-[#9A9A9A] font-mono">{item.timestamp}</span>
+                  <span className="text-[10px] text-[#8e8b82] font-mono">{item.timestamp}</span>
                 </div>
-                <p className="text-xs text-[#6B6B6B] leading-snug">{item.message}</p>
+                <p className="text-xs leading-snug" style={{ color: '#6c6a64' }}>{item.message}</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* Footer */}
-        <div className="pt-4 border-t border-[#C5BDB5]/40 text-center">
-          <p className="text-[11px] text-[#9A9A9A] font-mono">Notifications synced with daily streak engine.</p>
+        <div className="pt-4 text-center" style={{ borderTop: '1px solid rgba(230, 223, 216, 0.4)' }}>
+          <p className="text-[11px] text-[#8e8b82] font-mono">Notifications synced with daily streak engine.</p>
         </div>
       </motion.div>
     </div>

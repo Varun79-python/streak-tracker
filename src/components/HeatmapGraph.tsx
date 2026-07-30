@@ -64,11 +64,11 @@ export const HeatmapGraph: React.FC<HeatmapGraphProps> = ({
     }
   });
 
-  const getIntensityClass = (pct: number, hasEntry: boolean) => {
-    if (!hasEntry || pct === 0) return 'bg-[#D5CCC4]/60 border border-[#C5BDB5] hover:border-[#7C9EB2]';
-    if (pct < 50) return 'bg-[#7C9EB2]/40 border border-[#7C9EB2]/60 text-[#3D3D3D]';
-    if (pct < 100) return 'bg-[#7C9EB2]/70 border border-[#7C9EB2]/80 text-white';
-    return 'bg-[#7C9EB2] border border-[#5A8A9E] text-white font-bold';
+  const getIntensityStyle = (pct: number, hasEntry: boolean): React.CSSProperties => {
+    if (!hasEntry || pct === 0) return { background: 'rgba(230, 223, 216, 0.6)', border: '1px solid #e6dfd8' };
+    if (pct < 50) return { background: 'rgba(93, 184, 166, 0.4)', border: '1px solid rgba(93, 184, 166, 0.6)', color: '#3d3d3a' };
+    if (pct < 100) return { background: 'rgba(93, 184, 166, 0.7)', border: '1px solid rgba(93, 184, 166, 0.8)', color: '#faf9f5' };
+    return { background: '#5db8a6', border: '1px solid #4a9e8e', color: '#faf9f5', fontWeight: 'bold' };
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -82,12 +82,12 @@ export const HeatmapGraph: React.FC<HeatmapGraphProps> = ({
   return (
     <div className="relative w-full overflow-x-auto select-none py-2" onMouseMove={handleMouseMove}>
       {/* Month Labels */}
-      <div className="flex text-xs text-[#9A9A9A] mb-2 pl-8 space-x-1 font-mono">
+      <div className="flex text-xs mb-2 pl-8 space-x-1 font-mono" style={{ color: '#8e8b82' }}>
         {weeks.map((_, colIdx) => {
           const mLabel = monthLabels.find((m) => m.colIndex === colIdx);
           return (
             <div key={colIdx} className="w-3.5 text-center flex-shrink-0">
-              {mLabel ? <span className="absolute -mt-5 font-semibold text-[#6B6B6B]">{mLabel.label}</span> : null}
+              {mLabel ? <span className="absolute -mt-5 font-semibold" style={{ color: '#6c6a64' }}>{mLabel.label}</span> : null}
             </div>
           );
         })}
@@ -95,7 +95,7 @@ export const HeatmapGraph: React.FC<HeatmapGraphProps> = ({
 
       <div className="flex">
         {/* Day of Week Labels */}
-        <div className="flex flex-col justify-between text-[10px] text-[#C5BDB5] pr-2 pt-0.5 font-mono select-none">
+        <div className="flex flex-col justify-between text-[10px] pr-2 pt-0.5 font-mono select-none" style={{ color: '#e6dfd8' }}>
           <span>Mon</span>
           <span>Wed</span>
           <span>Fri</span>
@@ -109,7 +109,7 @@ export const HeatmapGraph: React.FC<HeatmapGraphProps> = ({
                 const dateStr = format(day, 'yyyy-MM-dd');
                 const checkIn = history[dateStr];
                 const pct = checkIn ? checkIn.completionPercentage : 0;
-                const intensity = getIntensityClass(pct, !!checkIn);
+                const intensityStyle = getIntensityStyle(pct, !!checkIn);
 
                 return (
                   <motion.button
@@ -127,7 +127,8 @@ export const HeatmapGraph: React.FC<HeatmapGraphProps> = ({
                       });
                     }}
                     onMouseLeave={() => setHoveredDay(null)}
-                    className={`w-3.5 h-3.5 rounded-sm transition-colors duration-200 cursor-pointer ${intensity}`}
+                    className="w-3.5 h-3.5 rounded-sm transition-colors duration-200 cursor-pointer"
+                    style={intensityStyle}
                   />
                 );
               })}
@@ -137,14 +138,14 @@ export const HeatmapGraph: React.FC<HeatmapGraphProps> = ({
       </div>
 
       {/* Legend & Details */}
-      <div className="flex items-center justify-between mt-4 text-xs text-[#9A9A9A] pt-2 border-t border-[#D5CCC4]">
+      <div className="flex items-center justify-between mt-4 text-xs pt-2 border-t" style={{ color: '#8e8b82', borderColor: '#e6dfd8' }}>
         <span className="font-mono text-[11px]">365 Days Activity Matrix</span>
         <div className="flex items-center gap-2">
           <span>Less</span>
-          <div className="w-3 h-3 rounded-sm bg-[#D5CCC4]/60 border border-[#C5BDB5]" />
-          <div className="w-3 h-3 rounded-sm bg-[#7C9EB2]/40 border border-[#7C9EB2]/60" />
-          <div className="w-3 h-3 rounded-sm bg-[#7C9EB2]/70" />
-          <div className="w-3 h-3 rounded-sm bg-[#7C9EB2]" />
+          <div className="w-3 h-3 rounded-sm" style={{ background: 'rgba(230, 223, 216, 0.6)', border: '1px solid #e6dfd8' }} />
+          <div className="w-3 h-3 rounded-sm" style={{ background: 'rgba(93, 184, 166, 0.4)', border: '1px solid rgba(93, 184, 166, 0.6)' }} />
+          <div className="w-3 h-3 rounded-sm" style={{ background: 'rgba(93, 184, 166, 0.7)' }} />
+          <div className="w-3 h-3 rounded-sm" style={{ background: '#5db8a6' }} />
           <span>More</span>
         </div>
       </div>
@@ -152,26 +153,27 @@ export const HeatmapGraph: React.FC<HeatmapGraphProps> = ({
       {/* Floating Tooltip */}
       {hoveredDay && (
         <div
-          className="absolute z-50 pointer-events-none glass-modal text-[#3D3D3D] text-xs rounded-lg p-2.5 shadow-2xl space-y-1 w-48"
+          className="absolute z-50 pointer-events-none claude-glass-modal text-xs rounded-lg p-2.5 shadow-2xl space-y-1 w-48"
           style={{
             left: Math.min(mousePos.x + 15, 600),
             top: Math.max(mousePos.y - 70, 0),
+            color: '#3d3d3a',
           }}
         >
-          <div className="font-semibold text-[#3D3D3D] border-b border-[#D5CCC4] pb-1 flex justify-between">
+          <div className="font-semibold border-b pb-1 flex justify-between" style={{ color: '#141413', borderColor: '#e6dfd8' }}>
             <span>{hoveredDay.date}</span>
-            <span className="text-[#7C9EB2] font-mono">+{hoveredDay.xp} XP</span>
+            <span className="font-mono" style={{ color: '#cc785c' }}>+{hoveredDay.xp} XP</span>
           </div>
-          <div className="flex justify-between text-[#6B6B6B] pt-1">
+          <div className="flex justify-between pt-1" style={{ color: '#6c6a64' }}>
             <span>Completion:</span>
-            <span className="font-mono font-bold text-[#7C9EB2]">{hoveredDay.percentage}%</span>
+            <span className="font-mono font-bold" style={{ color: '#cc785c' }}>{hoveredDay.percentage}%</span>
           </div>
-          <div className="flex justify-between text-[#6B6B6B]">
+          <div className="flex justify-between" style={{ color: '#6c6a64' }}>
             <span>Habits Done:</span>
-            <span className="font-mono text-[#3D3D3D]">{hoveredDay.completedCount}</span>
+            <span className="font-mono" style={{ color: '#252523' }}>{hoveredDay.completedCount}</span>
           </div>
           {hoveredDay.journal && (
-            <div className="text-[11px] italic text-[#D4A574] truncate pt-1">
+            <div className="text-[11px] italic truncate pt-1" style={{ color: '#e8a55a' }}>
               📖 {hoveredDay.journal}
             </div>
           )}

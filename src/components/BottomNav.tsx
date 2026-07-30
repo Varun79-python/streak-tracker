@@ -5,65 +5,73 @@ import { useStreak } from '@/lib/StreakContext';
 import { LayoutDashboard, BarChart3, Calendar, MessageCircle, Flame } from 'lucide-react';
 
 export const BottomNav: React.FC = () => {
-  const { activeView, setActiveView, setShowCheckInModal, user } = useStreak();
+  const { activeView, setActiveView, setShowCheckInModal } = useStreak();
 
   const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'dashboard', label: 'Home', icon: LayoutDashboard },
     { id: 'statistics', label: 'Stats', icon: BarChart3 },
     { id: 'calendar', label: 'Calendar', icon: Calendar },
     { id: 'coach', label: 'Coach', icon: MessageCircle },
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#E8E0D8]/95 backdrop-blur-2xl border-t border-[#D5CCC4] px-4 py-3 flex items-center justify-around select-none" style={{ boxShadow: '0 -4px 20px rgba(197, 189, 181, 0.5)' }}>
-      {navItems.slice(0, 2).map((item) => {
-        const Icon = item.icon;
-        const isActive = activeView === item.id;
-        return (
-          <button
-            key={item.id}
-            onClick={() => setActiveView(item.id)}
-            className={`flex flex-col items-center gap-1.5 px-4 py-2 rounded-2xl transition-all cursor-pointer ${
-              isActive 
-                ? 'neu-pressed text-[#7C9EB2] font-bold' 
-                : 'neu-btn text-[#6B6B6B] hover:text-[#3D3D3D]'
-            }`}
-          >
-            <Icon className={`w-5 h-5 ${isActive ? 'text-[#7C9EB2]' : ''}`} />
-            <span className="text-[10px] font-medium">{item.label}</span>
-          </button>
-        );
-      })}
+    <div className="fixed bottom-0 left-0 right-0 z-40 px-2 pb-2 select-none">
+      <div className="flex items-center justify-around rounded-2xl py-2 px-1" style={{ background: '#252320', boxShadow: '0 4px 24px rgba(0,0,0,0.12)' }}>
+        {navItems.slice(0, 2).map((item) => {
+          const Icon = item.icon;
+          const isActive = activeView === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => setActiveView(item.id)}
+              className="flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all cursor-pointer"
+              style={{ 
+                color: isActive ? '#faf9f5' : '#6c6a64',
+                background: isActive ? 'rgba(250, 249, 245, 0.08)' : 'transparent'
+              }}
+            >
+              <Icon className="w-5 h-5" />
+              <span className="text-[10px] font-medium">{item.label}</span>
+            </button>
+          );
+        })}
 
-      {/* Center Floating Action Button (FAB) for Check-in */}
-      <div className="-mt-8">
-        <button
-          onClick={() => setShowCheckInModal(true)}
-          className="w-14 h-14 rounded-full gradient-coral flex items-center justify-center clay-badge transition-transform active:scale-95 cursor-pointer hover:scale-105"
-          style={{ boxShadow: '0 6px 20px rgba(212, 165, 116, 0.5)' }}
-        >
-          <Flame className="w-7 h-7 fire-animated text-white" />
-        </button>
+        {/* Center FAB */}
+        <div className="-mt-7">
+          <button
+            onClick={() => setShowCheckInModal(true)}
+            className="w-13 h-13 rounded-full flex items-center justify-center transition-transform active:scale-95 cursor-pointer hover:scale-105"
+            style={{ 
+              background: '#cc785c', 
+              color: '#ffffff',
+              boxShadow: '0 4px 16px rgba(204, 120, 92, 0.4)',
+              width: '52px',
+              height: '52px'
+            }}
+          >
+            <Flame className="w-6 h-6 fire-animated text-white" />
+          </button>
+        </div>
+
+        {navItems.slice(2, 4).map((item) => {
+          const Icon = item.icon;
+          const isActive = activeView === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => setActiveView(item.id)}
+              className="flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all cursor-pointer"
+              style={{ 
+                color: isActive ? '#faf9f5' : '#6c6a64',
+                background: isActive ? 'rgba(250, 249, 245, 0.08)' : 'transparent'
+              }}
+            >
+              <Icon className="w-5 h-5" />
+              <span className="text-[10px] font-medium">{item.label}</span>
+            </button>
+          );
+        })}
       </div>
-
-      {navItems.slice(2, 4).map((item) => {
-        const Icon = item.icon;
-        const isActive = activeView === item.id;
-        return (
-          <button
-            key={item.id}
-            onClick={() => setActiveView(item.id)}
-            className={`flex flex-col items-center gap-1.5 px-4 py-2 rounded-2xl transition-all cursor-pointer ${
-              isActive 
-                ? 'neu-pressed text-[#7C9EB2] font-bold' 
-                : 'neu-btn text-[#6B6B6B] hover:text-[#3D3D3D]'
-            }`}
-          >
-            <Icon className={`w-5 h-5 ${isActive ? 'text-[#7C9EB2]' : ''}`} />
-            <span className="text-[10px] font-medium">{item.label}</span>
-          </button>
-        );
-      })}
     </div>
   );
 };

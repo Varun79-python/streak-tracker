@@ -9,7 +9,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-heading: var(--font-heading);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -49,52 +49,70 @@
 }
 
 :root {
-  /* Neumorphism + Claymorphism Palette */
-  --background: #E8E0D8;
-  --foreground: #3D3D3D;
-  --card: #EDE7DF;
-  --card-foreground: #3D3D3D;
-  --popover: #EDE7DF;
-  --popover-foreground: #3D3D3D;
-  --primary: #7C9EB2;
-  --primary-foreground: #FFFFFF;
-  --secondary: #D4A574;
-  --secondary-foreground: #FFFFFF;
-  --muted: #E0D8D0;
-  --muted-foreground: #6B6B6B;
-  --accent: #C4A8D4;
-  --accent-foreground: #FFFFFF;
-  --destructive: #C47C7C;
-  --border: #D5CCC4;
-  --input: #DDD5CD;
-  --ring: #7C9EB2;
-  --chart-1: #7C9EB2;
-  --chart-2: #D4A574;
-  --chart-3: #C4A8D4;
-  --chart-4: #A8C4B8;
-  --chart-5: #B8A8C4;
-  --radius: 1rem;
-  --sidebar: #E0D8D0;
-  --sidebar-foreground: #3D3D3D;
-  --sidebar-primary: #7C9EB2;
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #D5CCC4;
-  --sidebar-accent-foreground: #3D3D3D;
-  --sidebar-border: #C8C0B8;
-  --sidebar-ring: #7C9EB2;
+  /* Claude Design System — Warm Cream + Terracotta */
+  --background: #faf9f5;
+  --foreground: #141413;
+  --card: #efe9de;
+  --card-foreground: #141413;
+  --popover: #efe9de;
+  --popover-foreground: #141413;
+  --primary: #cc785c;
+  --primary-foreground: #ffffff;
+  --secondary: #f5f0e8;
+  --secondary-foreground: #3d3d3a;
+  --muted: #f5f0e8;
+  --muted-foreground: #6c6a64;
+  --accent: #5db8a6;
+  --accent-foreground: #ffffff;
+  --destructive: #c64545;
+  --border: #e6dfd8;
+  --input: #e6dfd8;
+  --ring: #cc785c;
+  --chart-1: #cc785c;
+  --chart-2: #5db8a6;
+  --chart-3: #e8a55a;
+  --chart-4: #5db872;
+  --chart-5: #c64545;
+  --radius: 0.75rem;
+  --sidebar: #f5f0e8;
+  --sidebar-foreground: #141413;
+  --sidebar-primary: #cc785c;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e6dfd8;
+  --sidebar-accent-foreground: #141413;
+  --sidebar-border: #e6dfd8;
+  --sidebar-ring: #cc785c;
 
-  /* Neumorphism Shadows */
-  --neu-shadow-light: #FFFFFF;
-  --neu-shadow-dark: #C5BDB5;
-  --neu-bg: #E8E0D8;
-  --neu-surface: #EDE7DF;
+  /* Claude Surface Palette */
+  --surface-canvas: #faf9f5;
+  --surface-soft: #f5f0e8;
+  --surface-card: #efe9de;
+  --surface-strong: #e8e0d2;
+  --surface-dark: #181715;
+  --surface-dark-elevated: #252320;
+  --surface-dark-soft: #1f1e1b;
 
-  /* Claymorphism Colors */
-  --clay-teal: #7C9EB2;
-  --clay-coral: #D4A574;
-  --clay-lavender: #C4A8D4;
-  --clay-mint: #A8C4B8;
-  --clay-peach: #D4B8A8;
+  /* Claude Text Palette */
+  --ink: #141413;
+  --body: #3d3d3a;
+  --body-strong: #252523;
+  --muted-claude: #6c6a64;
+  --muted-soft: #8e8b82;
+  --on-dark: #faf9f5;
+  --on-dark-soft: #a09d96;
+
+  /* Claude Accent Colors */
+  --coral: #cc785c;
+  --coral-active: #a9583e;
+  --coral-disabled: #e6dfd8;
+  --teal: #5db8a6;
+  --amber: #e8a55a;
+  --success: #5db872;
+  --error: #c64545;
+
+  /* Claude Hairlines */
+  --hairline: #e6dfd8;
+  --hairline-soft: #ebe6df;
 }
 
 @layer base {
@@ -102,327 +120,343 @@
     @apply border-border outline-none;
   }
   body {
-    background-color: var(--background);
-    color: var(--foreground);
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--surface-canvas);
+    color: var(--body);
+    font-family: var(--font-sans), 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading), 'EB Garamond', Georgia, serif;
+    color: var(--ink);
+  }
+  code, pre, .font-mono {
+    font-family: var(--font-geist-mono), 'JetBrains Mono', monospace;
+  }
+  .num-font {
+    font-family: var(--font-geist-mono), 'JetBrains Mono', ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
   }
 }
 
 /* ============================================
-   NEUMORPHISM + CLAYMORPHISM DESIGN SYSTEM
+   CLAUDE DESIGN SYSTEM — Clean Editorial
    ============================================ */
 
-/* --- Neumorphism Base Classes --- */
-.neu-flat {
-  background: var(--neu-bg);
-  box-shadow: 
-    8px 8px 16px var(--neu-shadow-dark),
-    -8px -8px 16px var(--neu-shadow-light);
-  border-radius: var(--radius);
+/* --- Claude Card --- */
+.claude-card {
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
 }
 
-.neu-convex {
-  background: linear-gradient(145deg, #f0e8e0, #d8d0c8);
-  box-shadow: 
-    8px 8px 16px var(--neu-shadow-dark),
-    -8px -8px 16px var(--neu-shadow-light);
-  border-radius: var(--radius);
+.claude-card-soft {
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline-soft);
+  border-radius: 12px;
 }
 
-.neu-concave {
-  background: linear-gradient(145deg, #d8d0c8, #f0e8e0);
-  box-shadow: 
-    inset 8px 8px 16px var(--neu-shadow-dark),
-    inset -8px -8px 16px var(--neu-shadow-light);
-  border-radius: var(--radius);
+.claude-card-elevated {
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
-.neu-pressed {
-  background: var(--neu-bg);
-  box-shadow: 
-    inset 4px 4px 8px var(--neu-shadow-dark),
-    inset -4px -4px 8px var(--neu-shadow-light);
-  border-radius: var(--radius);
-}
-
-/* --- Neumorphism Card --- */
-.neu-card {
-  background: var(--neu-surface);
-  box-shadow: 
-    8px 8px 20px var(--neu-shadow-dark),
-    -8px -8px 20px var(--neu-shadow-light);
-  border-radius: 1.25rem;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-}
-
-.neu-card-sm {
-  background: var(--neu-surface);
-  box-shadow: 
-    4px 4px 10px var(--neu-shadow-dark),
-    -4px -4px 10px var(--neu-shadow-light);
-  border-radius: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-}
-
-/* --- Neumorphism Button --- */
-.neu-btn {
-  background: linear-gradient(145deg, #f0e8e0, #d8d0c8);
-  box-shadow: 
-    6px 6px 12px var(--neu-shadow-dark),
-    -6px -6px 12px var(--neu-shadow-light);
-  border-radius: 0.875rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: all 0.2s ease;
+/* --- Claude Buttons --- */
+.claude-btn-primary {
+  background: var(--coral);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 14px;
   cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
-.neu-btn:hover {
-  box-shadow: 
-    4px 4px 8px var(--neu-shadow-dark),
-    -4px -4px 8px var(--neu-shadow-light);
-  transform: translateY(1px);
+.claude-btn-primary:hover {
+  background: var(--coral-active);
 }
 
-.neu-btn:active, .neu-btn-active {
-  background: var(--neu-bg);
-  box-shadow: 
-    inset 4px 4px 8px var(--neu-shadow-dark),
-    inset -4px -4px 8px var(--neu-shadow-light);
-  transform: translateY(2px);
+.claude-btn-primary:active {
+  transform: scale(0.98);
 }
 
-/* --- Neumorphism Input --- */
-.neu-input {
-  background: var(--neu-bg);
-  box-shadow: 
-    inset 3px 3px 6px var(--neu-shadow-dark),
-    inset -3px -3px 6px var(--neu-shadow-light);
-  border-radius: 0.75rem;
-  border: 1px solid transparent;
-  transition: all 0.2s ease;
+.claude-btn-primary:disabled {
+  background: var(--coral-disabled);
+  color: var(--muted-claude);
+  cursor: not-allowed;
 }
 
-.neu-input:focus {
-  border-color: var(--primary);
-  box-shadow: 
-    inset 3px 3px 6px var(--neu-shadow-dark),
-    inset -3px -3px 6px var(--neu-shadow-light),
-    0 0 0 3px rgba(124, 158, 178, 0.2);
+.claude-btn-secondary {
+  background: var(--surface-canvas);
+  color: var(--body);
+  border: 1px solid var(--hairline);
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
-/* --- Neumorphism Toggle --- */
-.neu-toggle {
-  width: 52px;
-  height: 28px;
-  background: var(--neu-bg);
-  box-shadow: 
-    inset 3px 3px 6px var(--neu-shadow-dark),
-    inset -3px -3px 6px var(--neu-shadow-light);
-  border-radius: 14px;
+.claude-btn-secondary:hover {
+  background: var(--surface-soft);
+  border-color: var(--muted-claude);
+}
+
+.claude-btn-secondary:active {
+  transform: scale(0.98);
+}
+
+.claude-btn-text {
+  background: none;
+  border: none;
+  color: var(--coral);
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.claude-btn-text:hover {
+  color: var(--coral-active);
+}
+
+.claude-btn-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--surface-canvas);
+  border: 1px solid var(--hairline);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  color: var(--body);
+  flex-shrink: 0;
+}
+
+.claude-btn-icon:hover {
+  background: var(--surface-soft);
+  border-color: var(--muted-claude);
+}
+
+.claude-btn-icon.active {
+  background: var(--surface-soft);
+  border-color: var(--coral);
+  color: var(--coral);
+}
+
+/* --- Claude Inputs --- */
+.claude-input {
+  width: 100%;
+  background: var(--surface-canvas);
+  border: 1px solid var(--hairline);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: var(--ink);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.claude-input::placeholder {
+  color: var(--muted-soft);
+}
+
+.claude-input:focus {
+  border-color: var(--coral);
+  box-shadow: 0 0 0 3px rgba(204, 120, 92, 0.15);
+  outline: none;
+}
+
+/* --- Claude Focus Ring --- */
+.claude-focus:focus-visible {
+  outline: 3px solid rgba(204, 120, 92, 0.2);
+  outline-offset: 2px;
+}
+
+/* --- Claude Badge --- */
+.claude-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--hairline);
+  background: var(--surface-soft);
+  color: var(--body);
+}
+
+.claude-badge-coral {
+  background: var(--coral);
+  color: #ffffff;
+  border: none;
+}
+
+.claude-badge-teal {
+  background: var(--teal);
+  color: #ffffff;
+  border: none;
+}
+
+.claude-badge-amber {
+  background: var(--amber);
+  color: #ffffff;
+  border: none;
+}
+
+/* --- Claude Toggle --- */
+.claude-toggle {
+  width: 44px;
+  height: 24px;
+  background: var(--hairline);
+  border-radius: 12px;
   position: relative;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.2s ease;
 }
 
-.neu-toggle-knob {
-  width: 22px;
-  height: 22px;
-  background: linear-gradient(145deg, #f0e8e0, #d8d0c8);
-  box-shadow: 
-    3px 3px 6px var(--neu-shadow-dark),
-    -3px -3px 6px var(--neu-shadow-light);
+.claude-toggle-knob {
+  width: 18px;
+  height: 18px;
+  background: #ffffff;
   border-radius: 50%;
   position: absolute;
   top: 3px;
   left: 3px;
-  transition: all 0.3s ease;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
-.neu-toggle.active {
-  background: var(--primary);
+.claude-toggle.active {
+  background: var(--coral);
 }
 
-.neu-toggle.active .neu-toggle-knob {
-  left: 27px;
-  background: white;
-  box-shadow: 
-    2px 2px 4px rgba(0, 0, 0, 0.2),
-    -1px -1px 3px rgba(255, 255, 255, 0.5);
+.claude-toggle.active .claude-toggle-knob {
+  transform: translateX(20px);
 }
 
-/* --- Claymorphism Elements --- */
-.clay-card {
-  background: var(--neu-surface);
-  border-radius: 1.5rem;
-  border: 2px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 
-    8px 8px 20px var(--neu-shadow-dark),
-    -8px -8px 20px var(--neu-shadow-light),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  position: relative;
+/* --- Claude Dark Card (for code/product sections) --- */
+.claude-dark-card {
+  background: var(--surface-dark);
+  color: var(--on-dark);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
 }
 
-.clay-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, transparent 50%);
-  pointer-events: none;
+.claude-dark-elevated {
+  background: var(--surface-dark-elevated);
+  color: var(--on-dark);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
 }
 
-.clay-icon {
-  border-radius: 1rem;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 
-    4px 4px 10px var(--neu-shadow-dark),
-    -4px -4px 10px var(--neu-shadow-light),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+/* --- Claude Section Divider --- */
+.claude-divider {
+  height: 1px;
+  background: var(--hairline);
+  width: 100%;
 }
 
-.clay-badge {
-  border-radius: 2rem;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 
-    3px 3px 8px var(--neu-shadow-dark),
-    -3px -3px 8px var(--neu-shadow-light),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+.claude-divider-soft {
+  height: 1px;
+  background: var(--hairline-soft);
+  width: 100%;
 }
 
-/* --- Claymorphism Avatar --- */
-.clay-avatar {
+/* --- Claude Avatar --- */
+.claude-avatar {
   border-radius: 50%;
-  border: 3px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 
-    6px 6px 14px var(--neu-shadow-dark),
-    -6px -6px 14px var(--neu-shadow-light),
-    inset 0 2px 0 rgba(255, 255, 255, 0.4);
+  object-fit: cover;
+  border: 2px solid var(--hairline);
 }
 
-/* --- Gradient Accents --- */
-.gradient-teal {
-  background: linear-gradient(135deg, #7C9EB2, #5A8A9E);
-  color: white;
+.claude-avatar-lg {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--hairline);
 }
 
-.gradient-coral {
-  background: linear-gradient(135deg, #D4A574, #C48A54);
-  color: white;
-}
-
-.gradient-lavender {
-  background: linear-gradient(135deg, #C4A8D4, #A888C4);
-  color: white;
-}
-
-.gradient-mint {
-  background: linear-gradient(135deg, #A8C4B8, #88B4A8);
-  color: white;
-}
-
-.gradient-sunset {
-  background: linear-gradient(135deg, #D4A574, #C47C7C);
-  color: white;
-}
-
-.gradient-ocean {
-  background: linear-gradient(135deg, #7C9EB2, #C4A8D4);
-  color: white;
-}
-
-/* --- Custom Scrollbars --- */
+/* --- Custom Scrollbars (Claude) --- */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--neu-bg);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--neu-shadow-dark);
-  border-radius: 4px;
-  border: 2px solid var(--neu-bg);
+  background: var(--hairline);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #B5ADA5;
+  background: var(--muted-claude);
 }
 
-/* --- Animations --- */
-@keyframes neuPulse {
-  0%, 100% { 
-    box-shadow: 
-      8px 8px 20px var(--neu-shadow-dark),
-      -8px -8px 20px var(--neu-shadow-light);
-  }
-  50% { 
-    box-shadow: 
-      6px 6px 15px var(--neu-shadow-dark),
-      -6px -6px 15px var(--neu-shadow-light);
-  }
-}
-
-@keyframes clayBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-
+/* --- Animations (Claude) --- */
 @keyframes fireFlicker {
-  0%, 100% { transform: scale(1) rotate(-1deg); filter: drop-shadow(0 0 8px rgba(212, 165, 116, 0.8)); }
-  50% { transform: scale(1.08) rotate(2deg); filter: drop-shadow(0 0 16px rgba(196, 124, 124, 0.9)); }
+  0%, 100% { transform: scale(1) rotate(-1deg); filter: drop-shadow(0 0 6px rgba(204, 120, 92, 0.6)); }
+  50% { transform: scale(1.06) rotate(2deg); filter: drop-shadow(0 0 12px rgba(204, 120, 92, 0.8)); }
 }
 
 .fire-animated {
   animation: fireFlicker 1.8s infinite ease-in-out;
 }
 
-.neu-pulse {
-  animation: neuPulse 3s infinite ease-in-out;
+@keyframes gentlePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
 }
 
-.clay-bounce {
-  animation: clayBounce 2s infinite ease-in-out;
+.gentle-pulse {
+  animation: gentlePulse 2s infinite ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.claude-fade-in {
+  animation: fadeIn 0.3s ease-out;
 }
 
 /* --- Glass Effects (kept for modals) --- */
-.glass-panel {
-  background: rgba(237, 231, 223, 0.85);
+.claude-glass {
+  background: rgba(250, 249, 245, 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--hairline);
 }
 
-.glass-modal {
-  background: rgba(232, 224, 216, 0.95);
+.claude-glass-modal {
+  background: rgba(250, 249, 245, 0.96);
   backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 
-    12px 12px 30px var(--neu-shadow-dark),
-    -12px -12px 30px var(--neu-shadow-light);
-}
-
-/* --- Glow Effects --- */
-.glow-teal {
-  box-shadow: 
-    0 0 20px rgba(124, 158, 178, 0.4),
-    8px 8px 20px var(--neu-shadow-dark),
-    -8px -8px 20px var(--neu-shadow-light);
-}
-
-.glow-coral {
-  box-shadow: 
-    0 0 20px rgba(212, 165, 116, 0.4),
-    8px 8px 20px var(--neu-shadow-dark),
-    -8px -8px 20px var(--neu-shadow-light);
-}
-
-.glow-lavender {
-  box-shadow: 
-    0 0 20px rgba(196, 168, 212, 0.4),
-    8px 8px 20px var(--neu-shadow-dark),
-    -8px -8px 20px var(--neu-shadow-light);
+  border: 1px solid var(--hairline);
+  border-radius: 16px;
 }

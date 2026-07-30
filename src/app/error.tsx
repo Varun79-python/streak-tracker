@@ -16,15 +16,15 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="min-h-screen bg-[#E8E0D8] text-[#3D3D3D] flex items-center justify-center p-4">
-      <div className="max-w-md w-full neu-card p-8 rounded-3xl text-center space-y-6">
-        <div className="w-16 h-16 rounded-2xl gradient-sunset flex items-center justify-center clay-icon mx-auto">
+    <div className="min-h-screen bg-[#faf9f5] text-[#3d3d3a] flex items-center justify-center p-4">
+      <div className="max-w-md w-full claude-card p-8 rounded-3xl text-center space-y-6">
+        <div style={{ borderRadius: '12px', background: '#c64545' }} className="w-16 h-16 flex items-center justify-center mx-auto">
           <AlertTriangle className="w-8 h-8 text-white" />
         </div>
 
         <div className="space-y-2">
-          <h2 className="text-xl font-bold text-[#3D3D3D]">Something went wrong</h2>
-          <p className="text-xs text-[#9A9A9A] font-mono">
+          <h2 className="text-xl font-bold text-[#141413]">Something went wrong</h2>
+          <p className="text-xs text-[#8e8b82] font-mono">
             {error.message || 'An unexpected application error occurred.'}
           </p>
         </div>
@@ -32,7 +32,8 @@ export default function Error({
         <div className="flex items-center justify-center gap-3 pt-2">
           <button
             onClick={() => reset()}
-            className="px-5 py-2.5 rounded-xl gradient-coral text-white font-bold text-xs transition-all flex items-center gap-2 clay-badge cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+            className="px-5 py-2.5 rounded-xl text-white font-bold text-xs transition-all flex items-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+            style={{ borderRadius: '9999px', background: '#cc785c' }}
           >
             <RefreshCw className="w-4 h-4" />
             <span>Try Again</span>
@@ -40,7 +41,7 @@ export default function Error({
 
           <Link
             href="/"
-            className="px-5 py-2.5 rounded-xl neu-btn text-[#6B6B6B] font-semibold text-xs transition-all flex items-center gap-2 cursor-pointer"
+            className="px-5 py-2.5 rounded-xl claude-btn-secondary text-[#6c6a64] font-semibold text-xs transition-all flex items-center gap-2 cursor-pointer"
           >
             <Home className="w-4 h-4" />
             <span>Go Home</span>

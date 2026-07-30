@@ -98,70 +98,70 @@ export const StatisticsView: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-[#3D3D3D] flex items-center gap-2.5">
-            <div className="clay-icon p-2 rounded-xl">
-              <BarChart3 className="w-5 h-5 text-[#7C9EB2]" />
+          <h2 className="text-2xl font-bold text-[#252523] flex items-center gap-2.5">
+            <div className="p-2 rounded-xl" style={{ borderRadius: '12px' }}>
+              <BarChart3 className="w-5 h-5 text-[#cc785c]" />
             </div>
             <span>Statistics & Consistency Analytics</span>
           </h2>
-          <p className="text-xs text-[#9A9A9A] font-mono">Deep insights into habit performance, completion trends, and streak milestones.</p>
+          <p className="text-xs text-[#8e8b82] font-mono">Deep insights into habit performance, completion trends, and streak milestones.</p>
         </div>
       </div>
 
       {/* Top Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="neu-card p-5 rounded-2xl space-y-1">
+        <div className="claude-card p-5 rounded-2xl space-y-1">
           <div className="flex items-center gap-2">
-            <div className="clay-icon w-8 h-8 rounded-lg flex items-center justify-center">
-              <CheckCircle2 className="w-4 h-4 text-[#7C9EB2]" />
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ borderRadius: '12px' }}>
+              <CheckCircle2 className="w-4 h-4 text-[#cc785c]" />
             </div>
-            <p className="text-xs text-[#9A9A9A] font-mono">Overall Completion %</p>
+            <p className="text-xs text-[#8e8b82] font-mono">Overall Completion %</p>
           </div>
-          <h3 className="text-3xl font-extrabold text-[#7C9EB2] font-mono">{user.successRate}%</h3>
-          <p className="text-[11px] text-[#9A9A9A]">Total days tracked: {user.totalDays}</p>
+          <h3 className="text-3xl font-extrabold text-[#cc785c] font-mono">{user.successRate}%</h3>
+          <p className="text-[11px] text-[#8e8b82]">Total days tracked: {user.totalDays}</p>
         </div>
 
-        <div className="neu-card p-5 rounded-2xl space-y-1">
+        <div className="claude-card p-5 rounded-2xl space-y-1">
           <div className="flex items-center gap-2">
-            <div className="clay-icon w-8 h-8 rounded-lg flex items-center justify-center">
-              <Target className="w-4 h-4 text-[#7C9EB2]" />
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ borderRadius: '12px' }}>
+              <Target className="w-4 h-4 text-[#cc785c]" />
             </div>
-            <p className="text-xs text-[#9A9A9A] font-mono">Perfect Days Logged</p>
+            <p className="text-xs text-[#8e8b82] font-mono">Perfect Days Logged</p>
           </div>
-          <h3 className="text-3xl font-extrabold text-[#7C9EB2] font-mono">{user.totalDays}</h3>
-          <p className="text-[11px] text-[#9A9A9A]">Days with 100% completion</p>
+          <h3 className="text-3xl font-extrabold text-[#cc785c] font-mono">{user.totalDays}</h3>
+          <p className="text-[11px] text-[#8e8b82]">Days with 100% completion</p>
         </div>
 
-        <div className="neu-card p-5 rounded-2xl space-y-1">
+        <div className="claude-card p-5 rounded-2xl space-y-1">
           <div className="flex items-center gap-2">
-            <div className="clay-icon w-8 h-8 rounded-lg flex items-center justify-center">
-              <Award className="w-4 h-4 text-[#D4A574]" />
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ borderRadius: '12px' }}>
+              <Award className="w-4 h-4 text-[#e8a55a]" />
             </div>
-            <p className="text-xs text-[#9A9A9A] font-mono">Longest Streak</p>
+            <p className="text-xs text-[#8e8b82] font-mono">Longest Streak</p>
           </div>
-          <h3 className="text-3xl font-extrabold text-[#D4A574] font-mono">{user.longestStreak} Days</h3>
-          <p className="text-[11px] text-[#9A9A9A]">All-time record</p>
+          <h3 className="text-3xl font-extrabold text-[#e8a55a] font-mono">{user.longestStreak} Days</h3>
+          <p className="text-[11px] text-[#8e8b82]">All-time record</p>
         </div>
 
-        <div className="neu-card p-5 rounded-2xl space-y-1">
+        <div className="claude-card p-5 rounded-2xl space-y-1">
           <div className="flex items-center gap-2">
-            <div className="clay-icon w-8 h-8 rounded-lg flex items-center justify-center">
-              <TrendingUp className="w-4 h-4 text-[#C4A8D4]" />
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ borderRadius: '12px' }}>
+              <TrendingUp className="w-4 h-4 text-[#e8a55a]" />
             </div>
-            <p className="text-xs text-[#9A9A9A] font-mono">Current Streak</p>
+            <p className="text-xs text-[#8e8b82] font-mono">Current Streak</p>
           </div>
-          <h3 className="text-3xl font-extrabold text-[#C4A8D4] font-mono">{user.currentStreak} Days</h3>
-          <p className="text-[11px] text-[#9A9A9A]">Active consistency streak</p>
+          <h3 className="text-3xl font-extrabold text-[#e8a55a] font-mono">{user.currentStreak} Days</h3>
+          <p className="text-[11px] text-[#8e8b82]">Active consistency streak</p>
         </div>
       </div>
 
       {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Weekly Progress Bar Chart */}
-        <div className="lg:col-span-6 neu-card p-6 rounded-3xl space-y-4">
-          <h3 className="text-base font-bold text-[#3D3D3D] flex items-center gap-2">
-            <div className="clay-icon w-8 h-8 rounded-lg flex items-center justify-center">
-              <BarChart3 className="w-4 h-4 text-[#7C9EB2]" />
+        <div className="lg:col-span-6 claude-card p-6 rounded-3xl space-y-4">
+          <h3 className="text-base font-bold text-[#252523] flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ borderRadius: '12px' }}>
+              <BarChart3 className="w-4 h-4 text-[#cc785c]" />
             </div>
             <span>Weekly Completion %</span>
           </h3>
@@ -169,22 +169,22 @@ export const StatisticsView: React.FC = () => {
           <div className="h-64 w-full pt-4">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={weeklyData}>
-                <XAxis dataKey="day" stroke="#9A9A9A" fontSize={12} tickLine={false} />
-                <YAxis stroke="#9A9A9A" fontSize={12} tickLine={false} domain={[0, 100]} />
+                <XAxis dataKey="day" stroke="#8e8b82" fontSize={12} tickLine={false} />
+                <YAxis stroke="#8e8b82" fontSize={12} tickLine={false} domain={[0, 100]} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#F5F0EB', borderColor: 'rgba(0,0,0,0.08)', borderRadius: '0.75rem', color: '#3D3D3D' }}
+                  contentStyle={{ backgroundColor: '#f5f0e8', borderColor: '#e6dfd8', borderRadius: '0.75rem', color: '#3d3d3a' }}
                 />
-                <Bar dataKey="completion" fill="#7C9EB2" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="completion" fill="#cc785c" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Monthly Progress Line Chart */}
-        <div className="lg:col-span-6 neu-card p-6 rounded-3xl space-y-4">
-          <h3 className="text-base font-bold text-[#3D3D3D] flex items-center gap-2">
-            <div className="clay-icon w-8 h-8 rounded-lg flex items-center justify-center">
-              <TrendingUp className="w-4 h-4 text-[#D4A574]" />
+        <div className="lg:col-span-6 claude-card p-6 rounded-3xl space-y-4">
+          <h3 className="text-base font-bold text-[#252523] flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ borderRadius: '12px' }}>
+              <TrendingUp className="w-4 h-4 text-[#e8a55a]" />
             </div>
             <span>Monthly Growth Trend</span>
           </h3>
@@ -193,12 +193,12 @@ export const StatisticsView: React.FC = () => {
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={monthlyData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
-                <XAxis dataKey="month" stroke="#9A9A9A" fontSize={12} />
-                <YAxis stroke="#9A9A9A" fontSize={12} />
+                <XAxis dataKey="month" stroke="#8e8b82" fontSize={12} />
+                <YAxis stroke="#8e8b82" fontSize={12} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#F5F0EB', borderColor: 'rgba(0,0,0,0.08)', borderRadius: '0.75rem', color: '#3D3D3D' }}
+                  contentStyle={{ backgroundColor: '#f5f0e8', borderColor: '#e6dfd8', borderRadius: '0.75rem', color: '#3d3d3a' }}
                 />
-                <Line type="monotone" dataKey="streak" stroke="#D4A574" strokeWidth={3} dot={{ fill: '#D4A574', r: 4 }} />
+                <Line type="monotone" dataKey="streak" stroke="#e8a55a" strokeWidth={3} dot={{ fill: '#e8a55a', r: 4 }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -208,23 +208,23 @@ export const StatisticsView: React.FC = () => {
       {/* Habit Performance & Highlights Row */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Habit Performance Bars */}
-        <div className="lg:col-span-8 neu-card p-6 rounded-3xl space-y-4">
-          <h3 className="text-base font-bold text-[#3D3D3D] flex items-center justify-between">
+        <div className="lg:col-span-8 claude-card p-6 rounded-3xl space-y-4">
+          <h3 className="text-base font-bold text-[#252523] flex items-center justify-between">
             <span>Habit Performance Breakdown</span>
-            <span className="text-xs text-[#9A9A9A] font-mono">Active Habits ({dynamicHabitStats.length})</span>
+            <span className="text-xs text-[#8e8b82] font-mono">Active Habits ({dynamicHabitStats.length})</span>
           </h3>
 
           <div className="space-y-4">
             {dynamicHabitStats.length === 0 ? (
-              <p className="text-xs text-[#9A9A9A]">No active habits found. Create habits to see performance analytics.</p>
+              <p className="text-xs text-[#8e8b82]">No active habits found. Create habits to see performance analytics.</p>
             ) : (
               dynamicHabitStats.map((item) => (
                 <div key={item.id} className="space-y-1.5">
-                  <div className="flex justify-between text-xs text-[#6B6B6B] font-semibold">
+                  <div className="flex justify-between text-xs text-[#6c6a64] font-semibold">
                     <span>{item.name}</span>
-                    <span className="font-mono text-[#7C9EB2]">{item.rate}%</span>
+                    <span className="font-mono text-[#cc785c]">{item.rate}%</span>
                   </div>
-                  <div className="w-full h-2 rounded-full neu-pressed overflow-hidden">
+                  <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: 'rgba(204, 120, 92, 0.08)' }}>
                     <div
                       className="h-full rounded-full transition-all duration-500"
                       style={{ width: `${item.rate}%`, backgroundColor: item.color }}
@@ -238,35 +238,35 @@ export const StatisticsView: React.FC = () => {
 
         {/* Most Missed vs Most Successful */}
         <div className="lg:col-span-4 space-y-4">
-          <div className="neu-card p-5 rounded-3xl space-y-2">
-            <div className="flex items-center gap-2 text-[#A8C4B8] text-xs font-bold font-mono">
+          <div className="claude-card p-5 rounded-3xl space-y-2">
+            <div className="flex items-center gap-2 text-[#5db872] text-xs font-bold font-mono">
               <CheckCircle2 className="w-4 h-4" />
               <span>MOST SUCCESSFUL HABIT</span>
             </div>
-            <h4 className="text-lg font-bold text-[#3D3D3D]">{mostSuccessful ? mostSuccessful.name : 'No habits track record'}</h4>
-            <p className="text-xs text-[#9A9A9A]">
+            <h4 className="text-lg font-bold text-[#252523]">{mostSuccessful ? mostSuccessful.name : 'No habits track record'}</h4>
+            <p className="text-xs text-[#8e8b82]">
               {mostSuccessful ? `${mostSuccessful.rate}% completion rate across ${totalHistoryDays} logged days.` : 'Start checking in to calculate habit stats.'}
             </p>
           </div>
 
           {mostMissed && (
-            <div className="neu-card p-5 rounded-3xl space-y-2">
-              <div className="flex items-center gap-2 text-[#C47C7C] text-xs font-bold font-mono">
+            <div className="claude-card p-5 rounded-3xl space-y-2">
+              <div className="flex items-center gap-2 text-[#c64545] text-xs font-bold font-mono">
                 <AlertTriangle className="w-4 h-4" />
                 <span>HABIT NEEDING FOCUS</span>
               </div>
-              <h4 className="text-lg font-bold text-[#3D3D3D]">{mostMissed.name}</h4>
-              <p className="text-xs text-[#9A9A9A]">{mostMissed.rate}% completion rate. Needs focused discipline!</p>
+              <h4 className="text-lg font-bold text-[#252523]">{mostMissed.name}</h4>
+              <p className="text-xs text-[#8e8b82]">{mostMissed.rate}% completion rate. Needs focused discipline!</p>
             </div>
           )}
         </div>
       </div>
 
       {/* AI Analytics */}
-      <div className="neu-card p-6 rounded-3xl mt-6">
-        <h3 className="text-lg font-bold text-[#3D3D3D] flex items-center gap-2 mb-4">
-          <div className="clay-icon w-8 h-8 rounded-lg flex items-center justify-center">
-            <Sparkles className="w-4 h-4 text-[#D4A574]" />
+      <div className="claude-card p-6 rounded-3xl mt-6">
+        <h3 className="text-lg font-bold text-[#252523] flex items-center gap-2 mb-4">
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ borderRadius: '12px' }}>
+            <Sparkles className="w-4 h-4 text-[#e8a55a]" />
           </div>
           Ask AI About Your Stats
         </h3>
@@ -276,20 +276,21 @@ export const StatisticsView: React.FC = () => {
             onChange={e => setAnalyticsQuery(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && runAnalyticsQuery()}
             placeholder="e.g., How was my week? What habit do I miss most?"
-            className="neu-input flex-1 rounded-xl px-4 py-2.5 text-sm text-[#3D3D3D] placeholder-[#9A9A9A] outline-none transition-colors"
+            className="flex-1 rounded-xl px-4 py-2.5 text-sm text-[#3d3d3a] placeholder-[#8e8b82] outline-none transition-colors claude-input"
           />
           <button
             onClick={runAnalyticsQuery}
             disabled={analyticsLoading || !analyticsQuery.trim()}
-            className="px-4 py-2.5 rounded-xl gradient-coral text-[#3D3D3D] font-medium text-sm transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 py-2.5 rounded-xl font-medium text-sm transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{ background: '#cc785c', color: '#faf9f5' }}
           >
             Ask
           </button>
         </div>
-        {analyticsLoading && <p className="text-sm text-[#9A9A9A] mt-3 animate-pulse">Analyzing your data...</p>}
+        {analyticsLoading && <p className="text-sm text-[#8e8b82] mt-3 animate-pulse">Analyzing your data...</p>}
         {analyticsResult && !analyticsLoading && (
-          <div className="mt-3 p-4 rounded-xl gradient-teal/20">
-            <p className="text-sm text-[#3D3D3D]">{analyticsResult}</p>
+          <div className="mt-3 p-4 rounded-xl" style={{ background: 'rgba(93, 184, 166, 0.2)' }}>
+            <p className="text-sm text-[#3d3d3a]">{analyticsResult}</p>
           </div>
         )}
       </div>

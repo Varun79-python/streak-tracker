@@ -1,22 +1,28 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, EB_Garamond, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { StreakProvider } from "@/lib/StreakContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
+const ebGaramond = EB_Garamond({
+  variable: "--font-heading",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const jetbrainsMono = JetBrains_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
 export const viewport: Viewport = {
-  themeColor: "#10b981",
+  themeColor: "#cc785c",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -29,7 +35,7 @@ export const metadata: Metadata = {
     template: "%s — Streakify",
   },
   description:
-    "A premium, modern dark-themed habit & streak tracking application with GitHub-style 365-day contribution matrix, gamification, and analytics.",
+    "A premium habit & streak tracking application with GitHub-style 365-day contribution matrix, gamification, and analytics.",
   keywords: ["Streak Tracker", "Habit Tracker", "Contribution Graph", "Discipline", "Gamification", "PWA"],
   authors: [{ name: "Streakify Team" }],
   creator: "Streakify",
@@ -40,7 +46,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Streakify — Build Discipline. Track Progress.",
     description:
-      "Track your daily habits, build streaks, and never break the chain with Streakify's beautiful dark-themed tracker.",
+      "Track your daily habits, build streaks, and never break the chain with Streakify's beautiful tracker.",
     url: "https://streakify.vercel.app",
     siteName: "Streakify",
     images: [
@@ -58,7 +64,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Streakify — Build Discipline. Track Progress.",
     description:
-      "Track your daily habits, build streaks, and never break the chain with Streakify's beautiful dark-themed tracker.",
+      "Track your daily habits, build streaks, and never break the chain with Streakify's beautiful tracker.",
     images: ["/logo.png"],
   },
   robots: {
@@ -88,7 +94,7 @@ export default function RootLayout({
     "name": "Streakify",
     "applicationCategory": "ProductivityApplication",
     "operatingSystem": "All",
-    "description": "A premium, modern dark-themed habit & streak tracking application with GitHub-style 365-day contribution matrix and gamification.",
+    "description": "A premium habit & streak tracking application with GitHub-style 365-day contribution matrix and gamification.",
     "url": "https://streakify.vercel.app",
     "offers": {
       "@type": "Offer",
@@ -100,14 +106,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${ebGaramond.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <head>
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#10b981" />
+        <meta name="theme-color" content="#cc785c" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Streakify" />
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
         <script
@@ -115,7 +121,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-[#E8E0D8] text-[#3D3D3D]">
+      <body className="min-h-full flex flex-col" style={{ background: '#faf9f5', color: '#3d3d3a' }}>
         <StreakProvider>
           <ErrorBoundary>
             {children}
