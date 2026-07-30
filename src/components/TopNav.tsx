@@ -16,7 +16,6 @@ function computeHeatmapStreak(history: Record<string, { completed?: boolean }>):
     if (entry && (entry.completed === true || Object.keys(entry).length > 0)) {
       streak++;
     } else if (i > 0) {
-      // Allow today to be incomplete (haven't checked in yet), but break on older gaps
       break;
     }
     d.setDate(d.getDate() - 1);
@@ -40,10 +39,10 @@ export const TopNav: React.FC = () => {
   const heatmapStreak = useMemo(() => computeHeatmapStreak(history), [history]);
 
   return (
-    <header className="sticky top-0 z-30 px-4 py-3 flex items-center justify-between min-h-[52px] border-b" style={{ background: 'var(--surface-canvas)', borderColor: 'var(--hairline)' }}>
+    <header className="sticky top-0 z-30 px-3 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between min-h-[48px] sm:min-h-[52px] border-b" style={{ background: 'var(--surface-canvas)', borderColor: 'var(--hairline)' }}>
       {/* Left — Brand */}
-      <div className="flex items-center gap-2.5">
-        <div className="w-8 h-8 rounded-xl flex items-center justify-center overflow-hidden" style={{ background: '#22C55E' }}>
+      <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0" style={{ background: '#22C55E' }}>
           <img 
             src="/logo.png" 
             alt="Streakify Logo" 
@@ -52,68 +51,63 @@ export const TopNav: React.FC = () => {
               e.currentTarget.style.display = 'none';
             }} 
           />
-          <Flame className="w-4 h-4 text-white fire-animated" />
+          <Flame className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white fire-animated" />
         </div>
-        <div className="flex flex-col">
-          <span className="text-sm font-bold leading-tight" style={{ color: 'var(--ink)', fontFamily: 'var(--font-heading)' }}>
+        <div className="flex flex-col min-w-0">
+          <span className="text-xs sm:text-sm font-bold leading-tight truncate" style={{ color: 'var(--ink)', fontFamily: 'var(--font-heading)' }}>
             {user.name || 'Streakify'}
           </span>
-          <span className="text-[10px] font-mono text-[var(--muted-soft)] leading-tight truncate max-w-[140px]">
-            {user.bio || 'Building daily consistency'}
+          <span className="text-[9px] sm:text-[10px] font-mono text-[var(--muted-soft)] leading-tight truncate max-w-[100px] sm:max-w-[140px]">
+            {heatmapStreak > 0 ? <>{heatmapStreak}d streak</> : 'Start today'}
           </span>
         </div>
       </div>
 
       {/* Right — Actions */}
-      <div className="flex items-center gap-2">
-        {/* Premium Glowing Streak Badge */}
+      <div className="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
+        {/* Streak Badge — compressed on mobile */}
         <div 
           onClick={() => setShowNotificationDrawer(true)}
-          className="flex items-center gap-2 px-3.5 py-1.5 rounded-full cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-sm"
+          className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-sm"
           style={{ 
             background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.12), rgba(34, 197, 94, 0.22))', 
             border: '1px solid var(--green)',
             borderRadius: '9999px' 
           }}
         >
-          <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'var(--green)', borderRadius: '9999px' }}>
-            <Flame className="w-3.5 h-3.5 text-white" />
+          <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'var(--green)', borderRadius: '9999px' }}>
+            <Flame className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 text-white" />
           </div>
-          <div className="flex items-baseline gap-1 font-mono">
-            <span className="text-xs font-extrabold num-font" style={{ color: 'var(--ink)' }}>{heatmapStreak}</span>
-            <span className="text-[10px] font-bold text-[var(--green)] uppercase tracking-wider">
-              {heatmapStreak === 1 ? 'DAY STREAK' : 'DAYS STREAK'}
-            </span>
-          </div>
+          <span className="text-[10px] sm:text-xs font-extrabold num-font" style={{ color: 'var(--ink)' }}>{heatmapStreak}</span>
         </div>
 
         {/* Theme Toggle */}
         <button
           onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-          className="w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-colors"
+          className="w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center cursor-pointer transition-colors"
           style={{ background: 'var(--surface-soft)', color: 'var(--muted-claude)' }}
           title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
         >
-          {theme === 'light' ? <Moon className="w-[18px] h-[18px]" /> : <Sun className="w-[18px] h-[18px]" />}
+          {theme === 'light' ? <Moon className="w-4 h-4 sm:w-[18px] sm:h-[18px]" /> : <Sun className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />}
         </button>
 
         {/* Notifications */}
         <button
           onClick={() => setShowNotificationDrawer(true)}
-          className="relative w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-colors"
+          className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center cursor-pointer transition-colors"
           style={{ background: 'transparent', color: 'var(--muted-claude)' }}
         >
-          <Bell className="w-[18px] h-[18px]" />
+          <Bell className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
           {unreadCount > 0 && (
-            <span className="absolute top-1 right-1 w-2 h-2 rounded-full" style={{ background: 'var(--green)' }} />
+            <span className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full" style={{ background: 'var(--green)' }} />
           )}
         </button>
 
-        {/* Logout */}
+        {/* Logout — hidden on very small screens */}
         <button
           onClick={async () => { await logout(); }}
           title="Logout"
-          className="w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-colors"
+          className="hidden sm:flex w-9 h-9 rounded-full items-center justify-center cursor-pointer transition-colors"
           style={{ color: 'var(--muted-claude)' }}
         >
           <LogOut className="w-[18px] h-[18px]" />
@@ -128,11 +122,11 @@ export const TopNav: React.FC = () => {
             <img
               src={user.avatar}
               alt={user.name}
-              className="w-8 h-8 rounded-full object-cover"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover"
               style={{ border: '2px solid var(--hairline)' }}
             />
           ) : (
-            <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ background: '#22C55E', border: '2px solid var(--hairline)' }}>
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white" style={{ background: '#22C55E', border: '2px solid var(--hairline)' }}>
               {(user.name || 'U').charAt(0).toUpperCase()}
             </div>
           )}

@@ -100,35 +100,39 @@ export const LeaderboardView: React.FC = () => {
 
       {/* Leaderboard Table */}
       <div className="claude-card rounded-3xl overflow-hidden">
-        <div className="p-4 grid grid-cols-12 text-xs font-bold font-mono uppercase tracking-wider" style={{ background: 'rgba(34, 197, 94, 0.08)', color: 'var(--muted-soft)' }}>
-          <span className="col-span-1">Rank</span>
-          <span className="col-span-5">User</span>
-          <span className="col-span-2">Level</span>
-          <span className="col-span-2">Total XP</span>
-          <span className="col-span-2 text-right">Streak</span>
-        </div>
-
-        <div className="font-mono text-xs">
-          {leaderboard.map((item) => (
-            <div
-              key={item.rank}
-              className={`claude-card-soft p-4 grid grid-cols-12 items-center transition-colors ${
-                item.isCurrentUser ? 'font-bold' : ''
-              }`}
-              style={item.isCurrentUser ? { borderLeft: '4px solid var(--green)' } : {}}
-            >
-              <span className="col-span-1 font-bold num-font" style={{ color: 'var(--muted-claude)' }}>#{item.rank}</span>
-              <div className="col-span-5 flex items-center gap-3">
-                <img src={item.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(item.name)}`} alt={item.name} className="w-8 h-8" style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--hairline)' }} />
-                <span className="text-[var(--ink)] font-semibold truncate">{item.name}</span>
-              </div>
-              <span className="col-span-2 text-[var(--muted-soft)]">Lvl <span className="num-font">{item.level}</span></span>
-              <span className="col-span-2 font-bold num-font" style={{ color: 'var(--green)' }}>{item.xp} XP</span>
-              <span className="col-span-2 text-right font-bold flex items-center justify-end gap-1" style={{ color: 'var(--green)' }}>
-                <Flame className="w-3.5 h-3.5 fire-animated" /> <span className="num-font">{item.currentStreak}</span>d
-              </span>
+        <div className="overflow-x-auto">
+          <div className="min-w-[500px]">
+            <div className="p-4 grid grid-cols-12 text-xs font-bold font-mono uppercase tracking-wider" style={{ background: 'rgba(34, 197, 94, 0.08)', color: 'var(--muted-soft)' }}>
+              <span className="col-span-1">Rank</span>
+              <span className="col-span-5">User</span>
+              <span className="col-span-2">Level</span>
+              <span className="col-span-2">Total XP</span>
+              <span className="col-span-2 text-right">Streak</span>
             </div>
-          ))}
+
+            <div className="font-mono text-xs">
+              {leaderboard.map((item) => (
+                <div
+                  key={item.rank}
+                  className={`claude-card-soft p-4 grid grid-cols-12 items-center transition-colors ${
+                    item.isCurrentUser ? 'font-bold' : ''
+                  }`}
+                  style={item.isCurrentUser ? { borderLeft: '4px solid var(--green)' } : {}}
+                >
+                  <span className="col-span-1 font-bold num-font" style={{ color: 'var(--muted-claude)' }}>#{item.rank}</span>
+                  <div className="col-span-5 flex items-center gap-3">
+                    <img src={item.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(item.name)}`} alt={item.name} className="w-8 h-8" style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--hairline)' }} />
+                    <span className="text-[var(--ink)] font-semibold truncate">{item.name}</span>
+                  </div>
+                  <span className="col-span-2 text-[var(--muted-soft)]">Lvl <span className="num-font">{item.level}</span></span>
+                  <span className="col-span-2 font-bold num-font" style={{ color: 'var(--green)' }}>{item.xp} XP</span>
+                  <span className="col-span-2 text-right font-bold flex items-center justify-end gap-1" style={{ color: 'var(--green)' }}>
+                    <Flame className="w-3.5 h-3.5 fire-animated" /> <span className="num-font">{item.currentStreak}</span>d
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -79,7 +79,7 @@ export const DashboardView: React.FC = () => {
   }, [history, todayStr]);
 
   return (
-    <div className="space-y-6 select-none">
+    <div className="space-y-4 sm:space-y-6 select-none">
 
       {/* Motivation Section */}
       <MotivationCard />

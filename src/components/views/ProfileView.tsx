@@ -54,12 +54,12 @@ export const ProfileView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 select-none max-w-4xl">
+    <div className="space-y-4 sm:space-y-6 select-none">
       {/* Header Profile Card */}
-      <div className="claude-card p-8 rounded-3xl relative overflow-hidden space-y-6">
-        <div className="absolute top-0 right-0 w-80 h-80 rounded-full blur-[100px] pointer-events-none" style={{ background: 'rgba(34, 197, 94, 0.1)' }} />
+      <div className="claude-card p-4 sm:p-8 rounded-3xl relative overflow-hidden space-y-4 sm:space-y-6">
+        <div className="absolute top-0 right-0 w-40 h-40 sm:w-80 sm:h-80 rounded-full blur-[100px] pointer-events-none" style={{ background: 'rgba(34, 197, 94, 0.1)' }} />
 
-        <div className="flex items-center gap-6 flex-wrap">
+        <div className="flex items-center gap-4 sm:gap-6 flex-wrap">
           {/* Avatar Container with Edit Camera Badge */}
           <div className="relative group cursor-pointer" onClick={() => setShowAvatarPicker(!showAvatarPicker)}>
             <div style={{ borderRadius: '50%' }}>
@@ -74,7 +74,7 @@ export const ProfileView: React.FC = () => {
             </div>
           </div>
 
-          <div className="space-y-2 flex-1 min-w-64">
+          <div className="space-y-2 flex-1 min-w-0 sm:min-w-64">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div>
                 {isEditingBio ? (
@@ -154,7 +154,7 @@ export const ProfileView: React.FC = () => {
       </div>
 
       {/* 4 Stat Cards moved from Dashboard to Profile Page */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         {/* Stat 1: Current Streak */}
         <div className="claude-card p-5 flex items-center justify-between relative overflow-hidden group">
           <div className="space-y-1">
