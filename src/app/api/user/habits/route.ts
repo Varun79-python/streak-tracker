@@ -29,9 +29,10 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { userId, title, description, icon, is_required, is_active } = body;
+    const { userId, title, name, description, icon, is_required, required, is_active, active } = body;
 
-    if (!userId || !title) {
+    const habitTitle = title || name;
+    if (!userId || !habitTitle) {
       return NextResponse.json({ error: 'userId and title required' }, { status: 400 });
     }
 
@@ -52,11 +53,11 @@ export async function POST(request: Request) {
       .from('questions')
       .insert({
         user_id: userId,
-        title,
+        title: habitTitle,
         description,
         icon: icon || 'circle',
-        is_required: is_required ?? true,
-        is_active: is_active ?? true,
+        is_required: is_required ?? required ?? true,
+        is_active: is_active ?? active ?? true,
         sort_order: nextOrder,
       })
       .select()

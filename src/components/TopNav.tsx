@@ -36,14 +36,13 @@ export const TopNav: React.FC = () => {
 
       {/* Right — Actions */}
       <div className="flex items-center gap-1.5">
-        {/* Streak pill */}
+        {/* Streak pill badge */}
         <button 
           onClick={() => setShowNotificationDrawer(true)}
-          className="flex items-center gap-1 px-2.5 py-1 rounded-full cursor-pointer transition-opacity hover:opacity-80"
-          style={{ background: 'var(--green-light)' }}
+          className="flex items-center gap-1.5 px-3 py-1 rounded-full cursor-pointer transition-all hover:scale-105 active:scale-95 border bg-gradient-to-r from-orange-500/10 via-amber-500/10 to-green-500/10 border-orange-500/30 text-orange-500 shadow-xs"
         >
-          <Flame className="w-3.5 h-3.5 fire-animated" style={{ color: 'var(--green)' }} />
-          <span className="text-xs font-bold num-font" style={{ color: 'var(--green)' }}>{user.currentStreak}</span>
+          <Flame className="w-4 h-4 fire-animated text-orange-500 fill-orange-500/30" />
+          <span className="text-xs font-extrabold num-font text-orange-600 dark:text-orange-400">{user.currentStreak}</span>
         </button>
 
         {/* Theme Toggle */}

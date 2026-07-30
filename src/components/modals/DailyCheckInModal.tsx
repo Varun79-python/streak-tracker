@@ -240,7 +240,10 @@ export const DailyCheckInModal: React.FC = () => {
               {canSubmit ? (
                 <>
                   <CheckCircle2 className="w-5 h-5" />
-                  <span>Save Answers & Update Streak 🔥</span>
+                  <span className="flex items-center gap-1.5">
+                    Save Answers & Update Streak
+                    <Flame className="w-4 h-4 text-orange-400 fill-orange-400/40 fire-animated" />
+                  </span>
                 </>
               ) : (
                 <>

@@ -99,7 +99,10 @@ export const DashboardView: React.FC = () => {
               <span>{user.currentStreak}</span>
               <span className="text-xs text-[var(--green)] font-normal font-sans">days</span>
             </h3>
-            <p className="text-[10px] text-[var(--green)] font-medium">🔥 Active streak</p>
+            <p className="text-[10px] text-[var(--green)] font-medium flex items-center gap-1">
+              <Flame className="w-3.5 h-3.5 text-orange-500 fill-orange-500/30 fire-animated" />
+              <span>Active streak</span>
+            </p>
           </div>
           <div className="w-12 h-12 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform" style={{ borderRadius: '12px', background: 'var(--green)' }}>
             <Flame className="w-7 h-7 fire-animated text-white" />
@@ -159,14 +162,20 @@ export const DashboardView: React.FC = () => {
       <div className="claude-card p-5 border-l-4 border-[var(--green)]">
         <div className="flex items-start gap-3">
           <div className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ borderRadius: '12px', background: 'var(--green)' }}>
-            <Sparkles className="w-5 h-5 text-white" />
+            <Sparkles className="w-5 h-5 text-white animate-pulse" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-[10px] text-[var(--green)] font-mono mb-1 uppercase tracking-wider">Daily Insight</p>
+            <p className="text-[10px] text-[var(--green)] font-mono mb-1 uppercase tracking-wider flex items-center gap-1">
+              <span>Daily Insight</span>
+              <Sparkles className="w-3 h-3 text-amber-500 fill-amber-500/20" />
+            </p>
             {quoteLoading ? (
               <p className="text-sm text-[var(--muted-soft)] animate-pulse">Finding your spark...</p>
             ) : (
-              <p className="text-sm text-[var(--body)] leading-relaxed">{dailyQuote?.text || 'Small steps lead to big changes. Keep showing up! 🔥'}</p>
+              <p className="text-sm text-[var(--body)] leading-relaxed flex items-center gap-1.5 flex-wrap">
+                <span>{dailyQuote?.text || 'Small steps lead to big changes. Keep showing up!'}</span>
+                <Flame className="w-4 h-4 text-orange-500 fill-orange-500/30 fire-animated inline" />
+              </p>
             )}
           </div>
         </div>
