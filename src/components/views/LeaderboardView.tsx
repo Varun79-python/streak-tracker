@@ -57,10 +57,10 @@ export const LeaderboardView: React.FC = () => {
             <img src={topThree[1].avatar} alt={topThree[1].name} className="w-16 h-16 mx-auto" style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid #e6dfd8' }} />
             <div>
               <h3 className="font-bold text-[#252523] text-base">{topThree[1].name}</h3>
-              <p className="text-xs text-[#8e8b82] font-mono">Level {topThree[1].level} • {topThree[1].xp} XP</p>
+              <p className="text-xs text-[#8e8b82] font-mono">Level <span className="num-font">{topThree[1].level}</span> • <span className="num-font">{topThree[1].xp}</span> XP</p>
             </div>
             <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full font-mono text-xs font-bold text-white" style={{ background: '#5db8a6' }}>
-              <Flame className="w-3.5 h-3.5 fire-animated" /> {topThree[1].currentStreak} days
+              <Flame className="w-3.5 h-3.5 fire-animated" /> <span className="num-font">{topThree[1].currentStreak}</span> days
             </div>
           </div>
         )}
@@ -72,10 +72,10 @@ export const LeaderboardView: React.FC = () => {
             <img src={topThree[0].avatar} alt={topThree[0].name} className="w-20 h-20 mx-auto" style={{ borderRadius: '50%', objectFit: 'cover', border: '4px solid #e8a55a' }} />
             <div>
               <h3 className="font-extrabold text-[#252523] text-lg">{topThree[0].name}</h3>
-              <p className="text-xs font-mono font-bold" style={{ color: '#e8a55a' }}>Level {topThree[0].level} • {topThree[0].xp} XP</p>
+              <p className="text-xs font-mono font-bold" style={{ color: '#e8a55a' }}>Level <span className="num-font">{topThree[0].level}</span> • <span className="num-font">{topThree[0].xp}</span> XP</p>
             </div>
             <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full font-mono text-xs font-extrabold shadow-lg text-white" style={{ background: '#cc785c' }}>
-              <Flame className="w-4 h-4 fire-animated" /> {topThree[0].currentStreak} days streak
+              <Flame className="w-4 h-4 fire-animated" /> <span className="num-font">{topThree[0].currentStreak}</span> days streak
             </div>
           </div>
         )}
@@ -89,10 +89,10 @@ export const LeaderboardView: React.FC = () => {
             <img src={topThree[2].avatar} alt={topThree[2].name} className="w-16 h-16 mx-auto" style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid #e6dfd8' }} />
             <div>
               <h3 className="font-bold text-[#252523] text-base">{topThree[2].name}</h3>
-              <p className="text-xs text-[#8e8b82] font-mono">Level {topThree[2].level} • {topThree[2].xp} XP</p>
+              <p className="text-xs text-[#8e8b82] font-mono">Level <span className="num-font">{topThree[2].level}</span> • <span className="num-font">{topThree[2].xp}</span> XP</p>
             </div>
             <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full font-mono text-xs font-bold text-white" style={{ background: '#e8a55a' }}>
-              <Flame className="w-3.5 h-3.5 fire-animated" /> {topThree[2].currentStreak} days
+              <Flame className="w-3.5 h-3.5 fire-animated" /> <span className="num-font">{topThree[2].currentStreak}</span> days
             </div>
           </div>
         )}
@@ -117,15 +117,15 @@ export const LeaderboardView: React.FC = () => {
               }`}
               style={item.isCurrentUser ? { borderLeft: '4px solid #cc785c' } : {}}
             >
-              <span className="col-span-1 font-bold" style={{ color: '#6c6a64' }}>#{item.rank}</span>
+              <span className="col-span-1 font-bold num-font" style={{ color: '#6c6a64' }}>#{item.rank}</span>
               <div className="col-span-5 flex items-center gap-3">
                 <img src={item.avatar} alt={item.name} className="w-8 h-8" style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid #e6dfd8' }} />
                 <span className="text-[#252523] font-semibold truncate">{item.name}</span>
               </div>
-              <span className="col-span-2 text-[#8e8b82]">Lvl {item.level}</span>
-              <span className="col-span-2 font-bold" style={{ color: '#cc785c' }}>{item.xp} XP</span>
+              <span className="col-span-2 text-[#8e8b82]">Lvl <span className="num-font">{item.level}</span></span>
+              <span className="col-span-2 font-bold num-font" style={{ color: '#cc785c' }}>{item.xp} XP</span>
               <span className="col-span-2 text-right font-bold flex items-center justify-end gap-1" style={{ color: '#e8a55a' }}>
-                <Flame className="w-3.5 h-3.5 fire-animated" /> {item.currentStreak}d
+                <Flame className="w-3.5 h-3.5 fire-animated" /> <span className="num-font">{item.currentStreak}</span>d
               </span>
             </div>
           ))}

@@ -24,7 +24,7 @@ export const AchievementsView: React.FC = () => {
         </div>
 
         <div className="px-4 py-2 rounded-xl text-xs font-mono font-bold" style={{ borderRadius: '9999px', background: '#f5f0e8', border: '1px solid #e6dfd8', color: '#e8a55a' }}>
-          🏆 Total XP Rewards: {achievements.reduce((acc, curr) => acc + (curr.unlocked ? curr.rewardXp : 0), 0)} XP
+          🏆 Total XP Rewards: <span className="num-font">{achievements.reduce((acc, curr) => acc + (curr.unlocked ? curr.rewardXp : 0), 0)}</span> XP
         </div>
       </div>
 
@@ -62,7 +62,7 @@ export const AchievementsView: React.FC = () => {
               <div className="space-y-1">
                 <h3 className="text-base font-bold text-[#252523] flex items-center justify-between">
                   <span>{item.title}</span>
-                  <span className="text-xs font-mono" style={{ color: '#e8a55a' }}>+{item.rewardXp} XP</span>
+                  <span className="text-xs font-mono num-font" style={{ color: '#e8a55a' }}>+{item.rewardXp} XP</span>
                 </h3>
                 <p className="text-xs text-[#8e8b82]">{item.description}</p>
               </div>
@@ -71,7 +71,7 @@ export const AchievementsView: React.FC = () => {
               <div className="space-y-1.5 pt-2">
                 <div className="flex justify-between text-[11px] font-mono text-[#8e8b82]">
                   <span>Progress</span>
-                  <span className="text-[#252523] font-bold">
+                  <span className="text-[#252523] font-bold num-font">
                     {item.currentDays} / {item.targetDays} Days ({pct}%)
                   </span>
                 </div>

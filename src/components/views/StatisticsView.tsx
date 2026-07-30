@@ -13,26 +13,8 @@ import {
   Line, 
   CartesianGrid 
 } from 'recharts';
+import { format, subDays, startOfWeek, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isWithinInterval, parseISO } from 'date-fns';
 import { BarChart3, TrendingUp, Award, CheckCircle2, AlertTriangle, Target, Sparkles } from 'lucide-react';
-
-const weeklyData = [
-  { day: 'Mon', completion: 100 },
-  { day: 'Tue', completion: 85 },
-  { day: 'Wed', completion: 90 },
-  { day: 'Thu', completion: 100 },
-  { day: 'Fri', completion: 75 },
-  { day: 'Sat', completion: 100 },
-  { day: 'Sun', completion: 95 },
-];
-
-const monthlyData = [
-  { month: 'Jan', streak: 12, rate: 78 },
-  { month: 'Feb', streak: 18, rate: 82 },
-  { month: 'Mar', streak: 25, rate: 88 },
-  { month: 'Apr', streak: 30, rate: 91 },
-  { month: 'May', streak: 45, rate: 94 },
-  { month: 'Jun', streak: 67, rate: 96 },
-];
 
 export const StatisticsView: React.FC = () => {
   const { user, habits, history } = useStreak();
@@ -42,6 +24,55 @@ export const StatisticsView: React.FC = () => {
 
   const activeHabits = habits.filter(h => h.active);
   const totalHistoryDays = Object.keys(history).length;
+
+  // Derive weekly data from last 7 days of history
+  const weeklyData = useMemo(() => {
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const today = new Date();
+    return Array.from({ length: 7 }, (_, i) => {
+      const date = subDays(today, 6 - i);
+      const dateStr = format(date, 'yyyy-MM-dd');
+      const entry = history[dateStr];
+      return {
+        day: dayNames[date.getDay()],
+        completion: entry?.completionPercentage ?? 0,
+      };
+    });
+  }, [history]);
+
+  // Derive monthly data from last 6 months
+  const monthlyData = useMemo(() => {
+    const today = new Date();
+    return Array.from({ length: 6 }, (_, i) => {
+      const monthDate = subMonths(today, 5 - i);
+      const monthStart = startOfMonth(monthDate);
+      const monthEnd = endOfMonth(monthDate);
+      const daysInMonth = eachDayOfInterval({ start: monthStart, end: monthEnd });
+
+      let totalCompletion = 0;
+      let trackedDays = 0;
+      let perfectDays = 0;
+
+      daysInMonth.forEach((day) => {
+        if (day > today) return;
+        const dateStr = format(day, 'yyyy-MM-dd');
+        const entry = history[dateStr];
+        if (entry) {
+          totalCompletion += entry.completionPercentage ?? 0;
+          trackedDays++;
+          if (entry.completed) perfectDays++;
+        }
+      });
+
+      const avgRate = trackedDays > 0 ? Math.round(totalCompletion / trackedDays) : 0;
+
+      return {
+        month: format(monthDate, 'MMM'),
+        streak: perfectDays,
+        rate: avgRate,
+      };
+    });
+  }, [history]);
 
   const runAnalyticsQuery = async () => {
     if (!analyticsQuery.trim() || analyticsLoading) return;
@@ -117,7 +148,7 @@ export const StatisticsView: React.FC = () => {
             </div>
             <p className="text-xs text-[#8e8b82] font-mono">Overall Completion %</p>
           </div>
-          <h3 className="text-3xl font-extrabold text-[#cc785c] font-mono">{user.successRate}%</h3>
+          <h3 className="text-3xl font-extrabold text-[#cc785c] num-font">{user.successRate}%</h3>
           <p className="text-[11px] text-[#8e8b82]">Total days tracked: {user.totalDays}</p>
         </div>
 
@@ -128,7 +159,7 @@ export const StatisticsView: React.FC = () => {
             </div>
             <p className="text-xs text-[#8e8b82] font-mono">Perfect Days Logged</p>
           </div>
-          <h3 className="text-3xl font-extrabold text-[#cc785c] font-mono">{user.totalDays}</h3>
+          <h3 className="text-3xl font-extrabold text-[#cc785c] num-font">{user.totalDays}</h3>
           <p className="text-[11px] text-[#8e8b82]">Days with 100% completion</p>
         </div>
 
@@ -139,7 +170,7 @@ export const StatisticsView: React.FC = () => {
             </div>
             <p className="text-xs text-[#8e8b82] font-mono">Longest Streak</p>
           </div>
-          <h3 className="text-3xl font-extrabold text-[#e8a55a] font-mono">{user.longestStreak} Days</h3>
+          <h3 className="text-3xl font-extrabold text-[#e8a55a] num-font">{user.longestStreak} Days</h3>
           <p className="text-[11px] text-[#8e8b82]">All-time record</p>
         </div>
 
@@ -150,7 +181,7 @@ export const StatisticsView: React.FC = () => {
             </div>
             <p className="text-xs text-[#8e8b82] font-mono">Current Streak</p>
           </div>
-          <h3 className="text-3xl font-extrabold text-[#e8a55a] font-mono">{user.currentStreak} Days</h3>
+          <h3 className="text-3xl font-extrabold text-[#e8a55a] num-font">{user.currentStreak} Days</h3>
           <p className="text-[11px] text-[#8e8b82]">Active consistency streak</p>
         </div>
       </div>
@@ -163,7 +194,7 @@ export const StatisticsView: React.FC = () => {
             <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ borderRadius: '12px' }}>
               <BarChart3 className="w-4 h-4 text-[#cc785c]" />
             </div>
-            <span>Weekly Completion %</span>
+            <span>Last 7 Days Completion %</span>
           </h3>
 
           <div className="h-64 w-full pt-4">
@@ -186,7 +217,7 @@ export const StatisticsView: React.FC = () => {
             <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ borderRadius: '12px' }}>
               <TrendingUp className="w-4 h-4 text-[#e8a55a]" />
             </div>
-            <span>Monthly Growth Trend</span>
+            <span>Monthly Average Completion %</span>
           </h3>
 
           <div className="h-64 w-full pt-4">
@@ -198,7 +229,7 @@ export const StatisticsView: React.FC = () => {
                 <Tooltip
                   contentStyle={{ backgroundColor: '#f5f0e8', borderColor: '#e6dfd8', borderRadius: '0.75rem', color: '#3d3d3a' }}
                 />
-                <Line type="monotone" dataKey="streak" stroke="#e8a55a" strokeWidth={3} dot={{ fill: '#e8a55a', r: 4 }} />
+                <Line type="monotone" dataKey="rate" stroke="#e8a55a" strokeWidth={3} dot={{ fill: '#e8a55a', r: 4 }} name="Avg Completion %" />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -222,7 +253,7 @@ export const StatisticsView: React.FC = () => {
                 <div key={item.id} className="space-y-1.5">
                   <div className="flex justify-between text-xs text-[#6c6a64] font-semibold">
                     <span>{item.name}</span>
-                    <span className="font-mono text-[#cc785c]">{item.rate}%</span>
+                    <span className="font-mono text-[#cc785c] num-font">{item.rate}%</span>
                   </div>
                   <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: 'rgba(204, 120, 92, 0.08)' }}>
                     <div

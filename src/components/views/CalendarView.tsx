@@ -124,7 +124,7 @@ export const CalendarView: React.FC = () => {
                 }`}
               >
                 <div className="flex justify-between items-center w-full">
-                  <span className="font-mono text-xs sm:text-sm font-extrabold">{format(day, 'd')}</span>
+                  <span className="num-font text-xs sm:text-sm font-extrabold">{format(day, 'd')}</span>
                   {isToday && (
                     <span className="text-[9px] px-1 rounded text-[#252523] font-bold uppercase" style={{ borderRadius: '9999px', background: '#5db8a6' }}>
                       Today
@@ -134,8 +134,8 @@ export const CalendarView: React.FC = () => {
 
                 {entry && entry.completionPercentage > 0 && (
                   <div className="text-[10px] font-mono text-right w-full space-y-0.5">
-                    <p className="font-bold">{entry.completionPercentage}%</p>
-                    <p className="text-[#cc785c]">+{entry.xpEarned} XP</p>
+                    <p className="font-bold num-font">{entry.completionPercentage}%</p>
+                    <p className="text-[#cc785c] num-font">+{entry.xpEarned} XP</p>
                   </div>
                 )}
               </button>

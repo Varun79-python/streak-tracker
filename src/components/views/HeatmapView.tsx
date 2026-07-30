@@ -24,14 +24,10 @@ export const HeatmapView: React.FC = () => {
       </div>
 
       {/* Main Heatmap Card */}
-      <div className="claude-card p-6 rounded-3xl space-y-4">
-        <div className="p-6 rounded-2xl" style={{ background: 'rgba(204, 120, 92, 0.08)' }}>
-          <HeatmapGraph
-            history={history}
-            onDayClick={(dateStr) => setSelectedDayDetailsDate(dateStr)}
-          />
-        </div>
-      </div>
+      <HeatmapGraph
+        history={history}
+        onDayClick={(dateStr) => setSelectedDayDetailsDate(dateStr)}
+      />
 
       {/* Analytics Summary Below Heatmap */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

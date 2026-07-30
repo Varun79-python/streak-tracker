@@ -121,7 +121,7 @@ export const LandingPage: React.FC = () => {
               </div>
 
               {/* Matrix Heatmap Preview */}
-              <div className="p-4 rounded-xl mb-4" style={{ background: 'rgba(204, 120, 92, 0.08)' }}>
+              <div className="mb-4">
                 <HeatmapGraph history={history} interactive={false} />
               </div>
 

@@ -96,7 +96,7 @@ export const ProfileView: React.FC = () => {
             <div className="space-y-1 pt-2">
               <div className="flex justify-between text-xs font-mono">
                 <span className="text-[#8e8b82]">XP Progress</span>
-                <span className="text-[#cc785c] font-bold">{user.xp} / {user.nextLevelXp} XP</span>
+                <span className="text-[#cc785c] font-bold num-font">{user.xp} / {user.nextLevelXp} XP</span>
               </div>
               <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: 'rgba(204, 120, 92, 0.08)' }}>
                 <div
@@ -122,7 +122,7 @@ export const ProfileView: React.FC = () => {
           <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto" style={{ background: '#cc785c', borderRadius: '12px' }}>
             <Flame className="w-6 h-6 text-[#3d3d3a] fire-animated" />
           </div>
-          <h4 className="text-2xl font-extrabold text-[#141413] font-mono">{user.currentStreak}</h4>
+          <h4 className="text-2xl font-extrabold text-[#141413] num-font">{user.currentStreak}</h4>
           <p className="text-xs text-[#8e8b82] font-mono">Current Streak</p>
         </div>
 
@@ -130,7 +130,7 @@ export const ProfileView: React.FC = () => {
           <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto" style={{ background: '#e8a55a', borderRadius: '12px' }}>
             <Trophy className="w-6 h-6 text-[#3d3d3a]" />
           </div>
-          <h4 className="text-2xl font-extrabold text-[#141413] font-mono">{user.longestStreak}</h4>
+          <h4 className="text-2xl font-extrabold text-[#141413] num-font">{user.longestStreak}</h4>
           <p className="text-xs text-[#8e8b82] font-mono">Best Streak</p>
         </div>
 
@@ -138,7 +138,7 @@ export const ProfileView: React.FC = () => {
           <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto" style={{ background: '#5db8a6', borderRadius: '12px' }}>
             <Calendar className="w-6 h-6 text-[#3d3d3a]" />
           </div>
-          <h4 className="text-2xl font-extrabold text-[#141413] font-mono">{user.totalDays}</h4>
+          <h4 className="text-2xl font-extrabold text-[#141413] num-font">{user.totalDays}</h4>
           <p className="text-xs text-[#8e8b82] font-mono">Total Check-ins</p>
         </div>
 
@@ -146,7 +146,7 @@ export const ProfileView: React.FC = () => {
           <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto" style={{ background: '#e8a55a', borderRadius: '12px' }}>
             <Award className="w-6 h-6 text-[#3d3d3a]" />
           </div>
-          <h4 className="text-2xl font-extrabold text-[#141413] font-mono">{unlockedAchievementsCount}</h4>
+          <h4 className="text-2xl font-extrabold text-[#141413] num-font">{unlockedAchievementsCount}</h4>
           <p className="text-xs text-[#8e8b82] font-mono">Achievements</p>
         </div>
       </div>

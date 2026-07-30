@@ -27,7 +27,7 @@ export const TopNav: React.FC = () => {
             {user.name || 'Streakify'}
           </span>
           <span className="text-[10px] font-mono leading-tight" style={{ color: '#6c6a64' }}>
-            {user.currentStreak > 0 ? `${user.currentStreak}d streak` : 'Start today'}
+            {user.currentStreak > 0 ? <><span className="num-font">{user.currentStreak}</span>d streak</> : 'Start today'}
           </span>
         </div>
       </div>
@@ -41,7 +41,7 @@ export const TopNav: React.FC = () => {
           style={{ background: 'rgba(204, 120, 92, 0.1)' }}
         >
           <Flame className="w-3.5 h-3.5 fire-animated" style={{ color: '#cc785c' }} />
-          <span className="text-xs font-bold font-mono" style={{ color: '#cc785c' }}>{user.currentStreak}</span>
+          <span className="text-xs font-bold num-font" style={{ color: '#cc785c' }}>{user.currentStreak}</span>
         </button>
 
         {/* Notifications */}

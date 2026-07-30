@@ -95,9 +95,9 @@ export const DashboardView: React.FC = () => {
         <div className="claude-card p-5 flex items-center justify-between relative overflow-hidden group">
           <div className="space-y-1">
             <p className="text-[10px] text-[#6c6a64] font-mono uppercase tracking-wider">Current Streak</p>
-            <h3 className="text-3xl font-extrabold text-[#252523] font-mono flex items-baseline gap-1">
+            <h3 className="text-3xl font-extrabold text-[#252523] num-font flex items-baseline gap-1">
               <span>{user.currentStreak}</span>
-              <span className="text-xs text-[#e8a55a] font-normal">days</span>
+              <span className="text-xs text-[#e8a55a] font-normal font-sans">days</span>
             </h3>
             <p className="text-[10px] text-[#e8a55a] font-medium">🔥 Active streak</p>
           </div>
@@ -110,9 +110,9 @@ export const DashboardView: React.FC = () => {
         <div className="claude-card p-5 flex items-center justify-between">
           <div className="space-y-1">
             <p className="text-[10px] text-[#6c6a64] font-mono uppercase tracking-wider">Longest Streak</p>
-            <h3 className="text-3xl font-extrabold text-[#252523] font-mono flex items-baseline gap-1">
+            <h3 className="text-3xl font-extrabold text-[#252523] num-font flex items-baseline gap-1">
               <span>{user.longestStreak}</span>
-              <span className="text-xs text-[#e8a55a] font-normal">days</span>
+              <span className="text-xs text-[#e8a55a] font-normal font-sans">days</span>
             </h3>
             <p className="text-[10px] text-[#e8a55a] font-medium">🏆 Personal record</p>
           </div>
@@ -125,7 +125,7 @@ export const DashboardView: React.FC = () => {
         <div className="claude-card p-5 flex items-center justify-between">
           <div className="space-y-1">
             <p className="text-[10px] text-[#6c6a64] font-mono uppercase tracking-wider">Consistency</p>
-            <h3 className="text-3xl font-extrabold text-[#252523] font-mono">
+            <h3 className="text-3xl font-extrabold text-[#252523] num-font">
               {user.successRate}%
             </h3>
             <p className="text-[10px] text-[#cc785c] font-medium">🎯 Performance</p>
@@ -139,8 +139,8 @@ export const DashboardView: React.FC = () => {
         <div className="claude-card p-5 flex items-center justify-between">
           <div className="space-y-1">
             <p className="text-[10px] text-[#6c6a64] font-mono uppercase tracking-wider">Level {user.level}</p>
-            <h3 className="text-2xl font-extrabold text-[#252523] font-mono">
-              {user.xp} <span className="text-xs text-[#8e8b82]">/ 2,000 XP</span>
+            <h3 className="text-2xl font-extrabold text-[#252523] num-font">
+              {user.xp} <span className="text-xs text-[#8e8b82] font-sans">/ 2,000 XP</span>
             </h3>
             <div className="w-full h-2 rounded-full overflow-hidden mt-1" style={{ background: 'rgba(204, 120, 92, 0.08)' }}>
               <div
@@ -194,12 +194,10 @@ export const DashboardView: React.FC = () => {
           </button>
         </div>
 
-        <div className="p-4 rounded-2xl" style={{ background: 'rgba(204, 120, 92, 0.08)' }}>
-          <HeatmapGraph
-            history={history}
-            onDayClick={(dateStr) => setSelectedDayDetailsDate(dateStr)}
-          />
-        </div>
+        <HeatmapGraph
+          history={history}
+          onDayClick={(dateStr) => setSelectedDayDetailsDate(dateStr)}
+        />
       </div>
 
       {/* Middle Grid: Today's Habits Preview & Recent Activity */}
