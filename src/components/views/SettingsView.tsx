@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useStreak } from '@/lib/StreakContext';
-import { Settings, Moon, Sun, Monitor, Shield, Download, Trash2, User } from 'lucide-react';
+import { Settings, Moon, Sun, Shield, Download, Trash2, User } from 'lucide-react';
 import { AvatarPicker } from '../AvatarPicker';
 
 export const SettingsView: React.FC = () => {

@@ -190,9 +190,9 @@
     font-family: var(--font-geist-mono), 'JetBrains Mono', monospace;
   }
   .num-font {
-    font-family: var(--font-geist-mono), 'JetBrains Mono', ui-monospace, monospace;
+    font-family: 'Times New Roman', Times, serif;
     font-variant-numeric: tabular-nums;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
   }
 }
 

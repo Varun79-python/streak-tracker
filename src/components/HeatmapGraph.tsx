@@ -111,6 +111,20 @@ export const HeatmapGraph: React.FC<HeatmapGraphProps> = ({
   };
 
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to the right so Today's box (current week) is in focus on load (GitHub & LeetCode style)
+  React.useEffect(() => {
+    const scrollToToday = () => {
+      if (scrollRef.current) {
+        scrollRef.current.scrollLeft = scrollRef.current.scrollWidth;
+      }
+    };
+    scrollToToday();
+    // Micro-delay fallback to handle dynamic rendering layout frames
+    const timer = setTimeout(scrollToToday, 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   const getTooltipPosition = () => {
     if (!containerRef.current) return { left: Math.max(10, mousePos.x - 100), top: Math.max(10, mousePos.y - 75) };
@@ -139,7 +153,7 @@ export const HeatmapGraph: React.FC<HeatmapGraphProps> = ({
         className="relative py-2 text-xs overflow-hidden"
         onMouseMove={handleMouseMove}
       >
-        <div className="overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-400/20 scrollbar-track-transparent pl-0.5">
+        <div ref={scrollRef} className="overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-400/20 scrollbar-track-transparent pl-0.5">
           <div className="min-w-[720px]">
             {/* Month Header Row */}
             <div className={`flex gap-[3px] ml-8 sm:ml-9 mb-1.5 text-[11px] font-mono overflow-hidden h-4 ${
