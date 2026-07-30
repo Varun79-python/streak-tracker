@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useStreak } from '@/lib/StreakContext';
 import { format } from 'date-fns';
 import { X, Check, HelpCircle, Sparkles, Flame, CheckCircle2, Lock } from 'lucide-react';
@@ -55,6 +55,16 @@ export const DailyCheckInModal: React.FC = () => {
   const [journalText, setJournalText] = useState(todayCheckIn?.journal?.content || '');
   const [mood, setMood] = useState(todayCheckIn?.journal?.mood || 'Productive');
 
+  // Re-sync state every time modal opens so fresh history data is reflected
+  useEffect(() => {
+    if (showCheckInModal) {
+      const latest = history[format(new Date(), 'yyyy-MM-dd')];
+      setCompletedHabits(latest?.completedHabits || []);
+      setJournalText(latest?.journal?.content || '');
+      setMood(latest?.journal?.mood || 'Productive');
+    }
+  }, [showCheckInModal, history]);
+
   if (!showCheckInModal) return null;
 
   const activeHabits = habits.filter(h => h.active);
@@ -71,8 +81,8 @@ export const DailyCheckInModal: React.FC = () => {
     }
   };
 
-  const handleSave = () => {
-    submitDailyCheckIn(completedHabits, journalText, 'Daily Check-in', mood);
+  const handleSave = async () => {
+    await submitDailyCheckIn(completedHabits, journalText, 'Daily Check-in', mood);
     if (allRequiredDone) {
       fireConfetti();
     }

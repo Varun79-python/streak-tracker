@@ -11,17 +11,42 @@ export async function GET(request: Request) {
     }
 
     const supabase = await createAdminClient();
-    const { data, error } = await supabase
+    
+    // Fetch profile
+    const { data: profile, error: profileError } = await supabase
       .from('profiles')
       .select('*')
       .eq('id', userId)
       .single();
 
-    if (error) throw new Error(error.message);
+    if (profileError) {
+      console.error('Profile fetch error:', profileError.message);
+      throw new Error(profileError.message);
+    }
 
-    return NextResponse.json(data);
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch profile' }, { status: 500 });
+    // Fetch streak data from streaks table (authoritative streak source)
+    let streakData: any = null;
+    try {
+      const { data } = await supabase
+        .from('streaks')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+      streakData = data;
+    } catch {
+      // streaks table may not have data yet
+    }
+
+    // Merge streak data into profile response
+    const merged = {
+      ...profile,
+      current_streak: streakData?.current_streak ?? profile.current_streak ?? 0,
+      longest_streak: streakData?.longest_streak ?? profile.longest_streak ?? 0,
+    };
+
+    return NextResponse.json(merged);
+  } catch (error: any) {
+    return NextResponse.json({ error: error?.message || 'Failed to fetch profile' }, { status: 500 });
   }
 }
 
@@ -39,6 +64,10 @@ export async function PATCH(request: Request) {
     if (avatar !== undefined) updateData.avatar_url = avatar;
     if (name !== undefined) updateData.display_name = name;
     if (bio !== undefined) updateData.bio = bio;
+
+    if (Object.keys(updateData).length === 0) {
+      return NextResponse.json({ error: 'No fields to update' }, { status: 400 });
+    }
 
     const { data, error } = await supabase
       .from('profiles')

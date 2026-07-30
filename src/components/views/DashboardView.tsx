@@ -3,6 +3,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { useStreak } from '@/lib/StreakContext';
 import { HeatmapGraph } from '../HeatmapGraph';
+import { MotivationCard } from '../MotivationCard';
 import { 
   Flame, 
   Trophy,
@@ -14,7 +15,8 @@ import {
   Clock,
   ArrowRight,
   Sparkles,
-  Plus
+  Plus,
+  HelpCircle
 } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -25,7 +27,8 @@ export const DashboardView: React.FC = () => {
     habits, 
     setShowCheckInModal, 
     setSelectedDayDetailsDate,
-    setActiveView 
+    setActiveView,
+    toggleHabitCompletion
   } = useStreak();
 
   const todayStr = format(new Date(), 'yyyy-MM-dd');
@@ -34,24 +37,7 @@ export const DashboardView: React.FC = () => {
   const activeHabits = habits.filter(h => h.active);
   const completedTodayCount = todayCheckIn?.completedHabits?.length || 0;
   const isTodayComplete = todayCheckIn?.completed || false;
-  const [dailyQuote, setDailyQuote] = useState<{ text: string } | null>(null);
-  const [quoteLoading, setQuoteLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchQuote = async () => {
-      try {
-        const res = await fetch('/api/ai/insights', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId: user.id, type: 'quote' }),
-        });
-        const data = await res.json();
-        setDailyQuote(data.insight);
-      } catch { /* ignore */ }
-      finally { setQuoteLoading(false) }
-    };
-    if (user.id) fetchQuote();
-  }, [user.id]);
 
   // Derive recent activity from actual history
   const recentActivity = useMemo(() => {
@@ -90,28 +76,8 @@ export const DashboardView: React.FC = () => {
   return (
     <div className="space-y-6 select-none">
 
-      {/* AI Insight Card */}
-      <div className="claude-card p-5 border-l-4 border-[var(--green)]">
-        <div className="flex items-start gap-3">
-          <div className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ borderRadius: '12px', background: 'var(--green)' }}>
-            <Sparkles className="w-5 h-5 text-white animate-pulse" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-[10px] text-[var(--green)] font-mono mb-1 uppercase tracking-wider flex items-center gap-1">
-              <span>Daily Insight</span>
-              <Sparkles className="w-3 h-3 text-amber-500 fill-amber-500/20" />
-            </p>
-            {quoteLoading ? (
-              <p className="text-sm text-[var(--muted-soft)] animate-pulse">Finding your spark...</p>
-            ) : (
-              <p className="text-sm text-[var(--body)] leading-relaxed flex items-center gap-1.5 flex-wrap">
-                <span>{dailyQuote?.text || 'Small steps lead to big changes. Keep showing up!'}</span>
-                <Flame className="w-4 h-4 text-orange-500 fill-orange-500/30 fire-animated inline" />
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
+      {/* Motivation Section */}
+      <MotivationCard />
 
       {/* Main Heatmap Matrix Widget */}
       <div className="claude-card p-6 space-y-4">
@@ -186,7 +152,7 @@ export const DashboardView: React.FC = () => {
                 return (
                   <div
                     key={habit.id}
-                    onClick={() => setShowCheckInModal(true)}
+                    onClick={() => toggleHabitCompletion(habit.id)}
                     className={`flex items-center justify-between p-3 rounded-2xl transition-all cursor-pointer ${
                       isDone
                         ? 'border-l-4 border-[var(--green)]'
@@ -202,15 +168,21 @@ export const DashboardView: React.FC = () => {
                       </div>
                     </div>
 
-                    <span className={`text-[10px] font-mono px-2.5 py-1 rounded-xl ${
-                      isDone ? 'text-white' : 'text-[var(--muted-soft)]'
-                    }`}
-                    style={isDone 
-                      ? { borderRadius: '9999px', background: 'var(--green)' } 
-                      : { borderRadius: '9999px', background: 'rgba(34, 197, 94, 0.08)' }
-                    }>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleHabitCompletion(habit.id);
+                      }}
+                      className={`text-[10px] font-mono px-3 py-1 rounded-full cursor-pointer transition-all hover:scale-105 active:scale-95 ${
+                        isDone ? 'text-white font-bold' : 'text-[var(--muted-soft)]'
+                      }`}
+                      style={isDone 
+                        ? { background: 'var(--green)' } 
+                        : { background: 'rgba(34, 197, 94, 0.08)' }
+                      }
+                    >
                       {isDone ? '✓ Done' : 'Pending'}
-                    </span>
+                    </button>
                   </div>
                 );
               })
@@ -218,45 +190,102 @@ export const DashboardView: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Column: Recent Activity Feed */}
-        <div className="lg:col-span-5 claude-card p-6 space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-base font-bold text-[var(--ink)] flex items-center gap-2">
-              <div className="w-7 h-7 rounded-xl flex items-center justify-center" style={{ borderRadius: '12px', background: 'var(--green)' }}>
-                <Clock className="w-4 h-4 text-white" />
-              </div>
-              <span>Recent Activity</span>
-            </h3>
+        {/* Right Column: Recent Activity Feed & How to Use Guide */}
+        <div className="lg:col-span-5 space-y-6">
+          <div className="claude-card p-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-base font-bold text-[var(--ink)] flex items-center gap-2">
+                <div className="w-7 h-7 rounded-xl flex items-center justify-center" style={{ borderRadius: '12px', background: 'var(--green)' }}>
+                  <Clock className="w-4 h-4 text-white" />
+                </div>
+                <span>Recent Activity</span>
+              </h3>
 
-            <button
-              onClick={() => setActiveView('activity')}
-              className="text-xs text-[var(--green)] hover:underline cursor-pointer font-medium"
-            >
-              View All
-            </button>
+              <button
+                onClick={() => setActiveView('activity')}
+                className="text-xs text-[var(--green)] hover:underline cursor-pointer font-medium"
+              >
+                View All
+              </button>
+            </div>
+
+            <div className="space-y-2 font-mono text-xs">
+              {recentActivity.length === 0 ? (
+                <div className="p-6 rounded-2xl text-center space-y-2" style={{ background: 'rgba(34, 197, 94, 0.08)' }}>
+                  <Clock className="w-8 h-8 text-[var(--hairline)] mx-auto" />
+                  <p className="text-[var(--muted-soft)] text-xs">No activity yet</p>
+                  <p className="text-[var(--hairline)] text-[10px]">Complete your first check-in to see activity here.</p>
+                </div>
+              ) : (
+                recentActivity.map((entry) => (
+                  <div
+                    key={entry.id}
+                    className="p-3 claude-card-soft flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      {entry.icon}
+                      <span className="text-[var(--body)] text-[11px]">{entry.label}</span>
+                    </div>
+                    <span className="text-[var(--muted-soft)] text-[10px]">{entry.time}</span>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
 
-          <div className="space-y-2 font-mono text-xs">
-            {recentActivity.length === 0 ? (
-              <div className="p-6 rounded-2xl text-center space-y-2" style={{ background: 'rgba(34, 197, 94, 0.08)' }}>
-                <Clock className="w-8 h-8 text-[var(--hairline)] mx-auto" />
-                <p className="text-[var(--muted-soft)] text-xs">No activity yet</p>
-                <p className="text-[var(--hairline)] text-[10px]">Complete your first check-in to see activity here.</p>
+          {/* How to Use Guide Card */}
+          <div className="claude-card p-6 space-y-4 border-l-4 border-[var(--green)]">
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-xl flex items-center justify-center" style={{ borderRadius: '12px', background: 'var(--green)' }}>
+                <HelpCircle className="w-4 h-4 text-white" />
               </div>
-            ) : (
-              recentActivity.map((entry) => (
-                <div
-                  key={entry.id}
-                  className="p-3 claude-card-soft flex items-center justify-between"
-                >
-                  <div className="flex items-center gap-2.5">
-                    {entry.icon}
-                    <span className="text-[var(--body)] text-[11px]">{entry.label}</span>
-                  </div>
-                  <span className="text-[var(--muted-soft)] text-[10px]">{entry.time}</span>
+              <div>
+                <h3 className="text-base font-bold text-[var(--ink)]">How to Use Streakify</h3>
+                <p className="text-[11px] text-[var(--muted-soft)] font-mono">Simple 4-step guide to build unstoppable habits</p>
+              </div>
+            </div>
+
+            <div className="space-y-2.5 pt-1">
+              <div className="p-3 rounded-2xl claude-card-soft flex items-start gap-3">
+                <span className="text-xs font-bold font-mono px-2 py-0.5 rounded-lg text-white flex-shrink-0" style={{ background: 'var(--green)' }}>1</span>
+                <div>
+                  <h4 className="text-xs font-bold text-[var(--ink)]">Check-in Daily</h4>
+                  <p className="text-[11px] text-[var(--muted-soft)] leading-relaxed">
+                    Click <strong>Daily Check-in</strong> or click directly on any habit in <strong>Today's Routine</strong> to mark it done.
+                  </p>
                 </div>
-              ))
-            )}
+              </div>
+
+              <div className="p-3 rounded-2xl claude-card-soft flex items-start gap-3">
+                <span className="text-xs font-bold font-mono px-2 py-0.5 rounded-lg text-white flex-shrink-0" style={{ background: 'var(--green)' }}>2</span>
+                <div>
+                  <h4 className="text-xs font-bold text-[var(--ink)]">Build Your Matrix</h4>
+                  <p className="text-[11px] text-[var(--muted-soft)] leading-relaxed">
+                    Every completed day fills a square in your <strong>Contribution Matrix Grid</strong> green just like GitHub!
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-2xl claude-card-soft flex items-start gap-3">
+                <span className="text-xs font-bold font-mono px-2 py-0.5 rounded-lg text-white flex-shrink-0" style={{ background: 'var(--green)' }}>3</span>
+                <div>
+                  <h4 className="text-xs font-bold text-[var(--ink)]">Protect Streaks with Rest Days</h4>
+                  <p className="text-[11px] text-[var(--muted-soft)] leading-relaxed">
+                    Taking a planned break? Active <strong>Streak Freezes</strong> turn tiles cyan so your hard-earned streak never breaks.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-2xl claude-card-soft flex items-start gap-3">
+                <span className="text-xs font-bold font-mono px-2 py-0.5 rounded-lg text-white flex-shrink-0" style={{ background: 'var(--green)' }}>4</span>
+                <div>
+                  <h4 className="text-xs font-bold text-[var(--ink)]">Track Level & Achievements</h4>
+                  <p className="text-[11px] text-[var(--muted-soft)] leading-relaxed">
+                    Head over to <strong>My Profile</strong> to view your total XP, current level progression, and unlocked badges.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

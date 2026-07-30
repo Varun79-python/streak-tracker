@@ -121,8 +121,8 @@ export const Sidebar: React.FC = () => {
       <div className="p-4 border-t border-[var(--hairline)] flex items-center justify-between">
         <div className="flex items-center gap-3 cursor-pointer group" onClick={() => setActiveView('profile')}>
           <img 
-            src={user.avatar} 
-            alt={user.name} 
+            src={user.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(user.name || 'User')}`} 
+            alt={user.name || 'User'} 
             className="w-10 h-10 rounded-full object-cover group-hover:opacity-80 transition-opacity" 
             style={{ border: '2px solid var(--hairline)' }}
           />

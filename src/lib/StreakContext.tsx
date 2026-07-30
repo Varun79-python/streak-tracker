@@ -62,6 +62,7 @@ interface StreakContextType {
   logout: () => Promise<void>;
   verifyAndUnlockAdmin: (keyInput: string) => boolean;
   submitDailyCheckIn: (completedIds: string[], journalText?: string, journalTitle?: string, mood?: string) => Promise<void>;
+  toggleHabitCompletion: (habitId: string) => Promise<void>;
   addNewHabit: (habitData: Omit<Habit, 'id'>) => Promise<void>;
   updateHabit: (id: string, updates: Partial<Habit>) => Promise<void>;
   deleteHabit: (id: string) => Promise<void>;
@@ -440,7 +441,7 @@ export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     // Sync to backend if logged in
     if (userId) {
       try {
-        await fetch('/api/user/checkin', {
+        const res = await fetch('/api/user/checkin', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -455,10 +456,45 @@ export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             mood: mood || 'Productive',
           }),
         });
+
+        if (res.ok) {
+          // Re-fetch history from DB to ensure local state matches persisted data
+          try {
+            const historyRes = await fetch(`/api/user/history?userId=${userId}`);
+            if (historyRes.ok) {
+              const historyData = await historyRes.json();
+              const historyMap: Record<string, DayCheckIn> = {};
+              historyData.forEach((item: any) => {
+                historyMap[item.completion_date] = transformCheckIn(item);
+              });
+              setHistory(historyMap);
+            }
+          } catch {
+            // Keep optimistic local state if re-fetch fails
+          }
+        } else {
+          console.warn('Check-in API returned error:', res.status);
+        }
       } catch (error) {
         console.warn('Backend check-in sync skipped or offline:', error);
       }
     }
+  };
+
+  const toggleHabitCompletion = async (habitId: string) => {
+    const todayStr = format(new Date(), 'yyyy-MM-dd');
+    const currentCompleted = history[todayStr]?.completedHabits || [];
+    const isCurrentlyDone = currentCompleted.includes(habitId);
+    const newCompleted = isCurrentlyDone
+      ? currentCompleted.filter(id => id !== habitId)
+      : [...currentCompleted, habitId];
+
+    await submitDailyCheckIn(
+      newCompleted,
+      history[todayStr]?.journal?.content,
+      history[todayStr]?.journal?.title,
+      history[todayStr]?.journal?.mood
+    );
   };
 
   const addNewHabit = async (habitData: Omit<Habit, 'id'>) => {
@@ -626,6 +662,7 @@ export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       logout,
       verifyAndUnlockAdmin,
       submitDailyCheckIn,
+      toggleHabitCompletion,
       addNewHabit,
       updateHabit,
       deleteHabit,

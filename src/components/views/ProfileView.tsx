@@ -1,18 +1,52 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useStreak } from '@/lib/StreakContext';
 import { Flame, Trophy, Edit2, Check, Camera, Sparkles, Target, Zap } from 'lucide-react';
 import { AvatarPicker } from '../AvatarPicker';
 
+/** Compute consecutive days with a check-in, walking backwards from today (LeetCode-style). */
+function computeHeatmapStreak(history: Record<string, any>): number {
+  const today = new Date();
+  let streak = 0;
+  const d = new Date(today);
+  for (let i = 0; i < 366; i++) {
+    const key = d.toISOString().split('T')[0];
+    const entry = history[key];
+    if (entry && (entry.completed === true || (entry.completedHabits && entry.completedHabits.length > 0))) {
+      streak++;
+    } else if (i > 0) {
+      break;
+    }
+    d.setDate(d.getDate() - 1);
+  }
+  return streak;
+}
+
 export const ProfileView: React.FC = () => {
-  const { user, updateUserProfile, achievements } = useStreak();
+  const { user, updateUserProfile, achievements, history } = useStreak();
   const [isEditingBio, setIsEditingBio] = useState(false);
   const [showAvatarPicker, setShowAvatarPicker] = useState(false);
   const [bio, setBio] = useState(user.bio);
   const [name, setName] = useState(user.name);
 
+  // Sync local state when user database profile loads or updates
+  React.useEffect(() => {
+    setName(user.name);
+    setBio(user.bio);
+  }, [user.name, user.bio]);
+
   const unlockedAchievementsCount = achievements.filter((a) => a.unlocked).length;
+
+  // Compute real stats from history data
+  const computedStats = useMemo(() => {
+    const allDates = Object.keys(history).sort();
+    const totalDays = allDates.length;
+    const completedDays = allDates.filter(d => history[d].completed).length;
+    const successRate = totalDays > 0 ? Math.round((completedDays / totalDays) * 100) : 0;
+    const heatmapStreak = computeHeatmapStreak(history);
+    return { totalDays, successRate, heatmapStreak };
+  }, [history]);
 
   const handleSaveBio = async () => {
     await updateUserProfile({ bio, name });
@@ -30,8 +64,8 @@ export const ProfileView: React.FC = () => {
           <div className="relative group cursor-pointer" onClick={() => setShowAvatarPicker(!showAvatarPicker)}>
             <div style={{ borderRadius: '50%' }}>
               <img
-                src={user.avatar}
-                alt={user.name}
+                src={user.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(user.name || 'User')}`}
+                alt={user.name || 'User Avatar'}
                 className="w-24 h-24 rounded-full object-cover group-hover:opacity-90 transition-opacity"
               />
             </div>
@@ -58,7 +92,10 @@ export const ProfileView: React.FC = () => {
                     </span>
                   </h2>
                 )}
-                <p className="text-xs text-[var(--muted-soft)] font-mono">Member since {user.joinedDate || '2025'}</p>
+                <p className="text-xs text-[var(--muted-soft)] font-mono">
+                  {user.email && <span className="mr-2 text-[var(--muted-claude)] font-sans">{user.email} •</span>}
+                  Member since {user.joinedDate || '2025'}
+                </p>
               </div>
 
               <div className="flex items-center gap-2">
@@ -123,7 +160,7 @@ export const ProfileView: React.FC = () => {
           <div className="space-y-1">
             <p className="text-[10px] text-[var(--muted-claude)] font-mono uppercase tracking-wider">Current Streak</p>
             <h3 className="text-3xl font-extrabold text-[var(--ink)] num-font flex items-baseline gap-1">
-              <span>{user.currentStreak}</span>
+              <span>{computedStats.heatmapStreak || user.currentStreak}</span>
               <span className="text-xs text-[var(--green)] font-normal font-sans">days</span>
             </h3>
             <p className="text-[10px] text-[var(--green)] font-medium flex items-center gap-1">
@@ -156,7 +193,7 @@ export const ProfileView: React.FC = () => {
           <div className="space-y-1">
             <p className="text-[10px] text-[var(--muted-claude)] font-mono uppercase tracking-wider">Consistency</p>
             <h3 className="text-3xl font-extrabold text-[var(--ink)] num-font">
-              {user.successRate}%
+              {computedStats.successRate || user.successRate}%
             </h3>
             <p className="text-[10px] text-[var(--green)] font-medium">🎯 Performance</p>
           </div>

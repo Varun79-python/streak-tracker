@@ -54,7 +54,7 @@ export const LeaderboardView: React.FC = () => {
             <div className="text-[var(--muted-claude)] font-bold text-xs mx-auto px-3 py-1" style={{ borderRadius: '9999px', background: 'var(--surface-soft)', border: '1px solid var(--hairline)' }}>
               🥈 2nd
             </div>
-            <img src={topThree[1].avatar} alt={topThree[1].name} className="w-16 h-16 mx-auto" style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--hairline)' }} />
+            <img src={topThree[1].avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(topThree[1].name)}`} alt={topThree[1].name} className="w-16 h-16 mx-auto" style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--hairline)' }} />
             <div>
               <h3 className="font-bold text-[var(--ink)] text-base">{topThree[1].name}</h3>
               <p className="text-xs text-[var(--muted-soft)] font-mono">Level <span className="num-font">{topThree[1].level}</span> • <span className="num-font">{topThree[1].xp}</span> XP</p>
@@ -69,7 +69,7 @@ export const LeaderboardView: React.FC = () => {
         {topThree[0] && (
           <div className="claude-card p-8 rounded-3xl text-center space-y-3 order-1 md:order-2 relative scale-105" style={{ borderTop: '4px solid var(--green)' }}>
             <Crown className="w-8 h-8 mx-auto fire-animated" style={{ color: 'var(--green)' }} />
-            <img src={topThree[0].avatar} alt={topThree[0].name} className="w-20 h-20 mx-auto" style={{ borderRadius: '50%', objectFit: 'cover', border: '4px solid var(--green)' }} />
+            <img src={topThree[0].avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(topThree[0].name)}`} alt={topThree[0].name} className="w-20 h-20 mx-auto" style={{ borderRadius: '50%', objectFit: 'cover', border: '4px solid var(--green)' }} />
             <div>
               <h3 className="font-extrabold text-[var(--ink)] text-lg">{topThree[0].name}</h3>
               <p className="text-xs font-mono font-bold" style={{ color: 'var(--green)' }}>Level <span className="num-font">{topThree[0].level}</span> • <span className="num-font">{topThree[0].xp}</span> XP</p>
@@ -86,7 +86,7 @@ export const LeaderboardView: React.FC = () => {
             <div className="font-bold text-xs mx-auto px-3 py-1" style={{ borderRadius: '9999px', background: 'var(--surface-soft)', border: '1px solid var(--hairline)', color: 'var(--green)' }}>
               🥉 3rd
             </div>
-            <img src={topThree[2].avatar} alt={topThree[2].name} className="w-16 h-16 mx-auto" style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--hairline)' }} />
+            <img src={topThree[2].avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(topThree[2].name)}`} alt={topThree[2].name} className="w-16 h-16 mx-auto" style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--hairline)' }} />
             <div>
               <h3 className="font-bold text-[var(--ink)] text-base">{topThree[2].name}</h3>
               <p className="text-xs text-[var(--muted-soft)] font-mono">Level <span className="num-font">{topThree[2].level}</span> • <span className="num-font">{topThree[2].xp}</span> XP</p>
@@ -119,7 +119,7 @@ export const LeaderboardView: React.FC = () => {
             >
               <span className="col-span-1 font-bold num-font" style={{ color: 'var(--muted-claude)' }}>#{item.rank}</span>
               <div className="col-span-5 flex items-center gap-3">
-                <img src={item.avatar} alt={item.name} className="w-8 h-8" style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--hairline)' }} />
+                <img src={item.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(item.name)}`} alt={item.name} className="w-8 h-8" style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--hairline)' }} />
                 <span className="text-[var(--ink)] font-semibold truncate">{item.name}</span>
               </div>
               <span className="col-span-2 text-[var(--muted-soft)]">Lvl <span className="num-font">{item.level}</span></span>

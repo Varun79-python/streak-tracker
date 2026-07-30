@@ -12,6 +12,7 @@ export async function GET(request: Request) {
 
     const supabase = await createAdminClient();
 
+    // Try with user_id filter first
     const { data, error } = await supabase
       .from('questions')
       .select('*')
@@ -20,16 +21,13 @@ export async function GET(request: Request) {
 
     if (error) {
       console.error('Habits GET error:', error.message, error.code);
-      // If user_id column doesn't exist, try without filter
-      if (error.message?.includes('user_id') || error.code === '42703') {
-        const { data: allData, error: allError } = await supabase
-          .from('questions')
-          .select('*')
-          .order('sort_order', { ascending: true });
-        if (allError) throw new Error(allError.message);
-        return NextResponse.json(allData || []);
-      }
-      throw new Error(error.message);
+      // Fallback: try without user_id filter
+      const { data: allData, error: allError } = await supabase
+        .from('questions')
+        .select('*')
+        .order('sort_order', { ascending: true });
+      if (allError) throw new Error(allError.message);
+      return NextResponse.json(allData || []);
     }
 
     return NextResponse.json(data || []);
@@ -52,18 +50,28 @@ export async function POST(request: Request) {
     const supabase = await createAdminClient();
 
     // Get max sort_order for this user
-    const { data: maxOrder, error: maxErr } = await supabase
-      .from('questions')
-      .select('sort_order')
-      .eq('user_id', userId)
-      .order('sort_order', { ascending: false })
-      .limit(1)
-      .single();
-
-    // If user_id column doesn't exist, get max from all rows
     let nextOrder = 0;
-    if (maxErr) {
-      console.error('Max order query error:', maxErr.message, maxErr.code);
+    try {
+      const { data: maxOrder, error: maxErr } = await supabase
+        .from('questions')
+        .select('sort_order')
+        .eq('user_id', userId)
+        .order('sort_order', { ascending: false })
+        .limit(1)
+        .single();
+      if (!maxErr && maxOrder) {
+        nextOrder = (maxOrder.sort_order ?? -1) + 1;
+      } else {
+        // Fallback without user_id filter
+        const { data: anyMax } = await supabase
+          .from('questions')
+          .select('sort_order')
+          .order('sort_order', { ascending: false })
+          .limit(1)
+          .single();
+        nextOrder = (anyMax?.sort_order ?? -1) + 1;
+      }
+    } catch {
       const { data: anyMax } = await supabase
         .from('questions')
         .select('sort_order')
@@ -71,8 +79,6 @@ export async function POST(request: Request) {
         .limit(1)
         .single();
       nextOrder = (anyMax?.sort_order ?? -1) + 1;
-    } else {
-      nextOrder = (maxOrder?.sort_order ?? -1) + 1;
     }
 
     const insertData: Record<string, any> = {
@@ -82,10 +88,8 @@ export async function POST(request: Request) {
       is_required: is_required ?? required ?? true,
       is_active: is_active ?? active ?? true,
       sort_order: nextOrder,
+      user_id: userId,
     };
-
-    // Try to include user_id — if column doesn't exist, insert without it
-    insertData.user_id = userId;
 
     const { data, error } = await supabase
       .from('questions')
@@ -95,21 +99,18 @@ export async function POST(request: Request) {
 
     if (error) {
       console.error('Habit insert error:', error.message, error.code);
-      // If user_id column is the problem, try without it
-      if (error.message?.includes('user_id') || error.code === '42703') {
-        delete insertData.user_id;
-        const { data: retryData, error: retryError } = await supabase
-          .from('questions')
-          .insert(insertData)
-          .select()
-          .single();
-        if (retryError) {
-          console.error('Habit insert retry error:', retryError.message);
-          throw new Error(retryError.message);
-        }
-        return NextResponse.json(retryData, { status: 201 });
+      // Retry without user_id column
+      delete insertData.user_id;
+      const { data: retryData, error: retryError } = await supabase
+        .from('questions')
+        .insert(insertData)
+        .select()
+        .single();
+      if (retryError) {
+        console.error('Habit insert retry error:', retryError.message);
+        throw new Error(retryError.message);
       }
-      throw new Error(error.message);
+      return NextResponse.json(retryData, { status: 201 });
     }
 
     return NextResponse.json(data, { status: 201 });
