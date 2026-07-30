@@ -48,71 +48,127 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* ============================================
+   LIGHT THEME — White + Green
+   ============================================ */
 :root {
-  /* Claude Design System — Warm Cream + Terracotta */
-  --background: #faf9f5;
-  --foreground: #141413;
-  --card: #efe9de;
-  --card-foreground: #141413;
-  --popover: #efe9de;
-  --popover-foreground: #141413;
-  --primary: #cc785c;
-  --primary-foreground: #ffffff;
-  --secondary: #f5f0e8;
-  --secondary-foreground: #3d3d3a;
-  --muted: #f5f0e8;
-  --muted-foreground: #6c6a64;
-  --accent: #5db8a6;
-  --accent-foreground: #ffffff;
-  --destructive: #c64545;
-  --border: #e6dfd8;
-  --input: #e6dfd8;
-  --ring: #cc785c;
-  --chart-1: #cc785c;
-  --chart-2: #5db8a6;
-  --chart-3: #e8a55a;
-  --chart-4: #5db872;
-  --chart-5: #c64545;
+  --background: #FFFFFF;
+  --foreground: #111827;
+  --card: #FFFFFF;
+  --card-foreground: #111827;
+  --popover: #FFFFFF;
+  --popover-foreground: #111827;
+  --primary: #22C55E;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F8FAFC;
+  --secondary-foreground: #111827;
+  --muted: #F8FAFC;
+  --muted-foreground: #6B7280;
+  --accent: #DCFCE7;
+  --accent-foreground: #15803D;
+  --destructive: #EF4444;
+  --border: #E5E7EB;
+  --input: #E5E7EB;
+  --ring: #22C55E;
+  --chart-1: #22C55E;
+  --chart-2: #4ADE80;
+  --chart-3: #86EFAC;
+  --chart-4: #16A34A;
+  --chart-5: #15803D;
   --radius: 0.75rem;
-  --sidebar: #f5f0e8;
-  --sidebar-foreground: #141413;
-  --sidebar-primary: #cc785c;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e6dfd8;
-  --sidebar-accent-foreground: #141413;
-  --sidebar-border: #e6dfd8;
-  --sidebar-ring: #cc785c;
+  --sidebar: #F8FAFC;
+  --sidebar-foreground: #111827;
+  --sidebar-primary: #22C55E;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #DCFCE7;
+  --sidebar-accent-foreground: #15803D;
+  --sidebar-border: #E5E7EB;
+  --sidebar-ring: #22C55E;
 
-  /* Claude Surface Palette */
-  --surface-canvas: #faf9f5;
-  --surface-soft: #f5f0e8;
-  --surface-card: #efe9de;
-  --surface-strong: #e8e0d2;
-  --surface-dark: #181715;
-  --surface-dark-elevated: #252320;
-  --surface-dark-soft: #1f1e1b;
+  /* Surface Palette */
+  --surface-canvas: #FFFFFF;
+  --surface-soft: #F8FAFC;
+  --surface-card: #FFFFFF;
+  --surface-strong: #F1F5F9;
 
-  /* Claude Text Palette */
-  --ink: #141413;
-  --body: #3d3d3a;
-  --body-strong: #252523;
-  --muted-claude: #6c6a64;
-  --muted-soft: #8e8b82;
-  --on-dark: #faf9f5;
-  --on-dark-soft: #a09d96;
+  /* Text Palette */
+  --ink: #111827;
+  --body: #374151;
+  --body-strong: #111827;
+  --muted-claude: #6B7280;
+  --muted-soft: #9CA3AF;
 
-  /* Claude Accent Colors */
-  --coral: #cc785c;
-  --coral-active: #a9583e;
-  --coral-disabled: #e6dfd8;
-  --teal: #5db8a6;
-  --amber: #e8a55a;
-  --success: #5db872;
-  --error: #c64545;
+  /* Accent Colors */
+  --green: #22C55E;
+  --green-hover: #16A34A;
+  --green-light: #DCFCE7;
+  --green-deep: #15803D;
+  --error: #EF4444;
 
-  /* Claude Hairlines */
-  --hairline: #e6dfd8;
-  --hairline-soft: #ebe6df;
+  /* Hairlines */
+  --hairline: #E5E7EB;
+  --hairline-soft: #F1F5F9;
+}
+
+/* ============================================
+   DARK THEME — Black + Green
+   ============================================ */
+.dark {
+  --background: #0B0F0C;
+  --foreground: #F3F4F6;
+  --card: #161B22;
+  --card-foreground: #F3F4F6;
+  --popover: #161B22;
+  --popover-foreground: #F3F4F6;
+  --primary: #39D353;
+  --primary-foreground: #000000;
+  --secondary: #111827;
+  --secondary-foreground: #F3F4F6;
+  --muted: #111827;
+  --muted-foreground: #9CA3AF;
+  --accent: #238636;
+  --accent-foreground: #39D353;
+  --destructive: #F87171;
+  --border: #30363D;
+  --input: #30363D;
+  --ring: #39D353;
+  --chart-1: #39D353;
+  --chart-2: #2EA043;
+  --chart-3: #238636;
+  --chart-4: #1A7F37;
+  --chart-5: #116329;
+  --sidebar: #0D1117;
+  --sidebar-foreground: #F3F4F6;
+  --sidebar-primary: #39D353;
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: #238636;
+  --sidebar-accent-foreground: #39D353;
+  --sidebar-border: #30363D;
+  --sidebar-ring: #39D353;
+
+  /* Surface Palette */
+  --surface-canvas: #0B0F0C;
+  --surface-soft: #111827;
+  --surface-card: #161B22;
+  --surface-strong: #1C2128;
+
+  /* Text Palette */
+  --ink: #F9FAFB;
+  --body: #D1D5DB;
+  --body-strong: #F3F4F6;
+  --muted-claude: #9CA3AF;
+  --muted-soft: #6B7280;
+
+  /* Accent Colors */
+  --green: #39D353;
+  --green-hover: #2EA043;
+  --green-light: #238636;
+  --green-deep: #1A7F37;
+  --error: #F87171;
+
+  /* Hairlines */
+  --hairline: #30363D;
+  --hairline-soft: #21262D;
 }
 
 @layer base {
@@ -141,35 +197,40 @@
 }
 
 /* ============================================
-   CLAUDE DESIGN SYSTEM — Clean Editorial
+   DESIGN SYSTEM — Green + Clean
    ============================================ */
 
-/* --- Claude Card --- */
+/* --- Card --- */
 .claude-card {
   background: var(--surface-card);
   border: 1px solid var(--hairline);
-  border-radius: 12px;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+}
+
+.dark .claude-card {
+  box-shadow: none;
 }
 
 .claude-card-soft {
   background: var(--surface-soft);
   border: 1px solid var(--hairline-soft);
-  border-radius: 12px;
+  border-radius: 16px;
 }
 
 .claude-card-elevated {
   background: var(--surface-card);
   border: 1px solid var(--hairline);
-  border-radius: 12px;
+  border-radius: 16px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
-/* --- Claude Buttons --- */
+/* --- Buttons --- */
 .claude-btn-primary {
-  background: var(--coral);
+  background: var(--green);
   color: #ffffff;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 10px 20px;
   font-weight: 600;
   font-size: 14px;
@@ -182,7 +243,7 @@
 }
 
 .claude-btn-primary:hover {
-  background: var(--coral-active);
+  background: var(--green-hover);
 }
 
 .claude-btn-primary:active {
@@ -190,7 +251,7 @@
 }
 
 .claude-btn-primary:disabled {
-  background: var(--coral-disabled);
+  background: var(--hairline);
   color: var(--muted-claude);
   cursor: not-allowed;
 }
@@ -199,7 +260,7 @@
   background: var(--surface-canvas);
   color: var(--body);
   border: 1px solid var(--hairline);
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 10px 20px;
   font-weight: 500;
   font-size: 14px;
@@ -212,18 +273,29 @@
 }
 
 .claude-btn-secondary:hover {
-  background: var(--surface-soft);
-  border-color: var(--muted-claude);
+  background: var(--green-light);
+  border-color: var(--green);
 }
 
 .claude-btn-secondary:active {
   transform: scale(0.98);
 }
 
+.dark .claude-btn-secondary {
+  background: var(--surface-card);
+  border-color: var(--hairline);
+  color: var(--body);
+}
+
+.dark .claude-btn-secondary:hover {
+  background: var(--green-light);
+  border-color: var(--green);
+}
+
 .claude-btn-text {
   background: none;
   border: none;
-  color: var(--coral);
+  color: var(--green);
   font-weight: 500;
   font-size: 14px;
   cursor: pointer;
@@ -236,7 +308,7 @@
 }
 
 .claude-btn-text:hover {
-  color: var(--coral-active);
+  color: var(--green-hover);
 }
 
 .claude-btn-icon {
@@ -255,22 +327,23 @@
 }
 
 .claude-btn-icon:hover {
-  background: var(--surface-soft);
-  border-color: var(--muted-claude);
+  background: var(--green-light);
+  border-color: var(--green);
+  color: var(--green);
 }
 
 .claude-btn-icon.active {
-  background: var(--surface-soft);
-  border-color: var(--coral);
-  color: var(--coral);
+  background: var(--green-light);
+  border-color: var(--green);
+  color: var(--green);
 }
 
-/* --- Claude Inputs --- */
+/* --- Inputs --- */
 .claude-input {
   width: 100%;
   background: var(--surface-canvas);
   border: 1px solid var(--hairline);
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 10px 14px;
   font-size: 14px;
   color: var(--ink);
@@ -282,18 +355,22 @@
 }
 
 .claude-input:focus {
-  border-color: var(--coral);
-  box-shadow: 0 0 0 3px rgba(204, 120, 92, 0.15);
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
   outline: none;
 }
 
-/* --- Claude Focus Ring --- */
+.dark .claude-input:focus {
+  box-shadow: 0 0 0 3px rgba(57, 211, 83, 0.15);
+}
+
+/* --- Focus Ring --- */
 .claude-focus:focus-visible {
-  outline: 3px solid rgba(204, 120, 92, 0.2);
+  outline: 3px solid rgba(34, 197, 94, 0.2);
   outline-offset: 2px;
 }
 
-/* --- Claude Badge --- */
+/* --- Badge --- */
 .claude-badge {
   display: inline-flex;
   align-items: center;
@@ -307,25 +384,17 @@
   color: var(--body);
 }
 
-.claude-badge-coral {
-  background: var(--coral);
+.claude-badge-green {
+  background: var(--green);
   color: #ffffff;
   border: none;
 }
 
-.claude-badge-teal {
-  background: var(--teal);
-  color: #ffffff;
-  border: none;
+.dark .claude-badge-green {
+  color: #000000;
 }
 
-.claude-badge-amber {
-  background: var(--amber);
-  color: #ffffff;
-  border: none;
-}
-
-/* --- Claude Toggle --- */
+/* --- Toggle --- */
 .claude-toggle {
   width: 44px;
   height: 24px;
@@ -349,29 +418,29 @@
 }
 
 .claude-toggle.active {
-  background: var(--coral);
+  background: var(--green);
 }
 
 .claude-toggle.active .claude-toggle-knob {
   transform: translateX(20px);
 }
 
-/* --- Claude Dark Card (for code/product sections) --- */
+/* --- Dark Card (admin) --- */
 .claude-dark-card {
-  background: var(--surface-dark);
-  color: var(--on-dark);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 12px;
+  background: #0D1117;
+  color: #F3F4F6;
+  border: 1px solid #30363D;
+  border-radius: 16px;
 }
 
 .claude-dark-elevated {
-  background: var(--surface-dark-elevated);
-  color: var(--on-dark);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
+  background: #161B22;
+  color: #F3F4F6;
+  border: 1px solid #30363D;
+  border-radius: 16px;
 }
 
-/* --- Claude Section Divider --- */
+/* --- Section Divider --- */
 .claude-divider {
   height: 1px;
   background: var(--hairline);
@@ -384,7 +453,7 @@
   width: 100%;
 }
 
-/* --- Claude Avatar --- */
+/* --- Avatar --- */
 .claude-avatar {
   border-radius: 50%;
   object-fit: cover;
@@ -399,7 +468,7 @@
   border: 3px solid var(--hairline);
 }
 
-/* --- Custom Scrollbars (Claude) --- */
+/* --- Custom Scrollbars --- */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -418,10 +487,10 @@
   background: var(--muted-claude);
 }
 
-/* --- Animations (Claude) --- */
+/* --- Animations --- */
 @keyframes fireFlicker {
-  0%, 100% { transform: scale(1) rotate(-1deg); filter: drop-shadow(0 0 6px rgba(204, 120, 92, 0.6)); }
-  50% { transform: scale(1.06) rotate(2deg); filter: drop-shadow(0 0 12px rgba(204, 120, 92, 0.8)); }
+  0%, 100% { transform: scale(1) rotate(-1deg); filter: drop-shadow(0 0 6px rgba(34, 197, 94, 0.6)); }
+  50% { transform: scale(1.06) rotate(2deg); filter: drop-shadow(0 0 12px rgba(34, 197, 94, 0.8)); }
 }
 
 .fire-animated {
@@ -446,17 +515,25 @@
   animation: fadeIn 0.3s ease-out;
 }
 
-/* --- Glass Effects (kept for modals) --- */
+/* --- Glass Effects --- */
 .claude-glass {
-  background: rgba(250, 249, 245, 0.92);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--hairline);
 }
 
+.dark .claude-glass {
+  background: rgba(11, 15, 12, 0.92);
+}
+
 .claude-glass-modal {
-  background: rgba(250, 249, 245, 0.96);
+  background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(24px);
   border: 1px solid var(--hairline);
   border-radius: 16px;
+}
+
+.dark .claude-glass-modal {
+  background: rgba(22, 27, 34, 0.96);
 }

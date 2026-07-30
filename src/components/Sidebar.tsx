@@ -44,10 +44,10 @@ export const Sidebar: React.FC = () => {
   ];
 
   return (
-    <aside className="hidden lg:flex flex-col w-64 border-r border-[#e6dfd8] h-screen sticky top-0 z-40 select-none" style={{ background: '#f5f0e8' }}>
+    <aside className="hidden lg:flex flex-col w-64 border-r border-[var(--hairline)] h-screen sticky top-0 z-40 select-none" style={{ background: 'var(--surface-soft)' }}>
       {/* Brand Logo */}
-      <div className="p-6 border-b border-[#e6dfd8] flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden" style={{ background: '#cc785c' }}>
+      <div className="p-6 border-b border-[var(--hairline)] flex items-center gap-3">
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden" style={{ background: 'var(--green)' }}>
           <img 
             src="/logo.png" 
             alt="Streakify Logo" 
@@ -59,8 +59,8 @@ export const Sidebar: React.FC = () => {
           <Flame className="w-5 h-5 fire-animated text-white" />
         </div>
         <div>
-          <h1 className="font-bold text-[#141413] tracking-tight text-lg" style={{ fontFamily: 'var(--font-heading)' }}>Streakify</h1>
-          <p className="text-[11px] text-[#6c6a64] font-mono">Build Discipline Daily</p>
+          <h1 className="font-bold text-[var(--ink)] tracking-tight text-lg" style={{ fontFamily: 'var(--font-heading)' }}>Streakify</h1>
+          <p className="text-[11px] text-[var(--muted-claude)] font-mono">Build Discipline Daily</p>
         </div>
       </div>
 
@@ -76,7 +76,7 @@ export const Sidebar: React.FC = () => {
                 key={item.id}
                 onClick={() => setShowCheckInModal(true)}
                 className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-white font-bold text-sm my-3 transition-all cursor-pointer hover:opacity-90"
-                style={{ background: '#cc785c' }}
+                style={{ background: 'var(--green)' }}
               >
                 <Icon className="w-4 h-4" />
                 <span>{item.label}</span>
@@ -97,8 +97,8 @@ export const Sidebar: React.FC = () => {
               }}
               className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer"
               style={{ 
-                background: isActive ? 'rgba(204, 120, 92, 0.08)' : 'transparent',
-                color: isActive ? '#cc785c' : '#6c6a64',
+                background: isActive ? 'rgba(57, 211, 83, 0.08)' : 'transparent',
+                color: isActive ? 'var(--green)' : 'var(--muted-claude)',
                 fontWeight: isActive ? 600 : 500
               }}
             >
@@ -110,25 +110,25 @@ export const Sidebar: React.FC = () => {
       </nav>
 
       {/* Motivational Quote Card */}
-      <div className="p-4 border-t border-[#e6dfd8]">
-        <div className="p-4 rounded-xl text-xs space-y-1.5" style={{ background: '#efe9de', border: '1px solid #e6dfd8' }}>
-          <p className="font-medium text-[11px]" style={{ color: '#cc785c' }}>"Discipline today, freedom tomorrow."</p>
-          <p className="text-[10px] text-[#6c6a64]">Level {user.level} · {user.xp} XP</p>
+      <div className="p-4 border-t border-[var(--hairline)]">
+        <div className="p-4 rounded-xl text-xs space-y-1.5" style={{ background: '#efe9de', border: '1px solid var(--hairline)' }}>
+          <p className="font-medium text-[11px]" style={{ color: 'var(--green)' }}>"Discipline today, freedom tomorrow."</p>
+          <p className="text-[10px] text-[var(--muted-claude)]">Level {user.level} · {user.xp} XP</p>
         </div>
       </div>
 
       {/* User Quick Profile & Logout */}
-      <div className="p-4 border-t border-[#e6dfd8] flex items-center justify-between">
+      <div className="p-4 border-t border-[var(--hairline)] flex items-center justify-between">
         <div className="flex items-center gap-3 cursor-pointer group" onClick={() => setActiveView('profile')}>
           <img 
             src={user.avatar} 
             alt={user.name} 
             className="w-10 h-10 rounded-full object-cover group-hover:opacity-80 transition-opacity" 
-            style={{ border: '2px solid #e6dfd8' }}
+            style={{ border: '2px solid var(--hairline)' }}
           />
           <div className="truncate">
-            <p className="text-sm font-semibold text-[#141413] truncate">{user.name}</p>
-            <p className="text-[11px] font-mono" style={{ color: '#cc785c' }}>Level {user.level}</p>
+            <p className="text-sm font-semibold text-[var(--ink)] truncate">{user.name}</p>
+            <p className="text-[11px] font-mono" style={{ color: 'var(--green)' }}>Level {user.level}</p>
           </div>
         </div>
         <button
@@ -138,7 +138,7 @@ export const Sidebar: React.FC = () => {
           }}
           title="Logout"
           className="claude-btn-icon cursor-pointer"
-          style={{ color: '#6c6a64' }}
+          style={{ color: 'var(--muted-claude)' }}
         >
           <LogOut className="w-4 h-4" />
         </button>

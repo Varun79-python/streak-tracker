@@ -54,7 +54,7 @@ export default function Home() {
   // Admin Panel — full screen, no nav
   if (activeView === 'admin') {
     return (
-      <main className="min-h-screen" style={{ background: '#faf9f5' }}>
+      <main className="min-h-screen" style={{ background: 'var(--surface-canvas)' }}>
         <AdminView />
       </main>
     );

@@ -73,14 +73,14 @@ export const DashboardView: React.FC = () => {
       if (checkIn.completed) {
         return {
           id: date,
-          icon: <Flame className="w-4 h-4 text-[#e8a55a]" />,
+          icon: <Flame className="w-4 h-4 text-[var(--green)]" />,
           label: `All habits done — ${completedCount}/${completedCount} completed`,
           time: displayDate,
         };
       }
       return {
         id: date,
-        icon: <CheckCircle2 className="w-4 h-4 text-[#cc785c]" />,
+        icon: <CheckCircle2 className="w-4 h-4 text-[var(--green)]" />,
         label: `${completedCount} habits checked in (${pct}%)`,
         time: displayDate,
       };
@@ -94,14 +94,14 @@ export const DashboardView: React.FC = () => {
         {/* Stat 1: Current Streak */}
         <div className="claude-card p-5 flex items-center justify-between relative overflow-hidden group">
           <div className="space-y-1">
-            <p className="text-[10px] text-[#6c6a64] font-mono uppercase tracking-wider">Current Streak</p>
-            <h3 className="text-3xl font-extrabold text-[#252523] num-font flex items-baseline gap-1">
+            <p className="text-[10px] text-[var(--muted-claude)] font-mono uppercase tracking-wider">Current Streak</p>
+            <h3 className="text-3xl font-extrabold text-[var(--ink)] num-font flex items-baseline gap-1">
               <span>{user.currentStreak}</span>
-              <span className="text-xs text-[#e8a55a] font-normal font-sans">days</span>
+              <span className="text-xs text-[var(--green)] font-normal font-sans">days</span>
             </h3>
-            <p className="text-[10px] text-[#e8a55a] font-medium">🔥 Active streak</p>
+            <p className="text-[10px] text-[var(--green)] font-medium">🔥 Active streak</p>
           </div>
-          <div className="w-12 h-12 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform" style={{ borderRadius: '12px', background: '#cc785c' }}>
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform" style={{ borderRadius: '12px', background: 'var(--green)' }}>
             <Flame className="w-7 h-7 fire-animated text-white" />
           </div>
         </div>
@@ -109,14 +109,14 @@ export const DashboardView: React.FC = () => {
         {/* Stat 2: Longest Streak */}
         <div className="claude-card p-5 flex items-center justify-between">
           <div className="space-y-1">
-            <p className="text-[10px] text-[#6c6a64] font-mono uppercase tracking-wider">Longest Streak</p>
-            <h3 className="text-3xl font-extrabold text-[#252523] num-font flex items-baseline gap-1">
+            <p className="text-[10px] text-[var(--muted-claude)] font-mono uppercase tracking-wider">Longest Streak</p>
+            <h3 className="text-3xl font-extrabold text-[var(--ink)] num-font flex items-baseline gap-1">
               <span>{user.longestStreak}</span>
-              <span className="text-xs text-[#e8a55a] font-normal font-sans">days</span>
+              <span className="text-xs text-[var(--green)] font-normal font-sans">days</span>
             </h3>
-            <p className="text-[10px] text-[#e8a55a] font-medium">🏆 Personal record</p>
+            <p className="text-[10px] text-[var(--green)] font-medium">🏆 Personal record</p>
           </div>
-          <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ borderRadius: '12px', background: '#e8a55a' }}>
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ borderRadius: '12px', background: 'var(--green)' }}>
             <Trophy className="w-6 h-6 text-white" />
           </div>
         </div>
@@ -124,13 +124,13 @@ export const DashboardView: React.FC = () => {
         {/* Stat 3: Consistency Rate */}
         <div className="claude-card p-5 flex items-center justify-between">
           <div className="space-y-1">
-            <p className="text-[10px] text-[#6c6a64] font-mono uppercase tracking-wider">Consistency</p>
-            <h3 className="text-3xl font-extrabold text-[#252523] num-font">
+            <p className="text-[10px] text-[var(--muted-claude)] font-mono uppercase tracking-wider">Consistency</p>
+            <h3 className="text-3xl font-extrabold text-[var(--ink)] num-font">
               {user.successRate}%
             </h3>
-            <p className="text-[10px] text-[#cc785c] font-medium">🎯 Performance</p>
+            <p className="text-[10px] text-[var(--green)] font-medium">🎯 Performance</p>
           </div>
-          <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ borderRadius: '12px', background: '#5db8a6' }}>
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ borderRadius: '12px', background: 'var(--green)' }}>
             <Target className="w-6 h-6 text-white" />
           </div>
         </div>
@@ -138,35 +138,35 @@ export const DashboardView: React.FC = () => {
         {/* Stat 4: Total XP & Level */}
         <div className="claude-card p-5 flex items-center justify-between">
           <div className="space-y-1">
-            <p className="text-[10px] text-[#6c6a64] font-mono uppercase tracking-wider">Level {user.level}</p>
-            <h3 className="text-2xl font-extrabold text-[#252523] num-font">
-              {user.xp} <span className="text-xs text-[#8e8b82] font-sans">/ 2,000 XP</span>
+            <p className="text-[10px] text-[var(--muted-claude)] font-mono uppercase tracking-wider">Level {user.level}</p>
+            <h3 className="text-2xl font-extrabold text-[var(--ink)] num-font">
+              {user.xp} <span className="text-xs text-[var(--muted-soft)] font-sans">/ 2,000 XP</span>
             </h3>
-            <div className="w-full h-2 rounded-full overflow-hidden mt-1" style={{ background: 'rgba(204, 120, 92, 0.08)' }}>
+            <div className="w-full h-2 rounded-full overflow-hidden mt-1" style={{ background: 'rgba(34, 197, 94, 0.08)' }}>
               <div
                 className="h-full rounded-full"
-                style={{ width: `${(user.xp / user.nextLevelXp) * 100}%`, background: '#5db8a6' }}
+                style={{ width: `${(user.xp / user.nextLevelXp) * 100}%`, background: 'var(--green)' }}
               />
             </div>
           </div>
-          <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ borderRadius: '12px', background: '#5db872' }}>
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ borderRadius: '12px', background: 'var(--green)' }}>
             <Zap className="w-6 h-6 text-white" />
           </div>
         </div>
       </div>
 
       {/* AI Insight Card */}
-      <div className="claude-card p-5 border-l-4 border-[#cc785c]">
+      <div className="claude-card p-5 border-l-4 border-[var(--green)]">
         <div className="flex items-start gap-3">
-          <div className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ borderRadius: '12px', background: '#5db8a6' }}>
+          <div className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ borderRadius: '12px', background: 'var(--green)' }}>
             <Sparkles className="w-5 h-5 text-white" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-[10px] text-[#cc785c] font-mono mb-1 uppercase tracking-wider">Daily Insight</p>
+            <p className="text-[10px] text-[var(--green)] font-mono mb-1 uppercase tracking-wider">Daily Insight</p>
             {quoteLoading ? (
-              <p className="text-sm text-[#8e8b82] animate-pulse">Finding your spark...</p>
+              <p className="text-sm text-[var(--muted-soft)] animate-pulse">Finding your spark...</p>
             ) : (
-              <p className="text-sm text-[#3d3d3a] leading-relaxed">{dailyQuote?.text || 'Small steps lead to big changes. Keep showing up! 🔥'}</p>
+              <p className="text-sm text-[var(--body)] leading-relaxed">{dailyQuote?.text || 'Small steps lead to big changes. Keep showing up! 🔥'}</p>
             )}
           </div>
         </div>
@@ -176,18 +176,18 @@ export const DashboardView: React.FC = () => {
       <div className="claude-card p-6 space-y-4">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div>
-            <h3 className="text-lg font-bold text-[#252523] flex items-center gap-2">
+            <h3 className="text-lg font-bold text-[var(--ink)] flex items-center gap-2">
               <span>Contribution Heatmap</span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full font-mono text-white" style={{ borderRadius: '9999px', background: '#5db8a6' }}>
+              <span className="text-[10px] px-2 py-0.5 rounded-full font-mono text-white" style={{ borderRadius: '9999px', background: 'var(--green)' }}>
                 365 Days
               </span>
             </h3>
-            <p className="text-xs text-[#6c6a64] font-mono">Every square represents a step toward mastery.</p>
+            <p className="text-xs text-[var(--muted-claude)] font-mono">Every square represents a step toward mastery.</p>
           </div>
 
           <button
             onClick={() => setActiveView('heatmap')}
-            className="px-4 py-2 text-xs text-[#6c6a64] hover:text-[#252523] transition-colors flex items-center gap-1.5 cursor-pointer rounded-xl claude-btn-secondary"
+            className="px-4 py-2 text-xs text-[var(--muted-claude)] hover:text-[var(--ink)] transition-colors flex items-center gap-1.5 cursor-pointer rounded-xl claude-btn-secondary"
           >
             <span>Full View</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -206,14 +206,14 @@ export const DashboardView: React.FC = () => {
         <div className="lg:col-span-7 claude-card p-6 space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-base font-bold text-[#252523]">Today's Habits</h3>
-              <p className="text-xs text-[#6c6a64] font-mono">{format(new Date(), 'EEEE, MMMM d')}</p>
+              <h3 className="text-base font-bold text-[var(--ink)]">Today's Habits</h3>
+              <p className="text-xs text-[var(--muted-claude)] font-mono">{format(new Date(), 'EEEE, MMMM d')}</p>
             </div>
 
             <button
               onClick={() => setShowCheckInModal(true)}
               className="px-4 py-2 rounded-xl text-white font-bold text-xs transition-all flex items-center gap-1.5 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
-              style={{ borderRadius: '9999px', background: '#cc785c' }}
+              style={{ borderRadius: '9999px', background: 'var(--green)' }}
             >
               <span>{isTodayComplete ? 'Edit Check-in' : 'Check-in'}</span>
               <Sparkles className="w-3.5 h-3.5" />
@@ -222,18 +222,18 @@ export const DashboardView: React.FC = () => {
 
           <div className="space-y-2.5">
             {activeHabits.length === 0 ? (
-              <div className="p-8 rounded-2xl text-center space-y-3" style={{ background: 'rgba(204, 120, 92, 0.08)' }}>
-                <div className="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto" style={{ borderRadius: '12px', background: '#5db8a6' }}>
+              <div className="p-8 rounded-2xl text-center space-y-3" style={{ background: 'rgba(34, 197, 94, 0.08)' }}>
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto" style={{ borderRadius: '12px', background: 'var(--green)' }}>
                   <Plus className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-[#252523]">No habits yet</p>
-                  <p className="text-xs text-[#6c6a64] mt-1">Create your first habit to start tracking.</p>
+                  <p className="text-sm font-semibold text-[var(--ink)]">No habits yet</p>
+                  <p className="text-xs text-[var(--muted-claude)] mt-1">Create your first habit to start tracking.</p>
                 </div>
                 <button
                   onClick={() => setActiveView('habits')}
                   className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-white font-bold text-xs transition-all cursor-pointer hover:scale-[1.02]"
-                  style={{ borderRadius: '9999px', background: '#cc785c' }}
+                  style={{ borderRadius: '9999px', background: 'var(--green)' }}
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Create a Habit</span>
@@ -248,25 +248,25 @@ export const DashboardView: React.FC = () => {
                     onClick={() => setShowCheckInModal(true)}
                     className={`flex items-center justify-between p-3 rounded-2xl transition-all cursor-pointer ${
                       isDone
-                        ? 'border-l-4 border-[#cc785c]'
+                        ? 'border-l-4 border-[var(--green)]'
                         : 'claude-card-soft hover:shadow-lg'
                     }`}
-                    style={isDone ? { background: 'rgba(204, 120, 92, 0.08)' } : undefined}
+                    style={isDone ? { background: 'rgba(34, 197, 94, 0.08)' } : undefined}
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-lg">{habit.icon}</span>
                       <div>
-                        <p className="text-xs font-semibold text-[#252523]">{habit.name}</p>
-                        <p className="text-[10px] text-[#8e8b82]">{habit.description}</p>
+                        <p className="text-xs font-semibold text-[var(--ink)]">{habit.name}</p>
+                        <p className="text-[10px] text-[var(--muted-soft)]">{habit.description}</p>
                       </div>
                     </div>
 
                     <span className={`text-[10px] font-mono px-2.5 py-1 rounded-xl ${
-                      isDone ? 'text-white' : 'text-[#8e8b82]'
+                      isDone ? 'text-white' : 'text-[var(--muted-soft)]'
                     }`}
                     style={isDone 
-                      ? { borderRadius: '9999px', background: '#5db8a6' } 
-                      : { borderRadius: '9999px', background: 'rgba(204, 120, 92, 0.08)' }
+                      ? { borderRadius: '9999px', background: 'var(--green)' } 
+                      : { borderRadius: '9999px', background: 'rgba(34, 197, 94, 0.08)' }
                     }>
                       {isDone ? '✓ Done' : 'Pending'}
                     </span>
@@ -280,8 +280,8 @@ export const DashboardView: React.FC = () => {
         {/* Right Column: Recent Activity Feed */}
         <div className="lg:col-span-5 claude-card p-6 space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-base font-bold text-[#252523] flex items-center gap-2">
-              <div className="w-7 h-7 rounded-xl flex items-center justify-center" style={{ borderRadius: '12px', background: '#e8a55a' }}>
+            <h3 className="text-base font-bold text-[var(--ink)] flex items-center gap-2">
+              <div className="w-7 h-7 rounded-xl flex items-center justify-center" style={{ borderRadius: '12px', background: 'var(--green)' }}>
                 <Clock className="w-4 h-4 text-white" />
               </div>
               <span>Recent Activity</span>
@@ -289,7 +289,7 @@ export const DashboardView: React.FC = () => {
 
             <button
               onClick={() => setActiveView('activity')}
-              className="text-xs text-[#cc785c] hover:underline cursor-pointer font-medium"
+              className="text-xs text-[var(--green)] hover:underline cursor-pointer font-medium"
             >
               View All
             </button>
@@ -297,10 +297,10 @@ export const DashboardView: React.FC = () => {
 
           <div className="space-y-2 font-mono text-xs">
             {recentActivity.length === 0 ? (
-              <div className="p-6 rounded-2xl text-center space-y-2" style={{ background: 'rgba(204, 120, 92, 0.08)' }}>
-                <Clock className="w-8 h-8 text-[#e6dfd8] mx-auto" />
-                <p className="text-[#8e8b82] text-xs">No activity yet</p>
-                <p className="text-[#e6dfd8] text-[10px]">Complete your first check-in to see activity here.</p>
+              <div className="p-6 rounded-2xl text-center space-y-2" style={{ background: 'rgba(34, 197, 94, 0.08)' }}>
+                <Clock className="w-8 h-8 text-[var(--hairline)] mx-auto" />
+                <p className="text-[var(--muted-soft)] text-xs">No activity yet</p>
+                <p className="text-[var(--hairline)] text-[10px]">Complete your first check-in to see activity here.</p>
               </div>
             ) : (
               recentActivity.map((entry) => (
@@ -310,9 +310,9 @@ export const DashboardView: React.FC = () => {
                 >
                   <div className="flex items-center gap-2.5">
                     {entry.icon}
-                    <span className="text-[#3d3d3a] text-[11px]">{entry.label}</span>
+                    <span className="text-[var(--body)] text-[11px]">{entry.label}</span>
                   </div>
-                  <span className="text-[#8e8b82] text-[10px]">{entry.time}</span>
+                  <span className="text-[var(--muted-soft)] text-[10px]">{entry.time}</span>
                 </div>
               ))
             )}

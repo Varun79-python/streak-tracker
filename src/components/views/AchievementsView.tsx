@@ -14,16 +14,16 @@ export const AchievementsView: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-[#141413] flex items-center gap-2.5" style={{ fontFamily: 'var(--font-heading)' }}>
-            <Trophy className="w-6 h-6" style={{ color: '#e8a55a' }} />
+          <h2 className="text-2xl font-bold text-[var(--ink)] flex items-center gap-2.5" style={{ fontFamily: 'var(--font-heading)' }}>
+            <Trophy className="w-6 h-6" style={{ color: 'var(--green)' }} />
             <span>Achievements & Milestones</span>
           </h2>
-          <p className="text-xs text-[#8e8b82] font-mono">
+          <p className="text-xs text-[var(--muted-soft)] font-mono">
             Unlocked: {unlockedCount} / {achievements.length} Milestones
           </p>
         </div>
 
-        <div className="px-4 py-2 rounded-xl text-xs font-mono font-bold" style={{ borderRadius: '9999px', background: '#f5f0e8', border: '1px solid #e6dfd8', color: '#e8a55a' }}>
+        <div className="px-4 py-2 rounded-xl text-xs font-mono font-bold" style={{ borderRadius: '9999px', background: 'var(--surface-soft)', border: '1px solid var(--hairline)', color: 'var(--green)' }}>
           🏆 Total XP Rewards: <span className="num-font">{achievements.reduce((acc, curr) => acc + (curr.unlocked ? curr.rewardXp : 0), 0)}</span> XP
         </div>
       </div>
@@ -40,45 +40,45 @@ export const AchievementsView: React.FC = () => {
                   ? 'claude-card'
                   : 'claude-card-soft opacity-80'
               }`}
-              style={item.unlocked ? { borderColor: '#5db872' } : {}}
+              style={item.unlocked ? { borderColor: 'var(--green)' } : {}}
             >
               <div className="flex items-center justify-between">
-                <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl" style={item.unlocked ? { background: '#5db872' } : { background: 'rgba(204, 120, 92, 0.08)' }}>
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl" style={item.unlocked ? { background: 'var(--green)' } : { background: 'rgba(34, 197, 94, 0.08)' }}>
                   {item.icon}
                 </div>
 
                 <span
                   className={`text-xs px-2.5 py-1 rounded-full font-mono font-bold border ${
                     item.unlocked
-                      ? 'text-[#252523]'
-                      : 'text-[#8e8b82]'
+                      ? 'text-[var(--ink)]'
+                      : 'text-[var(--muted-soft)]'
                   }`}
-                  style={item.unlocked ? { background: '#5db872', borderColor: 'rgba(93, 184, 166, 0.4)' } : { background: 'rgba(204, 120, 92, 0.08)', borderColor: '#e6dfd8' }}
+                  style={item.unlocked ? { background: 'var(--green)', borderColor: 'rgba(34, 197, 94, 0.4)' } : { background: 'rgba(34, 197, 94, 0.08)', borderColor: 'var(--hairline)' }}
                 >
                   {item.unlocked ? '✓ Unlocked' : 'Locked'}
                 </span>
               </div>
 
               <div className="space-y-1">
-                <h3 className="text-base font-bold text-[#252523] flex items-center justify-between">
+                <h3 className="text-base font-bold text-[var(--ink)] flex items-center justify-between">
                   <span>{item.title}</span>
-                  <span className="text-xs font-mono num-font" style={{ color: '#e8a55a' }}>+{item.rewardXp} XP</span>
+                  <span className="text-xs font-mono num-font" style={{ color: 'var(--green)' }}>+{item.rewardXp} XP</span>
                 </h3>
-                <p className="text-xs text-[#8e8b82]">{item.description}</p>
+                <p className="text-xs text-[var(--muted-soft)]">{item.description}</p>
               </div>
 
               {/* Progress Bar */}
               <div className="space-y-1.5 pt-2">
-                <div className="flex justify-between text-[11px] font-mono text-[#8e8b82]">
+                <div className="flex justify-between text-[11px] font-mono text-[var(--muted-soft)]">
                   <span>Progress</span>
-                  <span className="text-[#252523] font-bold num-font">
+                  <span className="text-[var(--ink)] font-bold num-font">
                     {item.currentDays} / {item.targetDays} Days ({pct}%)
                   </span>
                 </div>
-                <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: 'rgba(204, 120, 92, 0.08)' }}>
+                <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: 'rgba(34, 197, 94, 0.08)' }}>
                   <div
                     className="h-full transition-all duration-500"
-                    style={item.unlocked ? { background: '#5db872', width: `${pct}%` } : { background: '#cc785c', width: `${pct}%` }}
+                    style={item.unlocked ? { background: 'var(--green)', width: `${pct}%` } : { background: 'var(--green)', width: `${pct}%` }}
                   />
                 </div>
               </div>

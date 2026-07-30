@@ -96,22 +96,22 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({ onSelect, compact = 
       {/* Header & Quick Action */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-xl" style={{ background: '#5db8a6' }}>
+          <div className="p-1.5 rounded-xl" style={{ background: 'var(--green)' }}>
             <UserCheck className="w-4 h-4 text-white" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-[#141413]">Choose Profile Picture</h3>
-            <p className="text-[11px] text-[#6c6a64]">Select from random presets or generate a unique avatar</p>
+            <h3 className="text-sm font-bold text-[var(--ink)]">Choose Profile Picture</h3>
+            <p className="text-[11px] text-[var(--muted-claude)]">Select from random presets or generate a unique avatar</p>
           </div>
         </div>
 
         <button
           type="button"
           onClick={handleRandomize}
-          className="claude-btn-secondary px-3 py-1.5 rounded-xl text-xs font-bold text-[#252523] flex items-center gap-1.5 transition-all cursor-pointer"
-          style={{ background: 'rgba(232, 165, 90, 0.12)' }}
+          className="claude-btn-secondary px-3 py-1.5 rounded-xl text-xs font-bold text-[var(--ink)] flex items-center gap-1.5 transition-all cursor-pointer"
+          style={{ background: 'rgba(34, 197, 94, 0.12)' }}
         >
-          <Shuffle className="w-3.5 h-3.5 animate-spin-slow" style={{ color: '#cc785c' }} />
+          <Shuffle className="w-3.5 h-3.5 animate-spin-slow" style={{ color: 'var(--green)' }} />
           <span>🎲 Randomize Avatar</span>
         </button>
       </div>
@@ -126,10 +126,10 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({ onSelect, compact = 
               onClick={() => setActiveCategory(cat)}
               className={`px-3 py-1 text-xs font-semibold rounded-xl whitespace-nowrap transition-all cursor-pointer ${
                 activeCategory === cat
-                  ? 'shadow-sm font-bold text-[#141413]'
-                  : 'claude-btn-secondary text-[#6c6a64] hover:text-[#252523]'
+                  ? 'shadow-sm font-bold text-[var(--ink)]'
+                  : 'claude-btn-secondary text-[var(--muted-claude)] hover:text-[var(--ink)]'
               }`}
-              style={activeCategory === cat ? { background: '#5db8a6' } : undefined}
+              style={activeCategory === cat ? { background: 'var(--green)' } : undefined}
             >
               {cat}
             </button>
@@ -152,7 +152,7 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({ onSelect, compact = 
                   : 'claude-card hover:scale-105'
               }`}
               style={isSelected
-                ? { background: 'rgba(204, 120, 92, 0.08)', color: '#cc785c', boxShadow: '0 0 0 2px #5db8a6' }
+                ? { background: 'rgba(34, 197, 94, 0.08)', color: 'var(--green)', boxShadow: '0 0 0 2px var(--green)' }
                 : undefined
               }
             >
@@ -163,8 +163,8 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({ onSelect, compact = 
                 loading="lazy"
               />
               {isSelected && (
-                <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center shadow-md" style={{ background: '#5db8a6' }}>
-                  <Check className="w-3 h-3 text-[#141413] stroke-[3]" />
+                <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center shadow-md" style={{ background: 'var(--green)' }}>
+                  <Check className="w-3 h-3 text-[var(--ink)] stroke-[3]" />
                 </div>
               )}
             </button>
@@ -173,9 +173,9 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({ onSelect, compact = 
       </div>
 
       {/* Custom URL Option */}
-      <form onSubmit={handleCustomSubmit} className="pt-2 border-t flex items-center gap-2" style={{ borderColor: 'rgba(230, 223, 216, 0.4)' }}>
+      <form onSubmit={handleCustomSubmit} className="pt-2 border-t flex items-center gap-2" style={{ borderColor: 'rgba(34, 197, 94, 0.12)' }}>
         <div className="relative flex-1">
-          <Image className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#8e8b82' }} />
+          <Image className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2" style={{ color: 'var(--muted-soft)' }} />
           <input
             type="url"
             value={customUrl}
@@ -184,15 +184,15 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({ onSelect, compact = 
               setCustomError(false);
             }}
             placeholder="Paste custom image URL..."
-            className={`w-full claude-input rounded-xl pl-9 pr-3 py-1.5 text-xs text-[#252523] ${
+            className={`w-full claude-input rounded-xl pl-9 pr-3 py-1.5 text-xs text-[var(--ink)] ${
               customError ? 'border-red-400' : ''
             }`}
           />
         </div>
         <button
           type="submit"
-          className="claude-btn-secondary px-3 py-1.5 rounded-xl text-xs font-bold text-[#252523] transition-colors cursor-pointer"
-          style={{ color: '#cc785c' }}
+          className="claude-btn-secondary px-3 py-1.5 rounded-xl text-xs font-bold text-[var(--ink)] transition-colors cursor-pointer"
+          style={{ color: 'var(--green)' }}
         >
           Apply
         </button>

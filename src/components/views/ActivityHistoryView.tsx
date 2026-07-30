@@ -24,13 +24,13 @@ export const ActivityHistoryView: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-[#141413] flex items-center gap-2.5" style={{ fontFamily: 'var(--font-heading)' }}>
+          <h2 className="text-2xl font-bold text-[var(--ink)] flex items-center gap-2.5" style={{ fontFamily: 'var(--font-heading)' }}>
             <div className="p-2" style={{ borderRadius: '12px' }}>
-              <Clock className="w-5 h-5" style={{ color: '#cc785c' }} />
+              <Clock className="w-5 h-5" style={{ color: 'var(--green)' }} />
             </div>
             <span>Activity History</span>
           </h2>
-          <p className="text-xs text-[#8e8b82] font-mono">Complete chronological record of all daily check-ins, journal notes, and streaks.</p>
+          <p className="text-xs text-[var(--muted-soft)] font-mono">Complete chronological record of all daily check-ins, journal notes, and streaks.</p>
         </div>
 
         {/* Filters */}
@@ -42,9 +42,9 @@ export const ActivityHistoryView: React.FC = () => {
               className={`px-3 py-1.5 rounded-xl transition-colors cursor-pointer ${
                 filter === tab
                   ? 'font-bold text-white'
-                  : 'claude-btn-secondary text-[#8e8b82] hover:text-[#6c6a64]'
+                  : 'claude-btn-secondary text-[var(--muted-soft)] hover:text-[var(--muted-claude)]'
               }`}
-              style={filter === tab ? { background: '#5db8a6' } : {}}
+              style={filter === tab ? { background: 'var(--green)' } : {}}
             >
               {tab}
             </button>
@@ -64,41 +64,41 @@ export const ActivityHistoryView: React.FC = () => {
                 ? 'claude-card-soft'
                 : 'opacity-60'
             }`}
-            style={!item.completed && item.completionPercentage > 0 ? { borderColor: 'rgba(232, 165, 90, 0.3)' } : !item.completed && item.completionPercentage === 0 ? { background: 'rgba(204, 120, 92, 0.08)' } : {}}
+            style={!item.completed && item.completionPercentage > 0 ? { borderColor: 'rgba(232, 165, 90, 0.3)' } : !item.completed && item.completionPercentage === 0 ? { background: 'rgba(34, 197, 94, 0.08)' } : {}}
           >
             <div className="flex items-center gap-3">
               {item.completed ? (
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#5db872' }}>
-                  <CheckCircle2 className="w-4 h-4 text-[#252523]" />
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'var(--green)' }}>
+                  <CheckCircle2 className="w-4 h-4 text-[var(--ink)]" />
                 </div>
               ) : item.completionPercentage > 0 ? (
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#e8a55a' }}>
-                  <Clock className="w-4 h-4 text-[#252523]" />
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'var(--green)' }}>
+                  <Clock className="w-4 h-4 text-[var(--ink)]" />
                 </div>
               ) : (
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#cc785c' }}>
-                  <XCircle className="w-4 h-4 text-[#252523]" />
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'var(--green)' }}>
+                  <XCircle className="w-4 h-4 text-[var(--ink)]" />
                 </div>
               )}
 
               <div>
-                <h4 className="font-bold text-[#252523] text-sm">
+                <h4 className="font-bold text-[var(--ink)] text-sm">
                   {item.completed ? 'Completed all required habits' : item.completionPercentage > 0 ? 'Partial check-in logged' : 'Missed day'}
                 </h4>
-                <p className="text-[#8e8b82] text-[11px]">{item.date}</p>
+                <p className="text-[var(--muted-soft)] text-[11px]">{item.date}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
               {item.journal && (
-                <span className="px-2 py-0.5 rounded text-[11px]" style={{ color: '#e8a55a', background: 'rgba(232, 165, 90, 0.2)' }}>
+                <span className="px-2 py-0.5 rounded text-[11px]" style={{ color: 'var(--green)', background: 'rgba(232, 165, 90, 0.2)' }}>
                   📖 Journal
                 </span>
               )}
-              <span className="font-bold text-xs" style={{ color: '#cc785c' }}>
+              <span className="font-bold text-xs" style={{ color: 'var(--green)' }}>
                 +{item.xpEarned} XP
               </span>
-              <span className="font-bold text-xs" style={{ color: '#6c6a64' }}>
+              <span className="font-bold text-xs" style={{ color: 'var(--muted-claude)' }}>
                 {item.completionPercentage}%
               </span>
             </div>

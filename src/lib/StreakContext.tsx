@@ -24,8 +24,8 @@ interface StreakContextType {
   setIsLoggedIn: (val: boolean) => void;
   currentUserEmail: string | null;
   sessionId: string | null;
-  theme: 'dark' | 'amoled' | 'light';
-  setTheme: (t: 'dark' | 'amoled' | 'light') => void;
+  theme: 'light' | 'dark';
+  setTheme: (t: 'light' | 'dark') => void;
   activeView: string;
   setActiveView: (view: string) => void;
   user: UserProfile;
@@ -129,7 +129,7 @@ export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUserEmail, setCurrentUserEmail] = useState<string | null>(null);
   const [sessionId, setSessionId] = useState<string | null>(null);
-  const [theme, setThemeState] = useState<'dark' | 'amoled' | 'light'>('dark');
+  const [theme, setThemeState] = useState<'light' | 'dark'>('light');
   const [activeView, setActiveView] = useState<string>('login');
   const [isLoading, setIsLoading] = useState(true);
 
@@ -153,13 +153,23 @@ export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [showAdminKeyModal, setShowAdminKeyModal] = useState(false);
 
   // Sync theme to root HTML element
-  const setTheme = useCallback((t: 'dark' | 'amoled' | 'light') => {
+  const setTheme = useCallback((t: 'light' | 'dark') => {
     setThemeState(t);
     const root = document.documentElement;
-    root.classList.remove('theme-amoled', 'theme-light');
-    if (t === 'amoled') root.classList.add('theme-amoled');
-    if (t === 'light') root.classList.add('theme-light');
+    root.classList.remove('dark');
+    if (t === 'dark') root.classList.add('dark');
+    localStorage.setItem('streakify_theme', t);
   }, []);
+
+  // Load saved theme on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('streakify_theme') as 'light' | 'dark' | null;
+    if (saved) {
+      setTheme(saved);
+    } else {
+      setTheme('light');
+    }
+  }, [setTheme]);
 
   // Load user data from Supabase
   const loadUserData = useCallback(async (userId: string) => {
