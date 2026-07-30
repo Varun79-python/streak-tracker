@@ -60,7 +60,7 @@ export const LeaderboardView: React.FC = () => {
               <p className="text-xs text-[var(--muted-soft)] font-mono">Level <span className="num-font">{topThree[1].level}</span> • <span className="num-font">{topThree[1].xp}</span> XP</p>
             </div>
             <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full font-mono text-xs font-bold text-white" style={{ background: 'var(--green)' }}>
-              <Flame className="w-3.5 h-3.5 fire-animated" /> <span className="num-font">{topThree[1].currentStreak}</span> days
+              <Flame className="w-3.5 h-3.5 fire-animated" /> <span className="num-font">{topThree[1].currentStreak}</span> {topThree[1].currentStreak === 1 ? 'day' : 'days'}
             </div>
           </div>
         )}
@@ -75,7 +75,7 @@ export const LeaderboardView: React.FC = () => {
               <p className="text-xs font-mono font-bold" style={{ color: 'var(--green)' }}>Level <span className="num-font">{topThree[0].level}</span> • <span className="num-font">{topThree[0].xp}</span> XP</p>
             </div>
             <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full font-mono text-xs font-extrabold shadow-lg text-white" style={{ background: 'var(--green)' }}>
-              <Flame className="w-4 h-4 fire-animated" /> <span className="num-font">{topThree[0].currentStreak}</span> days streak
+              <Flame className="w-4 h-4 fire-animated" /> <span className="num-font">{topThree[0].currentStreak}</span> {topThree[0].currentStreak === 1 ? 'day streak' : 'days streak'}
             </div>
           </div>
         )}
@@ -92,7 +92,7 @@ export const LeaderboardView: React.FC = () => {
               <p className="text-xs text-[var(--muted-soft)] font-mono">Level <span className="num-font">{topThree[2].level}</span> • <span className="num-font">{topThree[2].xp}</span> XP</p>
             </div>
             <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full font-mono text-xs font-bold text-white" style={{ background: 'var(--green)' }}>
-              <Flame className="w-3.5 h-3.5 fire-animated" /> <span className="num-font">{topThree[2].currentStreak}</span> days
+              <Flame className="w-3.5 h-3.5 fire-animated" /> <span className="num-font">{topThree[2].currentStreak}</span> {topThree[2].currentStreak === 1 ? 'day' : 'days'}
             </div>
           </div>
         )}

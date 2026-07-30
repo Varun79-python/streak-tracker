@@ -58,22 +58,34 @@ export const TopNav: React.FC = () => {
           <span className="text-sm font-bold leading-tight" style={{ color: 'var(--ink)', fontFamily: 'var(--font-heading)' }}>
             {user.name || 'Streakify'}
           </span>
-          <span className="text-[10px] font-mono leading-tight" style={{ color: 'var(--muted-claude)' }}>
-            {heatmapStreak > 0 ? <><span className="num-font">{heatmapStreak}</span>d streak</> : 'Start today'}
+          <span className="text-[10px] font-mono text-[var(--muted-soft)] leading-tight truncate max-w-[140px]">
+            {user.bio || 'Building daily consistency'}
           </span>
         </div>
       </div>
 
       {/* Right — Actions */}
-      <div className="flex items-center gap-1.5">
-        {/* Streak pill badge */}
-        <button 
+      <div className="flex items-center gap-2">
+        {/* Premium Glowing Streak Badge */}
+        <div 
           onClick={() => setShowNotificationDrawer(true)}
-          className="flex items-center gap-1.5 px-3 py-1 rounded-full cursor-pointer transition-all hover:scale-105 active:scale-95 border bg-gradient-to-r from-orange-500/10 via-amber-500/10 to-green-500/10 border-orange-500/30 text-orange-500 shadow-xs"
+          className="flex items-center gap-2 px-3.5 py-1.5 rounded-full cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-sm"
+          style={{ 
+            background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.12), rgba(34, 197, 94, 0.22))', 
+            border: '1px solid var(--green)',
+            borderRadius: '9999px' 
+          }}
         >
-          <Flame className="w-4 h-4 fire-animated text-orange-500 fill-orange-500/30" />
-          <span className="text-xs font-extrabold num-font text-orange-600 dark:text-orange-400">{heatmapStreak}</span>
-        </button>
+          <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'var(--green)', borderRadius: '9999px' }}>
+            <Flame className="w-3.5 h-3.5 text-white" />
+          </div>
+          <div className="flex items-baseline gap-1 font-mono">
+            <span className="text-xs font-extrabold num-font" style={{ color: 'var(--ink)' }}>{heatmapStreak}</span>
+            <span className="text-[10px] font-bold text-[var(--green)] uppercase tracking-wider">
+              {heatmapStreak === 1 ? 'DAY STREAK' : 'DAYS STREAK'}
+            </span>
+          </div>
+        </div>
 
         {/* Theme Toggle */}
         <button

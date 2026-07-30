@@ -4,6 +4,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { useStreak } from '@/lib/StreakContext';
 import { HeatmapGraph } from '../HeatmapGraph';
 import { MotivationCard } from '../MotivationCard';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Flame, 
   Trophy,
@@ -16,7 +17,9 @@ import {
   ArrowRight,
   Sparkles,
   Plus,
-  HelpCircle
+  HelpCircle,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -30,6 +33,8 @@ export const DashboardView: React.FC = () => {
     setActiveView,
     toggleHabitCompletion
   } = useStreak();
+
+  const [isHowToUseOpen, setIsHowToUseOpen] = useState(false);
 
   const todayStr = format(new Date(), 'yyyy-MM-dd');
   const todayCheckIn = history[todayStr];
@@ -190,104 +195,131 @@ export const DashboardView: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Column: Recent Activity Feed & How to Use Guide */}
-        <div className="lg:col-span-5 space-y-6">
-          <div className="claude-card p-6 space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-base font-bold text-[var(--ink)] flex items-center gap-2">
-                <div className="w-7 h-7 rounded-xl flex items-center justify-center" style={{ borderRadius: '12px', background: 'var(--green)' }}>
-                  <Clock className="w-4 h-4 text-white" />
-                </div>
-                <span>Recent Activity</span>
-              </h3>
+        {/* Right Column: Recent Activity Feed */}
+        <div className="lg:col-span-5 claude-card p-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-base font-bold text-[var(--ink)] flex items-center gap-2">
+              <div className="w-7 h-7 rounded-xl flex items-center justify-center" style={{ borderRadius: '12px', background: 'var(--green)' }}>
+                <Clock className="w-4 h-4 text-white" />
+              </div>
+              <span>Recent Activity</span>
+            </h3>
 
-              <button
-                onClick={() => setActiveView('activity')}
-                className="text-xs text-[var(--green)] hover:underline cursor-pointer font-medium"
-              >
-                View All
-              </button>
-            </div>
-
-            <div className="space-y-2 font-mono text-xs">
-              {recentActivity.length === 0 ? (
-                <div className="p-6 rounded-2xl text-center space-y-2" style={{ background: 'rgba(34, 197, 94, 0.08)' }}>
-                  <Clock className="w-8 h-8 text-[var(--hairline)] mx-auto" />
-                  <p className="text-[var(--muted-soft)] text-xs">No activity yet</p>
-                  <p className="text-[var(--hairline)] text-[10px]">Complete your first check-in to see activity here.</p>
-                </div>
-              ) : (
-                recentActivity.map((entry) => (
-                  <div
-                    key={entry.id}
-                    className="p-3 claude-card-soft flex items-center justify-between"
-                  >
-                    <div className="flex items-center gap-2.5">
-                      {entry.icon}
-                      <span className="text-[var(--body)] text-[11px]">{entry.label}</span>
-                    </div>
-                    <span className="text-[var(--muted-soft)] text-[10px]">{entry.time}</span>
-                  </div>
-                ))
-              )}
-            </div>
+            <button
+              onClick={() => setActiveView('activity')}
+              className="text-xs text-[var(--green)] hover:underline cursor-pointer font-medium"
+            >
+              View All
+            </button>
           </div>
 
-          {/* How to Use Guide Card */}
-          <div className="claude-card p-6 space-y-4 border-l-4 border-[var(--green)]">
-            <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-xl flex items-center justify-center" style={{ borderRadius: '12px', background: 'var(--green)' }}>
-                <HelpCircle className="w-4 h-4 text-white" />
+          <div className="space-y-2 font-mono text-xs">
+            {recentActivity.length === 0 ? (
+              <div className="p-6 rounded-2xl text-center space-y-2" style={{ background: 'rgba(34, 197, 94, 0.08)' }}>
+                <Clock className="w-8 h-8 text-[var(--hairline)] mx-auto" />
+                <p className="text-[var(--muted-soft)] text-xs">No activity yet</p>
+                <p className="text-[var(--hairline)] text-[10px]">Complete your first check-in to see activity here.</p>
               </div>
-              <div>
-                <h3 className="text-base font-bold text-[var(--ink)]">How to Use Streakify</h3>
-                <p className="text-[11px] text-[var(--muted-soft)] font-mono">Simple 4-step guide to build unstoppable habits</p>
-              </div>
-            </div>
-
-            <div className="space-y-2.5 pt-1">
-              <div className="p-3 rounded-2xl claude-card-soft flex items-start gap-3">
-                <span className="text-xs font-bold font-mono px-2 py-0.5 rounded-lg text-white flex-shrink-0" style={{ background: 'var(--green)' }}>1</span>
-                <div>
-                  <h4 className="text-xs font-bold text-[var(--ink)]">Check-in Daily</h4>
-                  <p className="text-[11px] text-[var(--muted-soft)] leading-relaxed">
-                    Click <strong>Daily Check-in</strong> or click directly on any habit in <strong>Today's Routine</strong> to mark it done.
-                  </p>
+            ) : (
+              recentActivity.map((entry) => (
+                <div
+                  key={entry.id}
+                  className="p-3 claude-card-soft flex items-center justify-between"
+                >
+                  <div className="flex items-center gap-2.5">
+                    {entry.icon}
+                    <span className="text-[var(--body)] text-[11px]">{entry.label}</span>
+                  </div>
+                  <span className="text-[var(--muted-soft)] text-[10px]">{entry.time}</span>
                 </div>
-              </div>
-
-              <div className="p-3 rounded-2xl claude-card-soft flex items-start gap-3">
-                <span className="text-xs font-bold font-mono px-2 py-0.5 rounded-lg text-white flex-shrink-0" style={{ background: 'var(--green)' }}>2</span>
-                <div>
-                  <h4 className="text-xs font-bold text-[var(--ink)]">Build Your Matrix</h4>
-                  <p className="text-[11px] text-[var(--muted-soft)] leading-relaxed">
-                    Every completed day fills a square in your <strong>Contribution Matrix Grid</strong> green just like GitHub!
-                  </p>
-                </div>
-              </div>
-
-              <div className="p-3 rounded-2xl claude-card-soft flex items-start gap-3">
-                <span className="text-xs font-bold font-mono px-2 py-0.5 rounded-lg text-white flex-shrink-0" style={{ background: 'var(--green)' }}>3</span>
-                <div>
-                  <h4 className="text-xs font-bold text-[var(--ink)]">Protect Streaks with Rest Days</h4>
-                  <p className="text-[11px] text-[var(--muted-soft)] leading-relaxed">
-                    Taking a planned break? Active <strong>Streak Freezes</strong> turn tiles cyan so your hard-earned streak never breaks.
-                  </p>
-                </div>
-              </div>
-
-              <div className="p-3 rounded-2xl claude-card-soft flex items-start gap-3">
-                <span className="text-xs font-bold font-mono px-2 py-0.5 rounded-lg text-white flex-shrink-0" style={{ background: 'var(--green)' }}>4</span>
-                <div>
-                  <h4 className="text-xs font-bold text-[var(--ink)]">Track Level & Achievements</h4>
-                  <p className="text-[11px] text-[var(--muted-soft)] leading-relaxed">
-                    Head over to <strong>My Profile</strong> to view your total XP, current level progression, and unlocked badges.
-                  </p>
-                </div>
-              </div>
-            </div>
+              ))
+            )}
           </div>
         </div>
+      </div>
+
+      {/* Collapsible Bottom Card: How to Use Streakify */}
+      <div className="claude-card border-l-4 border-[var(--green)] overflow-hidden transition-all">
+        <button
+          onClick={() => setIsHowToUseOpen(!isHowToUseOpen)}
+          className="w-full p-6 flex items-center justify-between gap-4 text-left cursor-pointer transition-colors hover:bg-[var(--surface-soft)]"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ borderRadius: '12px', background: 'var(--green)' }}>
+              <HelpCircle className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold text-[var(--ink)] flex items-center gap-2" style={{ fontFamily: 'var(--font-heading)' }}>
+                <span>How to Use Streakify</span>
+              </h3>
+              <p className="text-xs text-[var(--muted-claude)] font-mono">
+                {isHowToUseOpen ? 'Click to collapse guide' : 'Click down arrow to view step-by-step guide'}
+              </p>
+            </div>
+          </div>
+
+          <div className="p-2 rounded-xl border border-[var(--hairline)] bg-[var(--surface-soft)] text-[var(--ink)] flex items-center justify-center transition-transform duration-300 hover:scale-105">
+            {isHowToUseOpen ? <ChevronUp className="w-5 h-5 text-[var(--green)]" /> : <ChevronDown className="w-5 h-5 text-[var(--green)]" />}
+          </div>
+        </button>
+
+        <AnimatePresence>
+          {isHowToUseOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              className="px-6 pb-6 pt-2 border-t border-[var(--hairline)]"
+            >
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-3">
+                <div className="p-4 rounded-2xl claude-card-soft space-y-2 border border-[var(--hairline)]">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold font-mono px-2.5 py-1 rounded-xl text-white" style={{ background: 'var(--green)' }}>Step 1</span>
+                    <span className="text-lg">🎯</span>
+                  </div>
+                  <h4 className="text-sm font-bold text-[var(--ink)]">Check-in Daily</h4>
+                  <p className="text-xs text-[var(--muted-soft)] leading-relaxed">
+                    Click <strong>Daily Check-in</strong> or click directly on any habit in <strong>Today's Habits</strong> list to toggle it <strong>✓ Done</strong> instantly.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-2xl claude-card-soft space-y-2 border border-[var(--hairline)]">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold font-mono px-2.5 py-1 rounded-xl text-white" style={{ background: 'var(--green)' }}>Step 2</span>
+                    <span className="text-lg">🟩</span>
+                  </div>
+                  <h4 className="text-sm font-bold text-[var(--ink)]">Build Contribution Matrix</h4>
+                  <p className="text-xs text-[var(--muted-soft)] leading-relaxed">
+                    Every day you complete required habits fills a square in your <strong>Contribution Grid</strong> green — just like GitHub!
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-2xl claude-card-soft space-y-2 border border-[var(--hairline)]">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold font-mono px-2.5 py-1 rounded-xl text-white" style={{ background: 'var(--green)' }}>Step 3</span>
+                    <span className="text-lg">❄️</span>
+                  </div>
+                  <h4 className="text-sm font-bold text-[var(--ink)]">Protect Streaks on Rest Days</h4>
+                  <p className="text-xs text-[var(--muted-soft)] leading-relaxed">
+                    Taking a planned break? Active <strong>Streak Freezes</strong> turn contribution tiles cyan so your streak is never broken.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-2xl claude-card-soft space-y-2 border border-[var(--hairline)]">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold font-mono px-2.5 py-1 rounded-xl text-white" style={{ background: 'var(--green)' }}>Step 4</span>
+                    <span className="text-lg">🏆</span>
+                  </div>
+                  <h4 className="text-sm font-bold text-[var(--ink)]">Track Level & Achievements</h4>
+                  <p className="text-xs text-[var(--muted-soft)] leading-relaxed">
+                    Visit <strong>My Profile</strong> to view your total XP, current level progression, and unlockable achievement badges.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

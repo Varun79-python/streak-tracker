@@ -45,21 +45,22 @@ export async function POST(request: Request) {
 
     // Upsert daily_completion
     let completion: any = null;
+    const completionPayload: Record<string, any> = {
+      user_id: userId,
+      completion_date: date,
+      is_completed: isCompleted,
+      completion_percentage: completionPercentage,
+      total_questions: totalCount,
+      completed_questions: completedCount,
+      xp_earned: xpEarned,
+      journal_entry: journalEntry,
+      mood,
+    };
+
     try {
       const result = await supabase
         .from('daily_completion')
-        .upsert({
-          user_id: userId,
-          completion_date: date,
-          is_completed: isCompleted,
-          completion_percentage: completionPercentage,
-          total_questions: totalCount,
-          completed_questions: completedCount,
-          xp_earned: xpEarned,
-          journal_entry: journalEntry,
-          mood,
-          completed_question_ids: completedHabitIds || [],
-        }, { onConflict: 'user_id,completion_date' })
+        .upsert(completionPayload, { onConflict: 'user_id,completion_date' })
         .select()
         .single();
       
@@ -67,51 +68,30 @@ export async function POST(request: Request) {
       completion = result.data;
     } catch (err: any) {
       console.error('daily_completion upsert error:', err?.message, err?.code);
-      // If user_id column is the issue, try without it
-      if (err?.message?.includes('user_id') || err?.code === '42703' || err?.code === '23505') {
+      // Retry without user_id column
+      const retryPayload = { ...completionPayload };
+      delete retryPayload.user_id;
+      try {
+        const result = await supabase
+          .from('daily_completion')
+          .upsert(retryPayload, { onConflict: 'completion_date' })
+          .select()
+          .single();
+        completion = result.data;
+      } catch (retryErr: any) {
+        console.error('daily_completion retry error:', retryErr?.message);
         try {
           const result = await supabase
             .from('daily_completion')
-            .upsert({
-              completion_date: date,
-              is_completed: isCompleted,
-              completion_percentage: completionPercentage,
-              total_questions: totalCount,
-              completed_questions: completedCount,
-              xp_earned: xpEarned,
-              journal_entry: journalEntry,
-              mood,
-              completed_question_ids: completedHabitIds || [],
-            }, { onConflict: 'completion_date' })
+            .insert(retryPayload)
             .select()
             .single();
           completion = result.data;
-        } catch (retryErr: any) {
-          console.error('daily_completion retry error:', retryErr?.message);
-          // Last resort: try a simple insert
-          try {
-            const result = await supabase
-              .from('daily_completion')
-              .insert({
-                completion_date: date,
-                is_completed: isCompleted,
-                completion_percentage: completionPercentage,
-                total_questions: totalCount,
-                completed_questions: completedCount,
-                xp_earned: xpEarned,
-                journal_entry: journalEntry,
-                mood,
-                completed_question_ids: completedHabitIds || [],
-              })
-              .select()
-              .single();
-            completion = result.data;
-          } catch { /* give up on completion */ }
-        }
+        } catch { /* give up on completion */ }
       }
     }
 
-    // Upsert daily_answers for each habit
+    // Upsert daily_answers for each habit — this is the authoritative source of per-habit completion
     if (completedHabitIds && completedHabitIds.length > 0) {
       try {
         const answers = completedHabitIds.map((question_id: string) => ({
@@ -126,17 +106,25 @@ export async function POST(request: Request) {
           .upsert(answers, { onConflict: 'user_id,question_id,answer_date' });
 
         if (answersError) {
-          console.error('daily_answers upsert error:', answersError.message);
-          // Retry without user_id
-          if (answersError.message?.includes('user_id') || answersError.code === '42703') {
-            const answersNoUser = completedHabitIds.map((question_id: string) => ({
-              question_id,
-              answer: true,
-              answer_date: date,
-            }));
+          console.warn('daily_answers upsert with user_id failed:', answersError.message);
+          // Retry without user_id in conflict key
+          const answersNoUser = completedHabitIds.map((question_id: string) => ({
+            user_id: userId,
+            question_id,
+            answer: true,
+            answer_date: date,
+          }));
+          try {
             await supabase
               .from('daily_answers')
               .upsert(answersNoUser, { onConflict: 'question_id,answer_date' });
+          } catch {
+            // Last resort: insert one by one, ignoring duplicates
+            for (const a of answersNoUser) {
+              try {
+                await supabase.from('daily_answers').insert(a);
+              } catch { /* ignore individual insert errors */ }
+            }
           }
         }
       } catch (e) {
