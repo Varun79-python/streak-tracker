@@ -5,9 +5,16 @@ import { useStreak } from '@/lib/StreakContext';
 import { HeatmapGraph } from '../HeatmapGraph';
 import { 
   Flame, 
+  Trophy,
+  Target,
+  Calendar as CalendarIcon,
+  Zap,
+  TrendingUp,
   CheckCircle2, 
+  Clock,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  Plus
 } from 'lucide-react';
 import { format } from 'date-fns';
 

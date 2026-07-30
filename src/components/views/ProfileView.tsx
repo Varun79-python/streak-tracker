@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useStreak } from '@/lib/StreakContext';
-import { User, Flame, Trophy, Calendar, Award, Edit2, Check, Camera, Sparkles, Target, Zap } from 'lucide-react';
+import { Flame, Trophy, Edit2, Check, Camera, Sparkles, Target, Zap } from 'lucide-react';
 import { AvatarPicker } from '../AvatarPicker';
 
 export const ProfileView: React.FC = () => {
