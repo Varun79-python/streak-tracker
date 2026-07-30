@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useStreak } from '@/lib/StreakContext';
-import { User, Flame, Trophy, Calendar, Award, Edit2, Check, Camera, Sparkles } from 'lucide-react';
+import { User, Flame, Trophy, Calendar, Award, Edit2, Check, Camera, Sparkles, Target, Zap } from 'lucide-react';
 import { AvatarPicker } from '../AvatarPicker';
 
 export const ProfileView: React.FC = () => {
@@ -116,38 +116,72 @@ export const ProfileView: React.FC = () => {
         )}
       </div>
 
-      {/* Summary Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="claude-card p-5 rounded-2xl text-center space-y-1">
-          <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto" style={{ background: 'var(--green)', borderRadius: '12px' }}>
-            <Flame className="w-6 h-6 text-[var(--body)] fire-animated" />
+      {/* 4 Stat Cards moved from Dashboard to Profile Page */}
+      <div className="grid grid-cols-2 gap-4">
+        {/* Stat 1: Current Streak */}
+        <div className="claude-card p-5 flex items-center justify-between relative overflow-hidden group">
+          <div className="space-y-1">
+            <p className="text-[10px] text-[var(--muted-claude)] font-mono uppercase tracking-wider">Current Streak</p>
+            <h3 className="text-3xl font-extrabold text-[var(--ink)] num-font flex items-baseline gap-1">
+              <span>{user.currentStreak}</span>
+              <span className="text-xs text-[var(--green)] font-normal font-sans">days</span>
+            </h3>
+            <p className="text-[10px] text-[var(--green)] font-medium flex items-center gap-1">
+              <Flame className="w-3.5 h-3.5 text-orange-500 fill-orange-500/30 fire-animated" />
+              <span>Active streak</span>
+            </p>
           </div>
-          <h4 className="text-2xl font-extrabold text-[var(--ink)] num-font">{user.currentStreak}</h4>
-          <p className="text-xs text-[var(--muted-soft)] font-mono">Current Streak</p>
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform" style={{ borderRadius: '12px', background: 'var(--green)' }}>
+            <Flame className="w-7 h-7 fire-animated text-white" />
+          </div>
         </div>
 
-        <div className="claude-card p-5 rounded-2xl text-center space-y-1">
-          <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto" style={{ background: 'var(--green)', borderRadius: '12px' }}>
-            <Trophy className="w-6 h-6 text-[var(--body)]" />
+        {/* Stat 2: Longest Streak */}
+        <div className="claude-card p-5 flex items-center justify-between">
+          <div className="space-y-1">
+            <p className="text-[10px] text-[var(--muted-claude)] font-mono uppercase tracking-wider">Longest Streak</p>
+            <h3 className="text-3xl font-extrabold text-[var(--ink)] num-font flex items-baseline gap-1">
+              <span>{user.longestStreak}</span>
+              <span className="text-xs text-[var(--green)] font-normal font-sans">days</span>
+            </h3>
+            <p className="text-[10px] text-[var(--green)] font-medium">🏆 Personal record</p>
           </div>
-          <h4 className="text-2xl font-extrabold text-[var(--ink)] num-font">{user.longestStreak}</h4>
-          <p className="text-xs text-[var(--muted-soft)] font-mono">Best Streak</p>
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ borderRadius: '12px', background: 'var(--green)' }}>
+            <Trophy className="w-6 h-6 text-white" />
+          </div>
         </div>
 
-        <div className="claude-card p-5 rounded-2xl text-center space-y-1">
-          <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto" style={{ background: 'var(--green)', borderRadius: '12px' }}>
-            <Calendar className="w-6 h-6 text-[var(--body)]" />
+        {/* Stat 3: Consistency Rate */}
+        <div className="claude-card p-5 flex items-center justify-between">
+          <div className="space-y-1">
+            <p className="text-[10px] text-[var(--muted-claude)] font-mono uppercase tracking-wider">Consistency</p>
+            <h3 className="text-3xl font-extrabold text-[var(--ink)] num-font">
+              {user.successRate}%
+            </h3>
+            <p className="text-[10px] text-[var(--green)] font-medium">🎯 Performance</p>
           </div>
-          <h4 className="text-2xl font-extrabold text-[var(--ink)] num-font">{user.totalDays}</h4>
-          <p className="text-xs text-[var(--muted-soft)] font-mono">Total Check-ins</p>
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ borderRadius: '12px', background: 'var(--green)' }}>
+            <Target className="w-6 h-6 text-white" />
+          </div>
         </div>
 
-        <div className="claude-card p-5 rounded-2xl text-center space-y-1">
-          <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto" style={{ background: 'var(--green)', borderRadius: '12px' }}>
-            <Award className="w-6 h-6 text-[var(--body)]" />
+        {/* Stat 4: Total XP & Level */}
+        <div className="claude-card p-5 flex items-center justify-between">
+          <div className="space-y-1">
+            <p className="text-[10px] text-[var(--muted-claude)] font-mono uppercase tracking-wider">Level {user.level}</p>
+            <h3 className="text-2xl font-extrabold text-[var(--ink)] num-font">
+              {user.xp} <span className="text-xs text-[var(--muted-soft)] font-sans">/ 2,000 XP</span>
+            </h3>
+            <div className="w-full h-2 rounded-full overflow-hidden mt-1" style={{ background: 'rgba(34, 197, 94, 0.08)' }}>
+              <div
+                className="h-full rounded-full"
+                style={{ width: `${(user.xp / (user.nextLevelXp || 2000)) * 100}%`, background: 'var(--green)' }}
+              />
+            </div>
           </div>
-          <h4 className="text-2xl font-extrabold text-[var(--ink)] num-font">{unlockedAchievementsCount}</h4>
-          <p className="text-xs text-[var(--muted-soft)] font-mono">Achievements</p>
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ borderRadius: '12px', background: 'var(--green)' }}>
+            <Zap className="w-6 h-6 text-white" />
+          </div>
         </div>
       </div>
     </div>

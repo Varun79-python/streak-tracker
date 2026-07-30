@@ -31,6 +31,8 @@ export const DayDetailsModal: React.FC = () => {
     // Fallback if parsing fails
   }
 
+  const isFreeze = !!(entry as any)?.streakFreezeUsed || !!(entry as any)?.isRestDay;
+
   return (
     <AnimatePresence>
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm select-none">
@@ -55,7 +57,9 @@ export const DayDetailsModal: React.FC = () => {
           {/* Modal Header (GitHub / LeetCode Style) */}
           <div className={`flex items-start gap-3.5 border-b pb-4 ${isLight ? 'border-gray-100' : 'border-[#21262d]'}`}>
             <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 border ${
-              isCompleted 
+              isFreeze
+                ? 'bg-sky-500/10 border-sky-500/30 text-sky-500'
+                : isCompleted 
                 ? (isLight ? 'bg-green-50 border-green-200 text-green-600' : 'bg-[#1f3526] border-[#2ea043]/40 text-[#39d353]')
                 : (isLight ? 'bg-gray-50 border-gray-200 text-gray-400' : 'bg-[#21262d] border-[#30363d] text-gray-400')
             }`}>
@@ -77,11 +81,13 @@ export const DayDetailsModal: React.FC = () => {
               {/* Contribution Status Badge */}
               <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                 <span className={`inline-flex items-center gap-1 text-[11px] font-mono px-2.5 py-0.5 rounded-full font-medium ${
-                  isCompleted 
+                  isFreeze
+                    ? 'bg-sky-500/15 text-sky-500 border border-sky-500/30'
+                    : isCompleted 
                     ? (isLight ? 'bg-green-100 text-green-700' : 'bg-[#1f3526] text-[#39d353] border border-[#2ea043]/30')
                     : (isLight ? 'bg-gray-100 text-gray-600' : 'bg-[#21262d] text-[#8b949e]')
                 }`}>
-                  {isCompleted ? '🟩 Completed' : '⬜ No contributions'}
+                  {isFreeze ? '❄️ Streak Freeze Protection' : isCompleted ? '🟩 Completed' : '⬜ No contributions'}
                 </span>
 
                 {entry && entry.xpEarned > 0 && (

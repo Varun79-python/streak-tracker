@@ -19,18 +19,27 @@ export const HeatmapGraph: React.FC<HeatmapGraphProps> = ({
   interactive = true,
 }) => {
   let theme = 'dark';
+  let habits: Array<{ id: string; name: string; icon: string }> = [];
   try {
     const streakCtx = useStreak();
     if (streakCtx?.theme) theme = streakCtx.theme;
+    if (streakCtx?.habits) habits = streakCtx.habits;
   } catch {
     // Fallback if used outside context provider
   }
 
   const isLight = theme === 'light';
 
+  // Feature 1: Habit Filter State ('all' or specific habit ID)
+  const [selectedHabitId, setSelectedHabitId] = useState<string>('all');
+
+  // Feature 2: Timeframe / Year Selector ('past365', '2026', '2025')
+  const [selectedTimeframe, setSelectedTimeframe] = useState<'past365' | '2026' | '2025'>('past365');
+
   const [hoveredDay, setHoveredDay] = useState<{
     date: string;
     completed: boolean;
+    isFreeze: boolean;
     percentage: number;
     xp: number;
     journal?: string;
@@ -40,15 +49,28 @@ export const HeatmapGraph: React.FC<HeatmapGraphProps> = ({
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [showInfoModal, setShowInfoModal] = useState(false);
 
-  // Generate last 365 days aligned Sunday -> Saturday
+  // Compute weeks based on selectedTimeframe
   const { weeks, monthLabels } = useMemo(() => {
+    let startDate: Date;
+    let endDate: Date;
     const today = new Date();
-    const startDate = subDays(today, 364);
+
+    if (selectedTimeframe === '2026') {
+      startDate = new Date(2026, 0, 1);
+      endDate = new Date(2026, 11, 31);
+    } else if (selectedTimeframe === '2025') {
+      startDate = new Date(2025, 0, 1);
+      endDate = new Date(2025, 11, 31);
+    } else {
+      // Past 365 Days
+      endDate = today;
+      startDate = subDays(today, 364);
+    }
 
     const startSunday = new Date(startDate);
     startSunday.setDate(startSunday.getDate() - startSunday.getDay());
 
-    const allDays = eachDayOfInterval({ start: startSunday, end: today });
+    const allDays = eachDayOfInterval({ start: startSunday, end: endDate });
 
     const weekCols: Date[][] = [];
     let currentWeek: Date[] = [];
@@ -84,10 +106,17 @@ export const HeatmapGraph: React.FC<HeatmapGraphProps> = ({
     });
 
     return { weeks: weekCols, monthLabels: mLabels };
-  }, []);
+  }, [selectedTimeframe]);
 
-  // 2-Color Binary Heatmap Styling (White Empty vs Green Completed)
-  const getTileStyle = (isCompleted: boolean): React.CSSProperties => {
+  // Feature 3: Binary + Streak Freeze Tile Styling (White, Green, or Cyan Freeze)
+  const getTileStyle = (isCompleted: boolean, isFreeze: boolean): React.CSSProperties => {
+    if (isFreeze) {
+      return {
+        background: '#38BDF8',
+        border: '1px solid #0284C7',
+        boxShadow: '0 0 4px rgba(56, 189, 248, 0.4)',
+      };
+    }
     if (isCompleted) {
       return {
         background: 'var(--green)',
@@ -98,11 +127,11 @@ export const HeatmapGraph: React.FC<HeatmapGraphProps> = ({
     // Not Completed: White tile with subtle border
     return {
       background: 'var(--surface-soft)',
-      border: '1px solid var(--hairline)',
+      border: isLight ? '1px solid #E5E7EB' : '1px solid #30363d',
     };
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     setMousePos({
       x: e.clientX - rect.left,
@@ -113,7 +142,7 @@ export const HeatmapGraph: React.FC<HeatmapGraphProps> = ({
   const containerRef = React.useRef<HTMLDivElement>(null);
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to the right so Today's box (current week) is in focus on load (GitHub & LeetCode style)
+  // Auto-scroll to the right so Today's box (current week) is in focus on load
   React.useEffect(() => {
     const scrollToToday = () => {
       if (scrollRef.current) {
@@ -121,23 +150,20 @@ export const HeatmapGraph: React.FC<HeatmapGraphProps> = ({
       }
     };
     scrollToToday();
-    // Micro-delay fallback to handle dynamic rendering layout frames
     const timer = setTimeout(scrollToToday, 50);
     return () => clearTimeout(timer);
-  }, []);
+  }, [selectedTimeframe]);
 
   const getTooltipPosition = () => {
     if (!containerRef.current) return { left: Math.max(10, mousePos.x - 100), top: Math.max(10, mousePos.y - 75) };
     const rect = containerRef.current.getBoundingClientRect();
     const containerWidth = rect.width;
-    const tooltipWidth = 210; // width of tooltip card
+    const tooltipWidth = 210;
     let left = mousePos.x + 12;
 
-    // If tooltip overflows right side of visible card/screen, flip it to the left of cursor
     if (left + tooltipWidth > containerWidth - 12) {
       left = mousePos.x - tooltipWidth - 12;
     }
-    // Clamp to left edge
     if (left < 12) left = 12;
 
     return {
@@ -147,7 +173,54 @@ export const HeatmapGraph: React.FC<HeatmapGraphProps> = ({
   };
 
   return (
-    <div className="w-full select-none" ref={containerRef}>
+    <div className="w-full select-none space-y-3" ref={containerRef}>
+      {/* Top Filter Controls Toolbar */}
+      <div className="flex items-center justify-between flex-wrap gap-2 text-xs">
+        {/* Habit Selector Dropdown */}
+        <div className="flex items-center gap-2">
+          <label className={`font-mono text-[11px] ${isLight ? 'text-gray-500' : 'text-[#8b949e]'}`}>Filter Habit:</label>
+          <select
+            value={selectedHabitId}
+            onChange={(e) => setSelectedHabitId(e.target.value)}
+            className={`px-2.5 py-1 rounded-xl text-xs font-medium border cursor-pointer outline-none transition-colors ${
+              isLight
+                ? 'bg-white border-gray-200 text-gray-800 focus:border-green-500'
+                : 'bg-[#161b22] border-[#30363d] text-[#c9d1d9] focus:border-[#39d353]'
+            }`}
+          >
+            <option value="all">🌟 All Habits Combined</option>
+            {habits.map((h) => (
+              <option key={h.id} value={h.id}>
+                {h.icon} {h.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Year / Timeframe Selector Pills */}
+        <div className={`flex items-center gap-1 p-1 rounded-xl border ${
+          isLight ? 'bg-gray-100/80 border-gray-200' : 'bg-[#161b22] border-[#30363d]'
+        }`}>
+          {(['past365', '2026', '2025'] as const).map((tf) => {
+            const labels = { past365: 'Past 365 Days', '2026': '2026', '2025': '2025' };
+            const isActive = selectedTimeframe === tf;
+            return (
+              <button
+                key={tf}
+                onClick={() => setSelectedTimeframe(tf)}
+                className={`px-2.5 py-0.5 text-[11px] font-mono rounded-lg transition-all cursor-pointer ${
+                  isActive
+                    ? 'bg-[var(--green)] text-white font-bold shadow-xs'
+                    : isLight ? 'text-gray-600 hover:text-gray-900' : 'text-[#8b949e] hover:text-white'
+                }`}
+              >
+                {labels[tf]}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Clean Borderless Heatmap Container */}
       <div 
         className="relative py-2 text-xs overflow-hidden"
@@ -177,7 +250,7 @@ export const HeatmapGraph: React.FC<HeatmapGraphProps> = ({
 
             {/* Heatmap Grid Area */}
             <div className="flex items-start gap-2">
-              {/* Day Labels Column - Sticky on left so Mon, Wed, Fri are never cut off */}
+              {/* Day Labels Column - Sticky on left */}
               <div className={`sticky left-0 z-10 flex flex-col gap-[3px] text-[10px] font-mono w-7 sm:w-8 pt-[1px] flex-shrink-0 select-none ${
                 isLight ? 'text-gray-500 bg-white/95' : 'text-[#8b949e] bg-[#161b22]/95'
               }`}>
@@ -197,8 +270,17 @@ export const HeatmapGraph: React.FC<HeatmapGraphProps> = ({
                     {week.map((day) => {
                       const dateStr = format(day, 'yyyy-MM-dd');
                       const checkIn = history[dateStr];
-                      const isCompleted = checkIn ? (checkIn.completed || checkIn.completionPercentage > 0) : false;
-                      const tileStyle = getTileStyle(isCompleted);
+                      
+                      // Calculate completion based on selectedHabitFilter
+                      let isCompleted = false;
+                      if (selectedHabitId === 'all') {
+                        isCompleted = checkIn ? (checkIn.completed || checkIn.completionPercentage > 0) : false;
+                      } else {
+                        isCompleted = checkIn?.completedHabits?.includes(selectedHabitId) || false;
+                      }
+
+                      const isFreeze = !!(checkIn as any)?.streakFreezeUsed || !!(checkIn as any)?.isRestDay;
+                      const tileStyle = getTileStyle(isCompleted, isFreeze);
 
                       return (
                         <motion.button
@@ -209,6 +291,7 @@ export const HeatmapGraph: React.FC<HeatmapGraphProps> = ({
                             setHoveredDay({
                               date: format(day, 'EEEE, MMM d, yyyy'),
                               completed: isCompleted,
+                              isFreeze,
                               percentage: checkIn?.completionPercentage || (isCompleted ? 100 : 0),
                               xp: checkIn?.xpEarned || 0,
                               journal: checkIn?.journal?.title,
@@ -242,28 +325,35 @@ export const HeatmapGraph: React.FC<HeatmapGraphProps> = ({
                 <span>Learn how we count contributions</span>
               </button>
 
-              {/* 2-State Legend */}
+              {/* 3-State Legend */}
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-1.5">
                   <div
                     className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-[2px]"
-                    style={getTileStyle(false)}
+                    style={getTileStyle(false, false)}
                   />
-                  <span>Not Completed</span>
+                  <span>Not Done</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <div
                     className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-[2px]"
-                    style={getTileStyle(true)}
+                    style={getTileStyle(true, false)}
                   />
                   <span>Completed</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div
+                    className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-[2px]"
+                    style={getTileStyle(false, true)}
+                  />
+                  <span>Freeze ❄️</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Floating Tooltip with Dynamic Clamp */}
+        {/* Floating Tooltip */}
         {hoveredDay && (() => {
           const pos = getTooltipPosition();
           return (
@@ -282,18 +372,22 @@ export const HeatmapGraph: React.FC<HeatmapGraphProps> = ({
                 isLight ? 'border-gray-100 text-gray-900' : 'border-[#21262d] text-[#f0f6fc]'
               }`}>
                 <span className="truncate max-w-[120px]" title={hoveredDay.date}>{hoveredDay.date}</span>
-                <span className={`font-mono font-bold text-[11px] ${isLight ? 'text-green-600' : 'text-[#39d353]'}`}>
-                  {hoveredDay.completed ? '✓ Done' : 'Missed'}
+                <span className={`font-mono font-bold text-[11px] ${
+                  hoveredDay.isFreeze ? 'text-sky-500' : hoveredDay.completed ? (isLight ? 'text-green-600' : 'text-[#39d353]') : 'text-gray-400'
+                }`}>
+                  {hoveredDay.isFreeze ? '❄️ Freeze' : hoveredDay.completed ? '✓ Done' : 'Missed'}
                 </span>
               </div>
               <div className="flex justify-between items-center pt-0.5 text-xs">
                 <span className={isLight ? 'text-gray-500' : 'text-[#8b949e]'}>Status:</span>
                 <span className={`font-mono font-bold ${
-                  hoveredDay.completed 
+                  hoveredDay.isFreeze
+                    ? 'text-sky-500'
+                    : hoveredDay.completed 
                     ? (isLight ? 'text-green-600' : 'text-[#39d353]') 
                     : (isLight ? 'text-gray-400' : 'text-gray-500')
                 }`}>
-                  {hoveredDay.completed ? 'Completed' : 'Not Completed'}
+                  {hoveredDay.isFreeze ? 'Streak Freeze Used ❄️' : hoveredDay.completed ? 'Completed' : 'Not Completed'}
                 </span>
               </div>
               {hoveredDay.xp > 0 && (
@@ -366,11 +460,11 @@ export const HeatmapGraph: React.FC<HeatmapGraphProps> = ({
                   <div className={`font-semibold ${isLight ? 'text-gray-900' : 'text-white'}`}>Visual States</div>
                   <div className="flex items-center gap-3 font-mono text-[11px]">
                     <div className="flex items-center gap-1.5">
-                      <div className="w-3.5 h-3.5 rounded-[2px]" style={getTileStyle(false)} />
+                      <div className="w-3.5 h-3.5 rounded-[2px]" style={getTileStyle(false, false)} />
                       <span>Not Completed</span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <div className="w-3.5 h-3.5 rounded-[2px]" style={getTileStyle(true)} />
+                      <div className="w-3.5 h-3.5 rounded-[2px]" style={getTileStyle(true, false)} />
                       <span className={isLight ? 'text-green-600 font-bold' : 'text-[#39d353] font-bold'}>Completed</span>
                     </div>
                   </div>

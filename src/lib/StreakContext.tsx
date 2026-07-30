@@ -469,7 +469,7 @@ export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       ...habitData,
     };
 
-    // Local state update
+    // Local state update (optimistic)
     setHabits(prev => [...prev, newHabitObj]);
 
     if (userId) {
@@ -480,13 +480,17 @@ export const StreakProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           body: JSON.stringify({ userId, ...habitData }),
         });
 
-        if (res.ok) {
-          const created = await res.json();
+        const result = await res.json();
+
+        if (res.ok && result.id) {
           // Replace temporary local ID with server ID
-          setHabits(prev => prev.map(h => h.id === localId ? transformHabit(created) : h));
+          setHabits(prev => prev.map(h => h.id === localId ? transformHabit(result) : h));
+        } else {
+          console.error('Habit save failed:', result);
+          // Keep the habit locally even if backend fails
         }
       } catch (error) {
-        console.warn('Backend habit creation skipped or offline:', error);
+        console.warn('Backend habit creation failed:', error);
       }
     }
   };
