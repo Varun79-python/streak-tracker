@@ -11,7 +11,7 @@ export const HeatmapView: React.FC = () => {
   return (
     <div className="space-y-6 select-none">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <h2 className="text-2xl font-bold text-[var(--ink)] flex items-center gap-2.5">
             <Grid3X3 className="w-6 h-6 text-[var(--green)]" />

@@ -32,7 +32,7 @@ export const SettingsView: React.FC = () => {
       </div>
 
       {/* Section 1: Appearance Theme */}
-      <div className="claude-card p-6 rounded-3xl space-y-4">
+      <div className="claude-card p-4 sm:p-6 rounded-3xl space-y-4">
         <h3 className="text-base font-bold text-[var(--ink)] flex items-center gap-2">
           <Moon className="w-4 h-4 text-[var(--green)]" />
           <span>Appearance & Theme</span>
@@ -76,7 +76,7 @@ export const SettingsView: React.FC = () => {
       </div>
 
       {/* Section 2: General Profile Settings */}
-      <div className="claude-card p-6 rounded-3xl space-y-6">
+      <div className="claude-card p-4 sm:p-6 rounded-3xl space-y-6">
         <h3 className="text-base font-bold text-[var(--ink)] flex items-center gap-2">
           <User className="w-4 h-4 text-[var(--green)]" />
           <span>General Profile Settings</span>
@@ -111,7 +111,7 @@ export const SettingsView: React.FC = () => {
       </div>
 
       {/* Section 3: Data & Export */}
-      <div className="claude-card p-6 rounded-3xl space-y-4">
+      <div className="claude-card p-4 sm:p-6 rounded-3xl space-y-4">
         <h3 className="text-base font-bold text-[var(--ink)] flex items-center gap-2">
           <Shield className="w-4 h-4 text-[var(--green)]" />
           <span>Data Privacy & Backup</span>

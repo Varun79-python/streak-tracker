@@ -64,7 +64,7 @@ export const HabitsManagementView: React.FC = () => {
             </div>
 
             {/* Actions & Toggles */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
               {/* Required Toggle */}
               <button
                 onClick={() => updateHabit(habit.id, { required: !habit.required })}

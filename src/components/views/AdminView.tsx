@@ -277,7 +277,7 @@ export const AdminView: React.FC = () => {
       {/* Admin Content — dark background */}
       <div className="rounded-b-2xl p-6 space-y-6" style={{ background: '#0B0F0C', border: '1px solid rgba(255,255,255,0.06)', borderTop: 'none' }}>
         {/* Stats row */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="p-4 rounded-xl" style={{ background: '#161B22', border: '1px solid rgba(255,255,255,0.06)' }}>
             <div className="flex items-center gap-2 mb-2">
               <Users className="w-4 h-4" style={{ color: '#39D353' }} />

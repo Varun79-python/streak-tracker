@@ -91,7 +91,7 @@ export const CalendarView: React.FC = () => {
       </div>
 
       {/* Monthly Grid */}
-      <div className="claude-card p-6 rounded-3xl space-y-4">
+      <div className="claude-card p-4 sm:p-6 rounded-3xl space-y-4">
         {/* Day Headers */}
         <div className="grid grid-cols-7 gap-2 text-center text-xs font-bold font-mono text-[var(--muted-soft)] border-b border-[var(--muted-soft)]/20 pb-3">
           <span>Sun</span>
